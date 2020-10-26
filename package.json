@@ -1,0 +1,35 @@
+{
+  "name": "@studiorack/core",
+  "version": "0.0.1",
+  "description": "Core library containing shared functionality",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/studiorack/studiorack-core.git"
+  },
+  "keywords": [
+    "studiorack",
+    "plugin",
+    "library",
+    "core",
+    "package"
+  ],
+  "author": "kmturley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/studiorack/studiorack-core/issues"
+  },
+  "homepage": "https://github.com/studiorack/studiorack-core#readme",
+  "dependencies": {
+    "typescript": "^4.0.3"
+  }
+}
