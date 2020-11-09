@@ -38,6 +38,7 @@
     "glob": "^7.1.6",
     "node-fetch": "^2.6.1",
     "nodejs-fs-utils": "^1.2.5",
+    "readline-sync": "^1.4.10",
     "typescript": "^4.0.3"
   }
 }

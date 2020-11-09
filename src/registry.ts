@@ -15,6 +15,10 @@ function pathGetRepoId(id: string) {
   return id.slice(0, id.lastIndexOf('/'))
 }
 
+function pathGetVersionId(id: string) {
+  return id.split('@');
+}
+
 async function pluginCreate(dir: string) {
   if (dirExists(dir)) {
     console.error(`Directory already exists: ${dir}`);
@@ -146,6 +150,6 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
 }
 
 export {
-  pathGetPluginId, pathGetRepoId,
+  pathGetPluginId, pathGetRepoId, pathGetVersionId,
   pluginCreate, pluginFolder, pluginGet, pluginsGet, pluginInstall, pluginSearch, pluginSource, pluginUninstall
 };

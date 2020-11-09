@@ -1,5 +1,5 @@
 import AdmZip from 'adm-zip';
-import { exec } from 'child_process';
+import { execSync } from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -75,7 +75,7 @@ function fileOpen(filePath: string) {
     case 'win32' : command = 'start'; break;
     default : command = 'xdg-open'; break;
   }
-  return exec(`${command} ${filePath}`);
+  return execSync(`${command} ${filePath}`);
 }
 
 function fileSize(filePath: string) {
