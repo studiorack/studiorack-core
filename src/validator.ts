@@ -1,10 +1,11 @@
 import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, fileSize, zipCreate, zipExtract } from './file';
+import { pathGetPlatform } from './registry';
 import { execSync } from 'child_process';
 import { getRaw } from './api';
 import path from 'path';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('lib')), 'bin', 'validator');
-const VALIDATOR_EXT = process.platform === 'win32' ? '.exe' : '';
+const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
 const VALIDATOR_PATH = path.join(VALIDATOR_DIR, 'validator' + VALIDATOR_EXT);
 
 const map: { [property: string]: string } = {
@@ -19,7 +20,7 @@ const map: { [property: string]: string } = {
 async function validateInstall() {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(VALIDATOR_DIR)) {
-    const data = await getRaw(`https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${file.getPlatformPrefix()}.zip`);
+    const data = await getRaw(`https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${pathGetPlatform()}.zip`);
     console.log('VALIDATOR_DIR', VALIDATOR_DIR);
     console.log('VALIDATOR_EXT', VALIDATOR_EXT);
     console.log('VALIDATOR_PATH', VALIDATOR_PATH);
@@ -36,7 +37,7 @@ function validatePlugin(pathItem: string, options: any) {
     return false;
   }
   console.log(`Reading: ${pathItem}`);
-  const outputText = run(pathItem);
+  const outputText = validateRun(pathItem);
   const outputJson = validateProcess(pathItem, outputText);
   const filepath = pathItem.substring(0, pathItem.lastIndexOf('.'));
   if (options.txt) {

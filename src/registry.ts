@@ -19,6 +19,14 @@ function pathGetVersionId(id: string) {
   return id.split('@');
 }
 
+function pathGetPlatform() {
+  switch (process.platform) { 
+    case 'darwin' : return 'mac';
+    case 'win32' : return 'win';
+    default : return 'linux';
+  }
+}
+
 async function pluginCreate(dir: string) {
   if (dirExists(dir)) {
     console.error(`Directory already exists: ${dir}`);
@@ -150,6 +158,6 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
 }
 
 export {
-  pathGetPluginId, pathGetRepoId, pathGetVersionId,
+  pathGetPlatform, pathGetPluginId, pathGetRepoId, pathGetVersionId,
   pluginCreate, pluginFolder, pluginGet, pluginsGet, pluginInstall, pluginSearch, pluginSource, pluginUninstall
 };
