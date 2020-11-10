@@ -1,8 +1,11 @@
 import { getJSON, getRaw } from './api';
-import { dirCreate, dirDelete, dirEmpty, dirExists, dirRename, zipExtract } from './file';
+import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import os from 'os';
+import path from 'path';
+import { validatePlugin } from './validator';
 
 const homedir = os.homedir();
+const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`
 const PLUGIN_DIR = './plugins';
 const PLUGIN_TEMPLATE = 'https://github.com/studiorack/studiorack-plugin/archive/master.zip';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
@@ -17,6 +20,14 @@ function pathGetRepoId(id: string) {
 
 function pathGetVersionId(id: string) {
   return id.split('@');
+}
+
+function pathFromSlashes(input: string) {
+  return input ? input.replace(/\//g, '_') : input
+}
+
+function pathToSlashes(input: string) {
+  return input ? input.replace(/_/g, '/') : input
 }
 
 function pathGetPlatform() {
@@ -61,10 +72,47 @@ async function pluginGet(id: string) {
   return plugins[id] || false;
 }
 
+function pluginGetLocal(filePath: string) {
+  const jsonPath = `${pluginFolder(true)}/${pathFromSlashes(path)}.json`;
+  const versionId = filePath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
+  console.log('jsonPath', jsonPath);
+  let plugin = fileJsonLoad(jsonPath);
+  plugin.id = pathFromSlashes(filePath);
+  plugin.path = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.vst3`;
+  plugin.slug = path;
+  plugin.status = 'installed';
+  plugin.version = versionId ? versionId[0] : plugin.version;
+  return plugin;
+}
+
 async function pluginsGet() {
   return await getJSON(REGISTRY_PATH).then((data) => {
     return data.objects;
   })
+}
+
+function pluginsGetLocal() {
+  const list: Array<object> = [];
+  const pluginPaths = dirRead(PLUGIN_LOCAL);
+  pluginPaths.forEach((pluginPath: string) => {
+    const folderPath = path.dirname(PLUGIN_LOCAL).replace('**', '');
+    const relativePath = pluginPath.substring(folderPath.length);
+    const pluginId = pathGetPluginId(pluginPath.substring(folderPath.length, pluginPath.lastIndexOf('.')));
+    const repoId = relativePath.split('/', 2).join('/');
+    const versionId = pluginPath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
+    const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
+    let plugin = fileJsonLoad(jsonPath);
+    if (!plugin) {
+      plugin = validatePlugin(pluginPath, { json: true });
+    }
+    plugin.id = `${repoId}/${pluginId}`;
+    plugin.path = pluginPath;
+    plugin.slug = pathFromSlashes(plugin.id);
+    plugin.status = 'installed';
+    plugin.version = versionId ? versionId[0] : plugin.version;
+    list.push(plugin);
+  })
+  return list;
 }
 
 async function pluginInstall(id: string, version: string, global: boolean) {
@@ -158,6 +206,7 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
 }
 
 export {
-  pathGetPlatform, pathGetPluginId, pathGetRepoId, pathGetVersionId,
-  pluginCreate, pluginFolder, pluginGet, pluginsGet, pluginInstall, pluginSearch, pluginSource, pluginUninstall
+  pathGetPlatform, pathGetPluginId, pathGetRepoId, pathGetVersionId, pathFromSlashes, pathToSlashes,
+  pluginCreate, pluginFolder, pluginGet, pluginGetLocal, pluginsGet, pluginsGetLocal, 
+  pluginInstall, pluginSearch, pluginSource, pluginUninstall
 };
