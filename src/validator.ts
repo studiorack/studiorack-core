@@ -14,13 +14,15 @@ const map: { [property: string]: string } = {
   subCategories: 'tags',
   url: 'homepage',
   vendor: 'author',
-  version: 'version'
-}
+  version: 'version',
+};
 
 async function validateInstall() {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(VALIDATOR_DIR)) {
-    const data = await getRaw(`https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${pathGetPlatform()}.zip`);
+    const data = await getRaw(
+      `https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${pathGetPlatform()}.zip`
+    );
     console.log('VALIDATOR_DIR', VALIDATOR_DIR);
     console.log('VALIDATOR_EXT', VALIDATOR_EXT);
     console.log('VALIDATOR_PATH', VALIDATOR_PATH);
@@ -67,7 +69,7 @@ function validateProcess(pathItem: string, log: string) {
     line = line.trim();
     // only process lines assigning values
     if (line.includes(' = ')) {
-      let [key, val] = line.split(' = ');
+      const [key, val] = line.split(' = ');
       let arr: Array<string> = [];
       // ignore keys with spaces
       if (!key.includes(' ')) {
@@ -97,12 +99,12 @@ function validateProcess(pathItem: string, log: string) {
     json.size = size;
   }
   // generate the id from the filename
-  const id = path.basename(pathItem, path.extname(pathItem))
+  const id = path.basename(pathItem, path.extname(pathItem));
   if (id) {
     json.id = id;
   }
   // generate the id from the filename
-  const filename = path.basename(pathItem)
+  const filename = path.basename(pathItem);
   if (filename) {
     json.file = filename;
   }
@@ -117,19 +119,14 @@ function validateProcess(pathItem: string, log: string) {
   return json;
 }
 
-function validateRun(path: string) {
+function validateRun(filePath: string) {
   // Run Steinberg VST3 SDK validator binary
   try {
-    const sdout = execSync(`${VALIDATOR_PATH} "${path}"`);
+    const sdout = execSync(`${VALIDATOR_PATH} "${filePath}"`);
     return sdout.toString();
   } catch (error) {
     return error.output ? error.output.toString() : error.toString();
   }
 }
 
-export {
-  validateInstall,
-  validatePlugin,
-  validateProcess,
-  validateRun
-}
+export { validateInstall, validatePlugin, validateProcess, validateRun };

@@ -5,10 +5,13 @@ const readline = require('readline-sync');
 const validator = require('./validator');
 
 const PROJECT_CONFIG = `${process.cwd()}/project.json`;
-const REGISTRY_PUBLISH = 'https://github.com/studiorack/studiorack-site/issues/new?title=Publish%20my%20plugin&body=Github%20repo%3A%20&labels=enhancement';
+const REGISTRY_PUBLISH =
+  'https://github.com/studiorack/studiorack-site/issues/new?title=Publish%20my%20plugin&body=Github%20repo%3A%20&labels=enhancement';
 
 function askQuestion(label: string, input: string, fallback: string) {
-  return readline.question(`${label}: ($<defaultInput>) `, { defaultInput: input || fallback });
+  return readline.question(`${label}: ($<defaultInput>) `, {
+    defaultInput: input || fallback,
+  });
 }
 
 async function projectCreate(folder: string) {
@@ -99,7 +102,7 @@ function projectUninstall(input: string, options: any) {
 
 async function projectValidate(pluginPath: string, options: any) {
   const pluginRack = {
-    plugins: <any> []
+    plugins: <any>[],
   };
   await validator.install();
   if (pluginPath.includes('*')) {
@@ -121,7 +124,14 @@ async function projectValidate(pluginPath: string, options: any) {
 }
 
 export {
-  projectCreate, projectInit, projectInstall,
-  projectLoad, projectPublish, projectSave,
-  projectSearch, projectStart, projectUninstall, projectValidate
+  projectCreate,
+  projectInit,
+  projectInstall,
+  projectLoad,
+  projectPublish,
+  projectSave,
+  projectSearch,
+  projectStart,
+  projectUninstall,
+  projectValidate,
 };

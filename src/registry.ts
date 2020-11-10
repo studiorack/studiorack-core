@@ -5,17 +5,17 @@ import path from 'path';
 import { validatePlugin } from './validator';
 
 const homedir = os.homedir();
-const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`
+const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
 const PLUGIN_DIR = './plugins';
 const PLUGIN_TEMPLATE = 'https://github.com/studiorack/studiorack-plugin/archive/master.zip';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
 
 function pathGetPluginId(id: string) {
-  return id.slice(id.lastIndexOf('/') + 1)
+  return id.slice(id.lastIndexOf('/') + 1);
 }
 
 function pathGetRepoId(id: string) {
-  return id.slice(0, id.lastIndexOf('/'))
+  return id.slice(0, id.lastIndexOf('/'));
 }
 
 function pathGetVersionId(id: string) {
@@ -23,18 +23,21 @@ function pathGetVersionId(id: string) {
 }
 
 function pathFromSlashes(input: string) {
-  return input ? input.replace(/\//g, '_') : input
+  return input ? input.replace(/\//g, '_') : input;
 }
 
 function pathToSlashes(input: string) {
-  return input ? input.replace(/_/g, '/') : input
+  return input ? input.replace(/_/g, '/') : input;
 }
 
 function pathGetPlatform() {
-  switch (process.platform) { 
-    case 'darwin' : return 'mac';
-    case 'win32' : return 'win';
-    default : return 'linux';
+  switch (process.platform) {
+    case 'darwin':
+      return 'mac';
+    case 'win32':
+      return 'win';
+    default:
+      return 'linux';
   }
 }
 
@@ -51,15 +54,15 @@ async function pluginCreate(dir: string) {
 
 function pluginFolder(global: boolean) {
   const supported: { [property: string]: string } = {
-    'aix': homedir + '/.vst3',
-    'darwin': '/Library/Audio/Plug-ins/VST3',
-    'freebsd': homedir + '/.vst3',
-    'linux': homedir + '/.vst3',
-    'openbsd': homedir + '/.vst3',
-    'sunos': homedir + '/.vst3',
-    'win32': '/Program Files/Common Files/VST3',
-    'win64': '/Program Files/Common Files/VST3'
-  }
+    aix: homedir + '/.vst3',
+    darwin: '/Library/Audio/Plug-ins/VST3',
+    freebsd: homedir + '/.vst3',
+    linux: homedir + '/.vst3',
+    openbsd: homedir + '/.vst3',
+    sunos: homedir + '/.vst3',
+    win32: '/Program Files/Common Files/VST3',
+    win64: '/Program Files/Common Files/VST3',
+  };
   if (global) {
     return supported[process.platform];
   } else {
@@ -88,7 +91,7 @@ function pluginGetLocal(filePath: string) {
 async function pluginsGet() {
   return await getJSON(REGISTRY_PATH).then((data) => {
     return data.objects;
-  })
+  });
 }
 
 function pluginsGetLocal() {
@@ -111,7 +114,7 @@ function pluginsGetLocal() {
     plugin.status = 'installed';
     plugin.version = versionId ? versionId[0] : plugin.version;
     list.push(plugin);
-  })
+  });
   return list;
 }
 
@@ -175,30 +178,31 @@ async function pluginSearch(query: string) {
   query = query.toLowerCase();
   const plugins = await pluginsGet();
   const results = [];
-  for (let pluginId in plugins) {
+  for (const pluginId in plugins) {
     const plugin = plugins[pluginId];
     const latest = plugin.versions[plugin.version];
     if (
-      latest.name.toLowerCase().indexOf(query) != -1 ||
-      latest.description.toLowerCase().indexOf(query) != -1 ||
-      latest.tags.includes(query)) {
-        results.push(plugin);
+      latest.name.toLowerCase().indexOf(query) !== -1 ||
+      latest.description.toLowerCase().indexOf(query) !== -1 ||
+      latest.tags.includes(query)
+    ) {
+      results.push(plugin);
     }
   }
   return results;
 }
 
 function pluginSource(repoId: string, pluginId: string, version: string) {
-  var supported: { [property: string]: string } = {
-    'aix': 'linux',
-    'darwin': 'mac',
-    'freebsd': 'linux',
-    'linux': 'linux',
-    'openbsd': 'linux',
-    'sunos': 'linux',
-    'win32': 'win',
-    'win64': 'win'
-  }
+  const supported: { [property: string]: string } = {
+    aix: 'linux',
+    darwin: 'mac',
+    freebsd: 'linux',
+    linux: 'linux',
+    openbsd: 'linux',
+    sunos: 'linux',
+    win32: 'win',
+    win64: 'win',
+  };
   if (supported[process.platform]) {
     return `https://github.com/${repoId}/releases/download/v${version}/${pluginId}-${supported[process.platform]}.zip`;
   }
@@ -206,7 +210,20 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
 }
 
 export {
-  pathGetPlatform, pathGetPluginId, pathGetRepoId, pathGetVersionId, pathFromSlashes, pathToSlashes,
-  pluginCreate, pluginFolder, pluginGet, pluginGetLocal, pluginsGet, pluginsGetLocal, 
-  pluginInstall, pluginSearch, pluginSource, pluginUninstall
+  pathGetPlatform,
+  pathGetPluginId,
+  pathGetRepoId,
+  pathGetVersionId,
+  pathFromSlashes,
+  pathToSlashes,
+  pluginCreate,
+  pluginFolder,
+  pluginGet,
+  pluginGetLocal,
+  pluginsGet,
+  pluginsGetLocal,
+  pluginInstall,
+  pluginSearch,
+  pluginSource,
+  pluginUninstall,
 };

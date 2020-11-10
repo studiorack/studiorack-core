@@ -33,7 +33,7 @@ function dirRead(dirPath: string) {
   return glob.sync(dirPath);
 }
 
-function dirRename(oldPath: string, newPath:string) {
+function dirRename(oldPath: string, newPath: string) {
   return fs.renameSync(oldPath, newPath);
 }
 
@@ -54,7 +54,7 @@ function fileExists(filePath: string) {
 }
 
 function fileJsonCreate(filePath: string, data: object) {
-  return fileCreate(filePath, JSON.stringify(data, null, 2))
+  return fileCreate(filePath, JSON.stringify(data, null, 2));
 }
 
 function fileJsonLoad(filePath: string) {
@@ -70,10 +70,16 @@ function fileLoad(filePath: string) {
 
 function fileOpen(filePath: string) {
   let command = '';
-  switch (process.platform) { 
-    case 'darwin' : command = 'open'; break;
-    case 'win32' : command = 'start'; break;
-    default : command = 'xdg-open'; break;
+  switch (process.platform) {
+    case 'darwin':
+      command = 'open';
+      break;
+    case 'win32':
+      command = 'start';
+      break;
+    default:
+      command = 'xdg-open';
+      break;
   }
   return execSync(`${command} ${filePath}`);
 }
@@ -82,13 +88,13 @@ function fileSize(filePath: string) {
   return fsUtils.fsizeSync(filePath);
 }
 
-function zipCreate(filesPath:string, zipPath: string) {
+function zipCreate(filesPath: string, zipPath: string) {
   if (fs.existsSync(zipPath)) {
     fs.unlinkSync(zipPath);
   }
   const zip = new AdmZip();
   const pathList = dirRead(filesPath);
-  pathList.forEach(pathItem => {
+  pathList.forEach((pathItem) => {
     if (fs.lstatSync(pathItem).isDirectory()) {
       zip.addLocalFolder(pathItem, path.basename(pathItem));
     } else {
@@ -104,7 +110,21 @@ function zipExtract(content: any, dirPath: string) {
 }
 
 export {
-  dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename,
-  fileCreate, fileDate, fileExec, fileExists, fileJsonCreate, fileJsonLoad, fileLoad, fileOpen, fileSize,
-  zipCreate, zipExtract
+  dirCreate,
+  dirDelete,
+  dirEmpty,
+  dirExists,
+  dirRead,
+  dirRename,
+  fileCreate,
+  fileDate,
+  fileExec,
+  fileExists,
+  fileJsonCreate,
+  fileJsonLoad,
+  fileLoad,
+  fileOpen,
+  fileSize,
+  zipCreate,
+  zipExtract,
 };
