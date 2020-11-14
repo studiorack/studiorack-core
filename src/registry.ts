@@ -30,17 +30,6 @@ function pathToSlashes(input: string) {
   return input ? input.replace(/_/g, '/') : input;
 }
 
-function pathGetPlatform() {
-  switch (process.platform) {
-    case 'darwin':
-      return 'mac';
-    case 'win32':
-      return 'win';
-    default:
-      return 'linux';
-  }
-}
-
 async function pluginCreate(dir: string) {
   if (dirExists(dir)) {
     console.error(`Directory already exists: ${dir}`);
@@ -76,7 +65,7 @@ async function pluginGet(id: string) {
 }
 
 function pluginGetLocal(filePath: string) {
-  const jsonPath = `${pluginFolder(true)}/${pathFromSlashes(path)}.json`;
+  const jsonPath = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.json`;
   const versionId = filePath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
   console.log('jsonPath', jsonPath);
   let plugin = fileJsonLoad(jsonPath);
@@ -145,14 +134,17 @@ async function pluginInstall(id: string, version: string, global: boolean) {
   const data = await getRaw(source);
   dirCreate(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
   zipExtract(data, `${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
-  return version;
+  plugin.path = `${pluginFolder(true)}/${repoId}/${pluginId}/${plugin.version}`;
+  plugin.status = 'installed';
+  return plugin;
 }
 
 function pluginInstalled(repoId: string, pluginId: string, version: string, global: boolean) {
   return dirExists(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
 }
 
-function pluginUninstall(id: string, version: string, global: boolean) {
+async function pluginUninstall(id: string, version: string, global: boolean) {
+  const plugin = await pluginGet(id);
   const pluginId = pathGetPluginId(id);
   const repoId = pathGetRepoId(id);
   if (!pluginInstalled(repoId, pluginId, version, global)) {
@@ -171,7 +163,9 @@ function pluginUninstall(id: string, version: string, global: boolean) {
   if (dirEmpty(grandparentDir)) {
     dirDelete(grandparentDir);
   }
-  return true;
+  delete plugin.path;
+  plugin.status = 'available';
+  return plugin;
 }
 
 async function pluginSearch(query: string) {
@@ -210,7 +204,6 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
 }
 
 export {
-  pathGetPlatform,
   pathGetPluginId,
   pathGetRepoId,
   pathGetVersionId,

@@ -1,5 +1,4 @@
 import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, fileSize, zipCreate, zipExtract } from './file';
-import { pathGetPlatform } from './registry';
 import { execSync } from 'child_process';
 import { getRaw } from './api';
 import path from 'path';
@@ -17,6 +16,17 @@ const map: { [property: string]: string } = {
   version: 'version',
 };
 
+function pathGetPlatform() {
+  switch (process.platform) {
+    case 'darwin':
+      return 'mac';
+    case 'win32':
+      return 'win';
+    default:
+      return 'linux';
+  }
+}
+
 async function validateInstall() {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(VALIDATOR_DIR)) {
@@ -33,7 +43,7 @@ async function validateInstall() {
   return false;
 }
 
-function validatePlugin(pathItem: string, options: any) {
+function validatePlugin(pathItem: string, options?: any) {
   if (!dirExists(pathItem)) {
     console.error(`File does not exist: ${pathItem}`);
     return false;
