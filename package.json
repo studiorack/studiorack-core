@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json --coverage"
   },
   "repository": {
     "type": "git",
