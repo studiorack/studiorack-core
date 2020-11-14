@@ -3,6 +3,7 @@ import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJson
 import os from 'os';
 import path from 'path';
 import { validatePlugin } from './validator';
+import { PluginEntry } from './types';
 
 const homedir = os.homedir();
 const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
@@ -143,6 +144,14 @@ function pluginInstalled(repoId: string, pluginId: string, version: string, glob
   return dirExists(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
 }
 
+function pluginLatest(plugin: PluginEntry) {
+  const version = plugin.versions[plugin.version];
+  version.id = plugin.id;
+  version.slug = pathFromSlashes(plugin.id);
+  version.version = plugin.version;
+  return version;
+}
+
 async function pluginUninstall(id: string, version: string, global: boolean) {
   const plugin = await pluginGet(id);
   const pluginId = pathGetPluginId(id);
@@ -216,6 +225,7 @@ export {
   pluginsGet,
   pluginsGetLocal,
   pluginInstall,
+  pluginLatest,
   pluginSearch,
   pluginSource,
   pluginUninstall,
