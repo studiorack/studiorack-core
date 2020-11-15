@@ -22,7 +22,7 @@ interface Plugin {
   size: number;
   slug?: string;
   status?: string;
-  tags: Array<string>;
+  tags: string[];
   version: string;
 }
 

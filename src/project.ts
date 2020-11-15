@@ -81,11 +81,12 @@ async function projectStart(path: string) {
 function projectUninstall(input: string, options: any) {
   const project = projectLoad();
   if (input) {
-    let [id, version] = pathGetVersionId(input);
+    const [id, version] = pathGetVersionId(input);
+    let result = version;
     if (!version) {
-      version = project.plugins[id];
+      result = project.plugins[id];
     }
-    const success = pluginUninstall(id, version, options.global);
+    const success = pluginUninstall(id, result, options.global);
     if (success) {
       delete project.plugins[id];
     }
@@ -101,9 +102,7 @@ function projectUninstall(input: string, options: any) {
 }
 
 async function projectValidate(pluginPath: string, options: any) {
-  const pluginRack = {
-    plugins: <any>[],
-  };
+  const pluginRack: any = {};
   await validator.install();
   if (pluginPath.includes('*')) {
     const pathList = dirRead(pluginPath);

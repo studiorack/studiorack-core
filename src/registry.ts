@@ -69,7 +69,7 @@ function pluginGetLocal(filePath: string) {
   const jsonPath = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.json`;
   const versionId = filePath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
   console.log('jsonPath', jsonPath);
-  let plugin = fileJsonLoad(jsonPath);
+  const plugin = fileJsonLoad(jsonPath);
   plugin.id = pathFromSlashes(filePath);
   plugin.path = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.vst3`;
   plugin.slug = path;
@@ -85,7 +85,7 @@ async function pluginsGet() {
 }
 
 function pluginsGetLocal() {
-  const list: Array<object> = [];
+  const list: any = [];
   const pluginPaths = dirRead(PLUGIN_LOCAL);
   pluginPaths.forEach((pluginPath: string) => {
     const folderPath = path.dirname(PLUGIN_LOCAL).replace('**', '');

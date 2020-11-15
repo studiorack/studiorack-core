@@ -125,7 +125,7 @@ function validateProcess(pathItem: string, log: string) {
     line = line.trim();
     // only process lines assigning values
     if (line.includes(' = ')) {
-      let [key, val] = line.split(' = ');
+      const [key, val] = line.split(' = ');
       let result: any = val;
       // ignore keys with spaces
       if (!key.includes(' ')) {
