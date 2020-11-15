@@ -9,7 +9,7 @@ interface PluginEntry {
 }
 
 interface PluginVersion {
-  [version:string]: Plugin
+  [version: string]: Plugin;
 }
 
 interface Plugin {
@@ -26,9 +26,4 @@ interface Plugin {
   version: string;
 }
 
-export {
-  Plugin,
-  PluginEntry,
-  PluginPack,
-  PluginVersion
-}
+export { Plugin, PluginEntry, PluginPack, PluginVersion };
