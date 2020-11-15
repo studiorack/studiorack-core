@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import { getRaw } from './api';
 import path from 'path';
 
-const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('lib')), 'bin', 'validator');
+const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
 const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
 const VALIDATOR_PATH = path.join(VALIDATOR_DIR, 'validator' + VALIDATOR_EXT);
 
@@ -33,9 +33,7 @@ async function validateInstall() {
     const data = await getRaw(
       `https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${pathGetPlatform()}.zip`
     );
-    console.log('VALIDATOR_DIR', VALIDATOR_DIR);
-    console.log('VALIDATOR_EXT', VALIDATOR_EXT);
-    console.log('VALIDATOR_PATH', VALIDATOR_PATH);
+    console.log(`Installed validator: ${VALIDATOR_PATH}`);
     zipExtract(data, VALIDATOR_DIR);
     fileExec(VALIDATOR_PATH);
     return true;
