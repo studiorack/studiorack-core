@@ -1,3 +1,7 @@
+interface PluginPack {
+  [property: string]: PluginEntry;
+}
+
 interface PluginEntry {
   id: string;
   version: string;
@@ -13,11 +17,11 @@ interface Plugin {
   date: string;
   description: string;
   homepage: string;
-  id: string;
+  id?: string;
   name: string;
   size: number;
-  slug: string;
-  status: string;
+  slug?: string;
+  status?: string;
   tags: Array<string>;
   version: string;
 }
@@ -25,5 +29,6 @@ interface Plugin {
 export {
   Plugin,
   PluginEntry,
+  PluginPack,
   PluginVersion
 }

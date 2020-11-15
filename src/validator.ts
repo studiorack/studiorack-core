@@ -1,6 +1,7 @@
 import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, fileSize, zipCreate, zipExtract } from './file';
 import { execSync } from 'child_process';
 import { getRaw } from './api';
+import { Plugin } from './types';
 import path from 'path';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
@@ -65,6 +66,25 @@ function validatePlugin(pathItem: string, options?: any) {
     console.log(`Generated: ${filepath}.zip`);
   }
   return outputJson;
+}
+
+function validatePluginSchema(plugin: Plugin) {
+  let error: any = false;
+  if (!plugin.author) { error = `author attribute missing`; }
+  if (typeof plugin.author !== 'string') { error = `author incorrect type ${typeof plugin.author}`; }
+  if (!plugin.homepage) { error = `homepage attribute missing`; }
+  if (typeof plugin.homepage !== 'string') { error = `homepage incorrect type ${typeof plugin.homepage}`; }
+  if (!plugin.name) { error = `name attribute missing`; }
+  if (typeof plugin.name !== 'string') { error = `name incorrect type ${typeof plugin.name}`; }
+  if (!plugin.description) { error = `description attribute missing`; }
+  if (typeof plugin.description !== 'string') { error = `description incorrect type ${typeof plugin.description}`; }
+  if (!plugin.tags) { error = `tags attribute missing`; }
+  if (!Array.isArray(plugin.tags)) { error = `tags incorrect type ${typeof plugin.tags}`; }
+  if (!plugin.version) { error = `version attribute missing`; }
+  if (typeof plugin.version !== 'string') { error = `version incorrect type ${typeof plugin.version}`; }
+  if (!plugin.size) { error = `size attribute missing`; }
+  if (typeof plugin.size !== 'number') { error = `size incorrect type ${typeof plugin.size}`; }
+  return error;
 }
 
 function validateProcess(pathItem: string, log: string) {
@@ -137,4 +157,4 @@ function validateRun(filePath: string) {
   }
 }
 
-export { validateInstall, validatePlugin, validateProcess, validateRun };
+export { validateInstall, validatePlugin, validatePluginSchema, validateProcess, validateRun };
