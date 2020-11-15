@@ -79,21 +79,21 @@ function validateProcess(pathItem: string, log: string) {
     line = line.trim();
     // only process lines assigning values
     if (line.includes(' = ')) {
-      const [key, val] = line.split(' = ');
-      let arr: Array<string> = [];
+      let [key, val] = line.split(' = ');
+      let result: any = val;
       // ignore keys with spaces
       if (!key.includes(' ')) {
         // turn bar delimited strings into arrays
-        if (val.includes('|')) {
-          arr = val.split('|');
+        if (result.includes('|')) {
+          result = result.split('|');
         }
         // ensure tags is always an array
-        if (map[key] === 'tags' && val.constructor !== Array) {
-          arr = [val];
+        if (key === 'subCategories' && !Array.isArray(result)) {
+          result = [result];
         }
         // rename and output only fields which exist in our map
         if (map[key]) {
-          json[map[key]] = arr;
+          json[map[key]] = result;
         }
       }
     }
