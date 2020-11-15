@@ -10,7 +10,7 @@ Common methods package shared across StudioRack CLI, app and website. Handling i
 
 To install the common package, run the command:
 
-    npm install @studiorack/studiorack-core
+    npm install @studiorack/core
 
 
 ## Usage
@@ -19,7 +19,7 @@ Import the package using:
 
     import { validateInstall } from '@studiorack/core';
 
-Then use the methods as normal.
+Then use the available methods as normal.
 
 
 ## Contact
