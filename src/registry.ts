@@ -31,6 +31,10 @@ function pathToSlashes(input: string) {
   return input ? input.replace(/_/g, '/') : input;
 }
 
+function pathTruncate(str: string, max: number) {
+  return (str.length > max) ? str.substr(0, max - 1) + '&hellip;' : str;
+}
+
 async function pluginCreate(dir: string) {
   if (dirExists(dir)) {
     console.error(`Directory already exists: ${dir}`);
@@ -218,6 +222,7 @@ export {
   pathGetVersionId,
   pathFromSlashes,
   pathToSlashes,
+  pathTruncate,
   pluginCreate,
   pluginFolder,
   pluginGet,

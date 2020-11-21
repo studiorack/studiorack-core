@@ -29,11 +29,15 @@ function projectInit() {
   project.main = askQuestion('Main', project.main, 'Song.als');
   project.audio = askQuestion('Audio', project.audio, 'Song.wav');
   project.image = askQuestion('Image', project.image, 'Song.png');
+  project.plugins = {};
   return projectSave(project);
 }
 
 async function projectInstall(input: string, options: any) {
   const project = projectLoad();
+  if (!project.plugins) {
+    project.plugins = {};
+  }
   if (input) {
     const [id, version] = pathGetVersionId(input);
     const installedVersion = await pluginInstall(id, version, options.global);
@@ -52,11 +56,7 @@ async function projectInstall(input: string, options: any) {
 }
 
 function projectLoad() {
-  const project = fileJsonLoad(PROJECT_CONFIG) || {};
-  if (!project.plugins) {
-    project.plugins = {};
-  }
-  return project;
+  return fileJsonLoad(PROJECT_CONFIG) || {};
 }
 
 async function projectPublish() {
@@ -80,6 +80,9 @@ async function projectStart(path: string) {
 
 function projectUninstall(input: string, options: any) {
   const project = projectLoad();
+  if (!project.plugins) {
+    project.plugins = {};
+  }
   if (input) {
     const [id, version] = pathGetVersionId(input);
     let result = version;
@@ -102,7 +105,9 @@ function projectUninstall(input: string, options: any) {
 }
 
 async function projectValidate(pluginPath: string, options: any) {
-  const pluginRack: any = {};
+  const pluginRack: any = {
+    plugins: []
+  };
   await validator.install();
   if (pluginPath.includes('*')) {
     const pathList = dirRead(pluginPath);
