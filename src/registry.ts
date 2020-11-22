@@ -32,7 +32,7 @@ function pathToSlashes(input: string) {
 }
 
 function pathTruncate(str: string, max: number) {
-  return (str.length > max) ? str.substr(0, max - 1) + '&hellip;' : str;
+  return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
 }
 
 async function pluginCreate(dir: string) {
