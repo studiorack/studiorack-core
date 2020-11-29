@@ -1,4 +1,5 @@
 # studiorack-core
+![Test](https://github.com/studiorack/studiorack-core/workflows/Test/badge.svg)
 
 Common methods package shared across StudioRack CLI, app and website. Handling installing DAW VST plugin dependencies using:
 
