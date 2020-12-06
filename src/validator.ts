@@ -32,7 +32,7 @@ async function validateInstall() {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(VALIDATOR_DIR)) {
     const data = await getRaw(
-      `https://github.com/studiorack/studiorack-plugin/releases/latest/download/validator-${pathGetPlatform()}.zip`
+      `https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${pathGetPlatform()}.zip`
     );
     console.log(`Installed validator: ${VALIDATOR_PATH}`);
     zipExtract(data, VALIDATOR_DIR);

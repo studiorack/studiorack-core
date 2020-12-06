@@ -8,7 +8,7 @@ import { PluginEntry } from './types';
 const homedir = os.homedir();
 const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
 const PLUGIN_DIR = './plugins';
-const PLUGIN_TEMPLATE = 'https://github.com/studiorack/studiorack-plugin/archive/master.zip';
+const PLUGIN_TEMPLATE = 'https://github.com/studiorack/studiorack-plugin-steinberg/archive/master.zip';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
 
 function pathGetPluginId(id: string) {
@@ -42,7 +42,7 @@ async function pluginCreate(dir: string) {
   }
   const data = await getRaw(PLUGIN_TEMPLATE);
   zipExtract(data, './');
-  dirRename('studiorack-plugin-master', dir);
+  dirRename('studiorack-plugin-steinberg-master', dir);
   return true;
 }
 
