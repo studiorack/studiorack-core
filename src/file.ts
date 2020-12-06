@@ -29,8 +29,8 @@ function dirExists(dirPath: string) {
   return fs.existsSync(dirPath);
 }
 
-function dirRead(dirPath: string) {
-  return glob.sync(dirPath, { nodir: true });
+function dirRead(dirPath: string, options?: any) {
+  return glob.sync(dirPath, options);
 }
 
 function dirRename(oldPath: string, newPath: string) {
