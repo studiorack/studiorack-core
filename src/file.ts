@@ -30,7 +30,7 @@ function dirExists(dirPath: string) {
 }
 
 function dirRead(dirPath: string) {
-  return glob.sync(dirPath);
+  return glob.sync(dirPath, { nodir: true });
 }
 
 function dirRename(oldPath: string, newPath: string) {
