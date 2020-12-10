@@ -6,9 +6,11 @@ import { validatePlugin } from './validator';
 import { PluginEntry } from './types';
 
 const homedir = os.homedir();
-const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
+const PLUGIN_BRANCH = 'main';
 const PLUGIN_DIR = './plugins';
-const PLUGIN_TEMPLATE = 'https://github.com/studiorack/studiorack-plugin-steinberg/archive/master.zip';
+const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
+const PLUGIN_PREFIX = 'studiorack-plugin';
+const PLUGIN_TEMPLATE = 'https://github.com/studiorack/';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
 
 function pathGetPluginId(id: string) {
@@ -35,14 +37,17 @@ function pathTruncate(str: string, max: number) {
   return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
 }
 
-async function pluginCreate(dir: string) {
+async function pluginCreate(dir: string, type?: string) {
   if (dirExists(dir)) {
     console.error(`Directory already exists: ${dir}`);
     return false;
   }
-  const data = await getRaw(PLUGIN_TEMPLATE);
+  if (!type) {
+    type = 'steinberg';
+  }
+  const data = await getRaw(`${PLUGIN_TEMPLATE}${PLUGIN_PREFIX}-${type}/archive/${PLUGIN_BRANCH}.zip`);
   zipExtract(data, './');
-  dirRename('studiorack-plugin-steinberg-master', dir);
+  dirRename('${PLUGIN_PREFIX}-${type}-${PLUGIN_BRANCH}', dir);
   return true;
 }
 
