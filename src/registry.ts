@@ -47,7 +47,7 @@ async function pluginCreate(dir: string, type?: string) {
   }
   const data = await getRaw(`${PLUGIN_TEMPLATE}${PLUGIN_PREFIX}-${type}/archive/${PLUGIN_BRANCH}.zip`);
   zipExtract(data, './');
-  dirRename('${PLUGIN_PREFIX}-${type}-${PLUGIN_BRANCH}', dir);
+  dirRename(`${PLUGIN_PREFIX}-${type}-${PLUGIN_BRANCH}`, dir);
   return true;
 }
 
