@@ -130,7 +130,7 @@ async function pluginInstall(id: string, version: string, global: boolean) {
   if (!plugin.versions[version]) {
     return console.error(`Plugin version not found ${version}`);
   }
-  const source = pluginSource(repoId, pluginId, version);
+  const source = pluginSource(repoId, pluginId, plugin.versions[version].release);
   if (!source) {
     return console.error(`Plugin not available for your system ${id}`);
   }
@@ -205,7 +205,7 @@ async function pluginSearch(query: string) {
   return results;
 }
 
-function pluginSource(repoId: string, pluginId: string, version: string) {
+function pluginSource(repoId: string, pluginId: string, release: string) {
   const supported: { [property: string]: string } = {
     aix: 'linux',
     darwin: 'mac',
@@ -217,7 +217,7 @@ function pluginSource(repoId: string, pluginId: string, version: string) {
     win64: 'win',
   };
   if (supported[process.platform]) {
-    return `https://github.com/${repoId}/releases/download/v${version}/${pluginId}-${supported[process.platform]}.zip`;
+    return `https://github.com/${repoId}/releases/download/${release}/${pluginId}-${supported[process.platform]}.zip`;
   }
   return false;
 }
