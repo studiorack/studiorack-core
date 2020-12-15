@@ -19,6 +19,7 @@ interface Plugin {
   homepage: string;
   id?: string;
   name: string;
+  release?: string;
   size: number;
   slug?: string;
   status?: string;
