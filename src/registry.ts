@@ -2,7 +2,7 @@ import { getJSON, getRaw } from './api';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import os from 'os';
 import path from 'path';
-import { validatePlugin } from './validator';
+import { validateInstall, validatePlugin } from './validator';
 import { PluginEntry } from './types';
 
 const homedir = os.homedir();
@@ -93,7 +93,8 @@ async function pluginsGet() {
   });
 }
 
-function pluginsGetLocal() {
+async function pluginsGetLocal() {
+  await validateInstall();
   const list: any = [];
   const pluginPaths = dirRead(PLUGIN_LOCAL);
   pluginPaths.forEach((pluginPath: string) => {
