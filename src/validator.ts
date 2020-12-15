@@ -175,10 +175,9 @@ function validateProcess(pathItem: string, log: string) {
   return json;
 }
 
-async function validateRun(filePath: string) {
+function validateRun(filePath: string) {
   // Run Steinberg VST3 SDK validator binary
   try {
-    await validateInstall();
     const sdout = execSync(`${VALIDATOR_PATH} "${filePath}"`);
     return sdout.toString();
   } catch (error) {
