@@ -22,7 +22,7 @@ async function projectCreate(folder: string) {
 }
 
 function projectInit() {
-  const project = projectLoad();
+  const project = fileJsonLoad(PROJECT_CONFIG);
   project.name = askQuestion('Name', project.name, 'My Project');
   project.version = askQuestion('Version', project.version, '0.0.1');
   project.description = askQuestion('Description', project.description, 'My project description');
