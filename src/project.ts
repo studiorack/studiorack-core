@@ -35,9 +35,6 @@ function projectInit() {
 
 async function projectInstall(input: string, options: any) {
   const project = projectLoad();
-  if (!project.plugins) {
-    project.plugins = {};
-  }
   if (input) {
     const [id, version] = pathGetVersionId(input);
     const installedVersion = await pluginInstall(id, version, options.global);
@@ -55,8 +52,12 @@ async function projectInstall(input: string, options: any) {
   return projectSave(project);
 }
 
-function projectLoad() {
-  return fileJsonLoad(PROJECT_CONFIG) || {};
+function projectLoad(): any {
+  const projectJson = fileJsonLoad(PROJECT_CONFIG) || projectInit();
+  if (!projectJson.plugins) {
+    projectJson.plugins = {};
+  }
+  return projectJson;
 }
 
 async function projectPublish() {
@@ -80,9 +81,6 @@ async function projectStart(path: string) {
 
 function projectUninstall(input: string, options: any) {
   const project = projectLoad();
-  if (!project.plugins) {
-    project.plugins = {};
-  }
   if (input) {
     const [id, version] = pathGetVersionId(input);
     let result = version;
