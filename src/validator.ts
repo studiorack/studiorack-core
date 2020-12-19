@@ -3,6 +3,7 @@ import { execSync } from 'child_process';
 import { getRaw } from './api';
 import { Plugin } from './types';
 import path from 'path';
+import * as semver from 'semver';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
 const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
@@ -51,17 +52,17 @@ function validatePlugin(pathItem: string, options?: any) {
   const outputText = validateRun(pathItem);
   const outputJson = validateProcess(pathItem, outputText);
   const filepath = pathItem.substring(0, pathItem.lastIndexOf('.'));
-  if (options.txt) {
+  if (options && options.txt) {
     console.log(outputText);
     fileCreate(`${filepath}.txt`, outputText);
     console.log(`Generated: ${filepath}.txt`);
   }
-  if (options.json) {
+  if (options && options.json) {
     console.log(outputJson);
     fileJsonCreate(`${filepath}.json`, outputJson);
     console.log(`Generated: ${filepath}.json`);
   }
-  if (options.zip) {
+  if (options && options.zip) {
     zipCreate(`${filepath}.*`, `${filepath}.zip`);
     console.log(`Generated: ${filepath}.zip`);
   }
@@ -69,50 +70,53 @@ function validatePlugin(pathItem: string, options?: any) {
 }
 
 function validatePluginSchema(plugin: Plugin) {
-  let error: any = false;
+  let error: string = '';
   if (!plugin.author) {
-    error = `author attribute missing`;
+    error += `- author attribute missing\n`;
   }
   if (typeof plugin.author !== 'string') {
-    error = `author incorrect type ${typeof plugin.author}`;
+    error += `- author incorrect type ${typeof plugin.author}\n`;
   }
   if (!plugin.homepage) {
-    error = `homepage attribute missing`;
+    error += `- homepage attribute missing\n`;
   }
   if (typeof plugin.homepage !== 'string') {
-    error = `homepage incorrect type ${typeof plugin.homepage}`;
+    error += `- homepage incorrect type ${typeof plugin.homepage}\n`;
   }
   if (!plugin.name) {
-    error = `name attribute missing`;
+    error += `- name attribute missing\n`;
   }
   if (typeof plugin.name !== 'string') {
-    error = `name incorrect type ${typeof plugin.name}`;
+    error += `- name incorrect type ${typeof plugin.name}\n`;
   }
   if (!plugin.description) {
-    error = `description attribute missing`;
+    error += `- description attribute missing\n`;
   }
   if (typeof plugin.description !== 'string') {
-    error = `description incorrect type ${typeof plugin.description}`;
+    error += `- description incorrect type ${typeof plugin.description}\n`;
   }
   if (!plugin.tags) {
-    error = `tags attribute missing`;
+    error += `- tags attribute missing\n`;
   }
   if (!Array.isArray(plugin.tags)) {
-    error = `tags incorrect type ${typeof plugin.tags}`;
+    error += `- tags incorrect type ${typeof plugin.tags}\n`;
   }
   if (!plugin.version) {
-    error = `version attribute missing`;
+    error += `- version attribute missing\n`;
   }
   if (typeof plugin.version !== 'string') {
-    error = `version incorrect type ${typeof plugin.version}`;
+    error += `- version incorrect type ${typeof plugin.version}\n`;
+  }
+  if (!semver.valid(plugin.version)) {
+    error += `- version does not conform to semantic versioning ${typeof plugin.version}\n`;
   }
   if (!plugin.size) {
-    error = `size attribute missing`;
+    error += `- size attribute missing\n`;
   }
   if (typeof plugin.size !== 'number') {
-    error = `size incorrect type ${typeof plugin.size}`;
+    error += `- size incorrect type ${typeof plugin.size}\n`;
   }
-  return error;
+  return error.length === 0 ? false : error;
 }
 
 function validateProcess(pathItem: string, log: string) {
