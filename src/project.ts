@@ -22,14 +22,14 @@ async function projectCreate(folder: string) {
 }
 
 function projectInit() {
-  const project = fileJsonLoad(PROJECT_CONFIG);
+  const project = fileJsonLoad(PROJECT_CONFIG) || {};
   project.name = askQuestion('Name', project.name, 'My Project');
   project.version = askQuestion('Version', project.version, '0.0.1');
   project.description = askQuestion('Description', project.description, 'My project description');
   project.main = askQuestion('Main', project.main, 'Song.als');
   project.audio = askQuestion('Audio', project.audio, 'Song.wav');
   project.image = askQuestion('Image', project.image, 'Song.png');
-  project.plugins = {};
+  project.plugins = project.plugins || {};
   return projectSave(project);
 }
 
