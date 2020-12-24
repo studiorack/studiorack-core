@@ -132,7 +132,7 @@ function validatePluginSchema(plugin: Plugin) {
   }
   error += validatePluginField(plugin, 'id', 'string');
   error += validatePluginField(plugin, 'date', 'string');
-  if (Date.parse(plugin.date) === NaN) {
+  if (Number.isNaN(Date.parse(plugin.date))) {
     error += `- date not valid ${plugin.date}\n`;
   }
   error += validatePluginField(plugin, 'files', 'object');
@@ -145,7 +145,7 @@ function validatePluginSchema(plugin: Plugin) {
 function validateProcess(pathItem: string, log: string) {
   const folder = pathItem.substring(0, pathItem.lastIndexOf('/'));
   // console.log('processLog', pathItem);
-  let json: { [property: string]: any } = {};
+  const json: { [property: string]: any } = {};
   // loop through validator output
   for (let line of log.split('\n')) {
     // remove whitespace at start and end of lines
