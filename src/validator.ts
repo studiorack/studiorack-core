@@ -109,62 +109,36 @@ function validatePlugin(pathItem: string, options?: any) {
   return outputJson;
 }
 
+function validatePluginField(obj: any, field: string, type: string) {
+  if (obj && !obj[field]) {
+    return `- ${field} field missing\n`;
+  }
+  if (obj && typeof obj[field] !== type) {
+    return `- ${field} field incorrect type ${typeof obj[field]}, expecting ${type}\n`;
+  }
+  return '';
+}
+
 function validatePluginSchema(plugin: Plugin) {
   let error: string = '';
-  if (!plugin.author) {
-    error += `- author attribute missing\n`;
-  }
-  if (typeof plugin.author !== 'string') {
-    error += `- author incorrect type ${typeof plugin.author}\n`;
-  }
-  if (!plugin.homepage) {
-    error += `- homepage attribute missing\n`;
-  }
-  if (typeof plugin.homepage !== 'string') {
-    error += `- homepage incorrect type ${typeof plugin.homepage}\n`;
-  }
-  if (!plugin.name) {
-    error += `- name attribute missing\n`;
-  }
-  if (typeof plugin.name !== 'string') {
-    error += `- name incorrect type ${typeof plugin.name}\n`;
-  }
-  if (!plugin.description) {
-    error += `- description attribute missing\n`;
-  }
-  if (typeof plugin.description !== 'string') {
-    error += `- description incorrect type ${typeof plugin.description}\n`;
-  }
-  if (!plugin.tags) {
-    error += `- tags attribute missing\n`;
-  }
-  if (!Array.isArray(plugin.tags)) {
-    error += `- tags incorrect type ${typeof plugin.tags}\n`;
-  }
-  if (!plugin.version) {
-    error += `- version attribute missing\n`;
-  }
-  if (typeof plugin.version !== 'string') {
-    error += `- version incorrect type ${typeof plugin.version}\n`;
-  }
+  error += validatePluginField(plugin, 'author', 'string');
+  error += validatePluginField(plugin, 'homepage', 'string');
+  error += validatePluginField(plugin, 'name', 'string');
+  error += validatePluginField(plugin, 'description', 'string');
+  error += validatePluginField(plugin, 'tags', 'object');
+  error += validatePluginField(plugin, 'version', 'string');
   if (!semver.valid(plugin.version)) {
-    error += `- version does not conform to semantic versioning ${typeof plugin.version}\n`;
+    error += `- version does not conform to semantic versioning ${plugin.version}\n`;
   }
-  if (!plugin.id) {
-    error += `- id attribute missing\n`;
-  }
-  if (typeof plugin.id !== 'string') {
-    error += `- id incorrect type ${typeof plugin.id}\n`;
-  }
-  if (!plugin.date) {
-    error += `- date attribute missing\n`;
-  }
-  if (typeof plugin.date !== 'string') {
-    error += `- date incorrect type ${typeof plugin.date}\n`;
-  }
+  error += validatePluginField(plugin, 'id', 'string');
+  error += validatePluginField(plugin, 'date', 'string');
   if (Date.parse(plugin.date) === NaN) {
-    error += `- date not valid ${typeof plugin.date}\n`;
+    error += `- date not valid ${plugin.date}\n`;
   }
+  error += validatePluginField(plugin, 'files', 'object');
+  error += validatePluginField(plugin.files, 'audio', 'object');
+  error += validatePluginField(plugin.files, 'image', 'object');
+
   return error.length === 0 ? false : error;
 }
 
@@ -226,4 +200,4 @@ function validateRun(filePath: string) {
   }
 }
 
-export { validateFiles, validateInstall, validatePlugin, validatePluginSchema, validateProcess, validateRun };
+export { validateFiles, validateInstall, validatePlugin, validatePluginField, validatePluginSchema, validateProcess, validateRun };

@@ -20,11 +20,34 @@ interface Plugin {
   id?: string;
   name: string;
   release?: string;
-  files?: object;
+  files: PluginFiles;
   slug?: string;
   status?: string;
   tags: string[];
   version: string;
+}
+
+interface PluginFiles {
+  audio: {
+    name: string;
+    size: number;
+  };
+  image: {
+    name: string;
+    size: number;
+  };
+  linux?: {
+    name: string;
+    size: number;
+  };
+  mac?: {
+    name: string;
+    size: number;
+  };
+  win?: {
+    name: string;
+    size: number;
+  };
 }
 
 export { Plugin, PluginEntry, PluginPack, PluginVersion };
