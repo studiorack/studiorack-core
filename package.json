@@ -37,7 +37,8 @@
     "node-fetch": "^2.6.1",
     "nodejs-fs-utils": "^1.2.5",
     "readline-sync": "^1.4.10",
-    "semver": "^7.3.4"
+    "semver": "^7.3.4",
+    "slugify": "^1.4.6"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.33",

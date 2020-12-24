@@ -20,7 +20,7 @@ interface Plugin {
   id?: string;
   name: string;
   release?: string;
-  size: number;
+  files?: object;
   slug?: string;
   status?: string;
   tags: string[];

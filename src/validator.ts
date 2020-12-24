@@ -4,6 +4,7 @@ import { getRaw } from './api';
 import { Plugin } from './types';
 import path from 'path';
 import * as semver from 'semver';
+import slugify from 'slugify';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
 const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
@@ -29,6 +30,42 @@ function pathGetPlatform() {
   }
 }
 
+function validateFiles(pathItem: string, json: any) {
+  const folder = pathItem.substring(0, pathItem.lastIndexOf('/'));
+  const id = slugify(path.basename(pathItem, path.extname(pathItem)), { lower: true });
+
+  // Ensure files object exists
+  if (!json.files) {
+    json.files = {};
+  }
+  // Add audio, image and zip files
+  json = addFile(`${folder}/${id}.wav`, `${id}.wav`, 'audio', json);
+  json = addFile(`${folder}/${id}.png`, `${id}.png`, 'image', json);
+  json = addFile(pathItem, `${id}-linux.zip`, 'linux', json);
+  json = addFile(pathItem, `${id}-mac.zip`, 'mac', json);
+  json = addFile(pathItem, `${id}-win.zip`, 'win', json);
+  return json;
+}
+
+function addFile(filePath: string, fileName: string, fileType: string, json: any) {
+  if (dirExists(filePath)) {
+    // Ensure file type object exists
+    if (!json.files[fileType]) {
+      json.files[fileType] = {};
+    }
+    // Add file name
+    if (fileName) {
+      json.files[fileType].name = fileName;
+    }
+    // Add file size
+    const size = fileSize(filePath);
+    if (size) {
+      json.files[fileType].size = size;
+    }
+  }
+  return json;
+}
+
 async function validateInstall() {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(VALIDATOR_DIR)) {
@@ -50,7 +87,10 @@ function validatePlugin(pathItem: string, options?: any) {
   }
   console.log(`Reading: ${pathItem}`);
   const outputText = validateRun(pathItem);
-  const outputJson = validateProcess(pathItem, outputText);
+  let outputJson:any = validateProcess(pathItem, outputText);
+  if (options && options.files) {
+    outputJson = validateFiles(pathItem, outputJson);
+  }
   const filepath = pathItem.substring(0, pathItem.lastIndexOf('.'));
   if (options && options.txt) {
     console.log(outputText);
@@ -110,11 +150,20 @@ function validatePluginSchema(plugin: Plugin) {
   if (!semver.valid(plugin.version)) {
     error += `- version does not conform to semantic versioning ${typeof plugin.version}\n`;
   }
-  if (!plugin.size) {
-    error += `- size attribute missing\n`;
+  if (!plugin.id) {
+    error += `- id attribute missing\n`;
   }
-  if (typeof plugin.size !== 'number') {
-    error += `- size incorrect type ${typeof plugin.size}\n`;
+  if (typeof plugin.id !== 'string') {
+    error += `- id incorrect type ${typeof plugin.id}\n`;
+  }
+  if (!plugin.date) {
+    error += `- date attribute missing\n`;
+  }
+  if (typeof plugin.date !== 'string') {
+    error += `- date incorrect type ${typeof plugin.date}\n`;
+  }
+  if (Date.parse(plugin.date) === NaN) {
+    error += `- date not valid ${typeof plugin.date}\n`;
   }
   return error.length === 0 ? false : error;
 }
@@ -122,7 +171,7 @@ function validatePluginSchema(plugin: Plugin) {
 function validateProcess(pathItem: string, log: string) {
   const folder = pathItem.substring(0, pathItem.lastIndexOf('/'));
   // console.log('processLog', pathItem);
-  const json: { [property: string]: any } = {};
+  let json: { [property: string]: any } = {};
   // loop through validator output
   for (let line of log.split('\n')) {
     // remove whitespace at start and end of lines
@@ -148,34 +197,22 @@ function validateProcess(pathItem: string, log: string) {
       }
     }
   }
-  // get date then add to json
+
+  // Generate the id from the filename
+  const id = slugify(path.basename(pathItem, path.extname(pathItem)), { lower: true });
+  if (id) {
+    json.id = id;
+  }
+  // Get date then add to json
   const date = fileDate(pathItem);
   if (date) {
     json.date = date.toISOString();
   }
-  // get filesize then add to json
-  const size = fileSize(pathItem);
-  if (size) {
-    json.size = size;
+  // Ensure version is always valid semantic version
+  if (json.version) {
+    json.version = semver.coerce(json.version)?.version || '0.0.0';
   }
-  // generate the id from the filename
-  const id = path.basename(pathItem, path.extname(pathItem));
-  if (id) {
-    json.id = id;
-  }
-  // generate the id from the filename
-  const filename = path.basename(pathItem);
-  if (filename) {
-    json.file = filename;
-  }
-  // if image exists add to json
-  if (dirExists(`${folder}/${id}.png`)) {
-    json.image = `${id}.png`;
-  }
-  // if audio exists add to json
-  if (dirExists(`${folder}/${id}.wav`)) {
-    json.audio = `${id}.wav`;
-  }
+
   return json;
 }
 
@@ -189,4 +226,4 @@ function validateRun(filePath: string) {
   }
 }
 
-export { validateInstall, validatePlugin, validatePluginSchema, validateProcess, validateRun };
+export { validateFiles, validateInstall, validatePlugin, validatePluginSchema, validateProcess, validateRun };
