@@ -106,7 +106,7 @@ async function pluginsGetLocal() {
     const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
     let plugin = fileJsonLoad(jsonPath);
     if (!plugin) {
-      plugin = validatePlugin(pluginPath, { json: true });
+      plugin = validatePlugin(pluginPath, { files: true, json: true });
     }
     plugin.id = `${repoId}/${pluginId}`;
     plugin.path = pluginPath;

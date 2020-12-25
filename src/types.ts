@@ -19,6 +19,7 @@ interface Plugin {
   homepage: string;
   id?: string;
   name: string;
+  path?: string;
   release?: string;
   files: PluginFiles;
   slug?: string;
