@@ -3,7 +3,7 @@ import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJson
 import os from 'os';
 import path from 'path';
 import { validateInstall, validatePlugin } from './validator';
-import { PluginEntry } from './types';
+import { PluginEntry, PluginFiles } from './types';
 
 const homedir = os.homedir();
 const PLUGIN_BRANCH = 'main';
@@ -131,7 +131,7 @@ async function pluginInstall(id: string, version: string, global: boolean) {
   if (!plugin.versions[version]) {
     return console.error(`Plugin version not found ${version}`);
   }
-  const source = pluginSource(repoId, pluginId, plugin.versions[version].release);
+  const source = pluginSource(repoId, plugin.versions[version].files, plugin.versions[version].release);
   if (!source) {
     return console.error(`Plugin not available for your system ${id}`);
   }
@@ -206,7 +206,7 @@ async function pluginSearch(query: string) {
   return results;
 }
 
-function pluginSource(repoId: string, pluginId: string, release: string) {
+function pluginSource(repoId: string, pluginFiles: any, release: string) {
   const supported: { [property: string]: string } = {
     aix: 'linux',
     darwin: 'mac',
@@ -217,8 +217,9 @@ function pluginSource(repoId: string, pluginId: string, release: string) {
     win32: 'win',
     win64: 'win',
   };
-  if (supported[process.platform]) {
-    return `https://github.com/${repoId}/releases/download/${release}/${pluginId}-${supported[process.platform]}.zip`;
+  const platformName = supported[process.platform];
+  if (platformName && pluginFiles[platformName]) {
+    return `https://github.com/${repoId}/releases/download/${release}/${pluginFiles[platformName].name}`;
   }
   return false;
 }

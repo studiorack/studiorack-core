@@ -28,7 +28,7 @@ interface Plugin {
   version: string;
 }
 
-interface PluginFiles {
+export interface PluginFiles {
   audio: {
     name: string;
     size: number;
