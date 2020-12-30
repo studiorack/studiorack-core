@@ -1,5 +1,4 @@
 import AdmZip from 'adm-zip';
-import { execSync } from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -81,7 +80,10 @@ function fileOpen(filePath: string) {
       command = 'xdg-open';
       break;
   }
-  return execSync(`${command} ${filePath}`);
+  if (typeof window === 'undefined') {
+    return require('child_process').execSync(`${command} ${filePath}`);
+  }
+  return false;
 }
 
 function fileSize(filePath: string) {
