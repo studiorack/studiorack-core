@@ -3,7 +3,10 @@ import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJson
 import os from 'os';
 import path from 'path';
 import { validateInstall, validatePlugin } from './validator';
-import { PluginEntry, PluginFiles } from './types';
+import { idToSlug, pathGetId, pathGetRepo, pathGetVersion } from './utils';
+import { PluginEntry } from './types';
+import * as semver from 'semver';
+import slugify from 'slugify';
 
 const homedir = os.homedir();
 const PLUGIN_BRANCH = 'main';
@@ -12,30 +15,7 @@ const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
 const PLUGIN_PREFIX = 'studiorack-plugin';
 const PLUGIN_TEMPLATE = 'https://github.com/studiorack/';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
-
-function pathGetPluginId(id: string) {
-  return id.slice(id.lastIndexOf('/') + 1);
-}
-
-function pathGetRepoId(id: string) {
-  return id.slice(0, id.lastIndexOf('/'));
-}
-
-function pathGetVersionId(id: string) {
-  return id.split('@');
-}
-
-function pathFromSlashes(input: string) {
-  return input ? input.replace(/\//g, '_') : input;
-}
-
-function pathToSlashes(input: string) {
-  return input ? input.replace(/_/g, '/') : input;
-}
-
-function pathTruncate(str: string, max: number) {
-  return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
-}
+export const PLUGIN_FOLDER = pluginFolder(true) + '/';
 
 async function pluginCreate(dir: string, type?: string) {
   if (dirExists(dir)) {
@@ -74,16 +54,18 @@ async function pluginGet(id: string) {
   return plugins[id] || false;
 }
 
-function pluginGetLocal(filePath: string) {
-  const jsonPath = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.json`;
-  const versionId = filePath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
-  console.log('jsonPath', jsonPath);
-  const plugin = fileJsonLoad(jsonPath);
-  plugin.id = pathFromSlashes(filePath);
-  plugin.path = `${pluginFolder(true)}/${pathFromSlashes(filePath)}.vst3`;
-  plugin.slug = path;
+function pluginGetLocal(pluginSlug: string) {
+  const pluginPath = `${pluginFolder(true)}/${idToSlug(pluginSlug)}.vst3`;
+  const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
+  let plugin = fileJsonLoad(jsonPath);
+  if (!plugin) {
+    plugin = validatePlugin(pluginPath, { files: true, json: true });
+  }
+  plugin.id = pathGetId(pluginPath);
+  plugin.path = pluginPath;
+  plugin.slug = idToSlug(plugin.id);
   plugin.status = 'installed';
-  plugin.version = versionId ? versionId[0] : plugin.version;
+  plugin.version = pathGetVersion(pluginPath);
   return plugin;
 }
 
@@ -98,21 +80,16 @@ async function pluginsGetLocal() {
   const list: any = [];
   const pluginPaths = dirRead(PLUGIN_LOCAL);
   pluginPaths.forEach((pluginPath: string) => {
-    const folderPath = path.dirname(PLUGIN_LOCAL).replace('**', '');
-    const relativePath = pluginPath.substring(folderPath.length);
-    const pluginId = pathGetPluginId(pluginPath.substring(folderPath.length, pluginPath.lastIndexOf('.')));
-    const repoId = relativePath.split('/', 2).join('/');
-    const versionId = pluginPath.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/);
     const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
     let plugin = fileJsonLoad(jsonPath);
     if (!plugin) {
       plugin = validatePlugin(pluginPath, { files: true, json: true });
     }
-    plugin.id = `${repoId}/${pluginId}`;
+    plugin.id = pathGetId(pluginPath);
     plugin.path = pluginPath;
-    plugin.slug = pathFromSlashes(plugin.id);
+    plugin.slug = idToSlug(plugin.id);
     plugin.status = 'installed';
-    plugin.version = versionId ? versionId[0] : plugin.version;
+    plugin.version = pathGetVersion(pluginPath);
     list.push(plugin);
   });
   return list;
@@ -120,8 +97,8 @@ async function pluginsGetLocal() {
 
 async function pluginInstall(id: string, version: string, global: boolean) {
   const plugin = await pluginGet(id);
-  const pluginId = pathGetPluginId(id);
-  const repoId = pathGetRepoId(id);
+  const pluginId = pathGetId(id);
+  const repoId = pathGetRepo(id);
   if (!version) {
     version = plugin.version;
   }
@@ -157,15 +134,15 @@ function pluginInstalled(repoId: string, pluginId: string, version: string, glob
 function pluginLatest(plugin: PluginEntry) {
   const version = plugin.versions[plugin.version];
   version.id = plugin.id;
-  version.slug = pathFromSlashes(plugin.id);
+  version.slug = idToSlug(plugin.id);
   version.version = plugin.version;
   return version;
 }
 
 async function pluginUninstall(id: string, version: string, global: boolean) {
   const plugin = await pluginGet(id);
-  const pluginId = pathGetPluginId(id);
-  const repoId = pathGetRepoId(id);
+  const pluginId = pathGetId(id);
+  const repoId = pathGetRepo(id);
   if (!pluginInstalled(repoId, pluginId, version, global)) {
     console.error(`Plugin not installed ${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
   } else {
@@ -225,12 +202,6 @@ function pluginSource(repoId: string, pluginFiles: any, release: string) {
 }
 
 export {
-  pathGetPluginId,
-  pathGetRepoId,
-  pathGetVersionId,
-  pathFromSlashes,
-  pathToSlashes,
-  pathTruncate,
   pluginCreate,
   pluginFolder,
   pluginGet,

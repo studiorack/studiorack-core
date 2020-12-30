@@ -1,5 +1,6 @@
 import { dirRead, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
-import { pathGetVersionId, pluginCreate, pluginInstall, pluginSearch, pluginUninstall } from './registry';
+import { pluginCreate, pluginInstall, pluginSearch, pluginUninstall } from './registry';
+import { pathGetId, pathGetVersion } from './utils';
 
 const readline = require('readline-sync');
 const validator = require('./validator');
@@ -35,7 +36,8 @@ function projectInit() {
 async function projectInstall(input: string, options: any) {
   const project = projectLoad();
   if (input) {
-    const [id, version] = pathGetVersionId(input);
+    const id = pathGetId(input);
+    const version = pathGetVersion(input);
     const installedVersion = await pluginInstall(id, version, options.global);
     if (installedVersion) {
       project.plugins[id] = installedVersion;
@@ -81,7 +83,8 @@ async function projectStart(path: string) {
 function projectUninstall(input: string, options: any) {
   const project = projectLoad();
   if (input) {
-    const [id, version] = pathGetVersionId(input);
+    const id = pathGetId(input);
+    const version = pathGetVersion(input);
     let result = version;
     if (!version) {
       result = project.plugins[id];

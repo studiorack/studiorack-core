@@ -5,6 +5,7 @@ import { Plugin } from './types';
 import path from 'path';
 import * as semver from 'semver';
 import slugify from 'slugify';
+import { pathGetId } from './utils';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
 const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
@@ -173,7 +174,7 @@ function validateProcess(pathItem: string, log: string) {
   }
 
   // Generate the id from the filename
-  const id = slugify(path.basename(pathItem, path.extname(pathItem)), { lower: true });
+  const id = pathGetId(pathItem);
   if (id) {
     json.id = id;
   }
