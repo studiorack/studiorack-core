@@ -1,11 +1,13 @@
+import os from 'os';
 import { getJSON, getRaw } from './api';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import { validateInstall, validatePlugin } from './validator';
-import { idToSlug, pathGetId, pathGetRepo, pathGetVersion, pluginFolder } from './utils';
+import { idToSlug, pathGetId, pathGetRepo, pathGetVersion } from './utils';
 import { PluginEntry } from './types';
 
 const PLUGIN_BRANCH = 'main';
-
+const homedir = os.homedir();
+const PLUGIN_DIR = './plugins';
 const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
 const PLUGIN_PREFIX = 'studiorack-plugin';
 const PLUGIN_TEMPLATE = 'https://github.com/studiorack/';
@@ -23,6 +25,24 @@ async function pluginCreate(dir: string, type?: string) {
   zipExtract(data, './');
   dirRename(`${PLUGIN_PREFIX}-${type}-${PLUGIN_BRANCH}`, dir);
   return true;
+}
+
+function pluginFolder(global: boolean) {
+  const supported: { [property: string]: string } = {
+    aix: homedir + '/.vst3',
+    darwin: '/Library/Audio/Plug-ins/VST3',
+    freebsd: homedir + '/.vst3',
+    linux: homedir + '/.vst3',
+    openbsd: homedir + '/.vst3',
+    sunos: homedir + '/.vst3',
+    win32: '/Program Files/Common Files/VST3',
+    win64: '/Program Files/Common Files/VST3',
+  };
+  if (global) {
+    return supported[process.platform];
+  } else {
+    return PLUGIN_DIR;
+  }
 }
 
 async function pluginGet(id: string) {
