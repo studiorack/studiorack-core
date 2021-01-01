@@ -106,7 +106,7 @@ function projectUninstall(input: string, options: any) {
 
 async function projectValidate(pluginPath: string, options: any) {
   const pluginRack: any = {
-    plugins: []
+    plugins: [],
   };
   await validator.install();
   if (pluginPath.includes('*')) {

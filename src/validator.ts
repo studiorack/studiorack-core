@@ -88,7 +88,7 @@ function validatePlugin(pathItem: string, options?: any) {
   }
   console.log(`Reading: ${pathItem}`);
   const outputText = validateRun(pathItem);
-  let outputJson:any = validateProcess(pathItem, outputText);
+  let outputJson: any = validateProcess(pathItem, outputText);
   if (options && options.files) {
     outputJson = validateFiles(pathItem, outputJson);
   }
@@ -201,4 +201,12 @@ function validateRun(filePath: string) {
   }
 }
 
-export { validateFiles, validateInstall, validatePlugin, validatePluginField, validatePluginSchema, validateProcess, validateRun };
+export {
+  validateFiles,
+  validateInstall,
+  validatePlugin,
+  validatePluginField,
+  validatePluginSchema,
+  validateProcess,
+  validateRun,
+};

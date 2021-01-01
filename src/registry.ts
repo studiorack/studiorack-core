@@ -25,8 +25,6 @@ async function pluginCreate(dir: string, type?: string) {
   return true;
 }
 
-
-
 async function pluginGet(id: string) {
   const plugins = await pluginsGet();
   return plugins[id] || false;
