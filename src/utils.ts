@@ -1,12 +1,14 @@
+import os from 'os';
 import path from 'path';
-import { PLUGIN_FOLDER } from './registry';
 import slugify from 'slugify';
 
-const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
+const homedir = os.homedir();
+const PLUGIN_DIR = './plugins';
 const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
+const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function cleanPath(pathItem: string) {
-  return pathItem.replace(PLUGIN_FOLDER, '');
+  return pathItem.replace(pluginFolder(true), '');
 }
 
 function idToSlug(id: string) {
@@ -34,10 +36,29 @@ function pathGetVersion(pathItem: string) {
   return matches ? matches[0] : '0.0.0';
 }
 
+function pluginFolder(global: boolean) {
+  const supported: { [property: string]: string } = {
+    aix: homedir + '/.vst3',
+    darwin: '/Library/Audio/Plug-ins/VST3',
+    freebsd: homedir + '/.vst3',
+    linux: homedir + '/.vst3',
+    openbsd: homedir + '/.vst3',
+    sunos: homedir + '/.vst3',
+    win32: '/Program Files/Common Files/VST3',
+    win64: '/Program Files/Common Files/VST3',
+  };
+  if (global) {
+    return supported[process.platform];
+  } else {
+    return PLUGIN_DIR;
+  }
+}
+
 export {
   idToSlug,
   slugToId,
   pathGetId,
   pathGetRepo,
-  pathGetVersion
+  pathGetVersion,
+  pluginFolder
 };
