@@ -1,4 +1,5 @@
 import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, fileSize, zipCreate, zipExtract } from './file';
+import { execSync } from 'child_process';
 import { getRaw } from './api';
 import { Plugin } from './types';
 import path from 'path';
@@ -193,10 +194,8 @@ function validateProcess(pathItem: string, log: string) {
 function validateRun(filePath: string) {
   // Run Steinberg VST3 SDK validator binary
   try {
-    if (typeof window === 'undefined') {
-      const sdout = require('child_process').execSync(`${VALIDATOR_PATH} "${filePath}"`);
-      return sdout.toString();
-    }
+    const sdout = execSync(`${VALIDATOR_PATH} "${filePath}"`);
+    return sdout.toString();
   } catch (error) {
     return error.output ? error.output.toString() : error.toString();
   }

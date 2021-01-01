@@ -23,6 +23,18 @@ Import the package using:
 Then use the available methods as normal.
 
 
+## Deployment
+
+Release an updated version on npm by simply creating a version tag:
+
+    npm version patch
+    git push && git push origin --tags
+
+Then publish to npm using:
+
+    npm publish
+
+
 ## Contact
 
 For more information please contact kmturley

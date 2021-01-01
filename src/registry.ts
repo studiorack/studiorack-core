@@ -1,12 +1,9 @@
 import { getJSON, getRaw } from './api';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import os from 'os';
-import path from 'path';
 import { validateInstall, validatePlugin } from './validator';
 import { idToSlug, pathGetId, pathGetRepo, pathGetVersion } from './utils';
 import { PluginEntry } from './types';
-import * as semver from 'semver';
-import slugify from 'slugify';
 
 const homedir = os.homedir();
 const PLUGIN_BRANCH = 'main';
