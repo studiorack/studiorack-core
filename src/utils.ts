@@ -8,7 +8,7 @@ const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function cleanPath(pathItem: string) {
-  return pathItem.replace(pluginFolder(true), '');
+  return pathItem.replace(pluginFolder(true) + '/', '');
 }
 
 function idToSlug(id: string) {
