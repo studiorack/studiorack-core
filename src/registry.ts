@@ -3,7 +3,7 @@ import { getJSON, getRaw } from './api';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import { validateInstall, validatePlugin } from './validator';
 import { idToSlug, pathGetId, pathGetRepo, pathGetVersion } from './utils';
-import { PluginEntry } from './types';
+import { Plugin, PluginEntry } from './types';
 
 const PLUGIN_BRANCH = 'main';
 const homedir = os.homedir();
@@ -50,18 +50,11 @@ async function pluginGet(id: string) {
   return plugins[id] || false;
 }
 
-function pluginGetLocal(pluginPath: string) {
-  const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
-  let plugin = fileJsonLoad(jsonPath);
-  if (!plugin) {
-    plugin = validatePlugin(pluginPath, { files: true, json: true });
-  }
-  plugin.id = pathGetId(pluginPath);
-  plugin.path = pluginPath;
-  plugin.slug = idToSlug(plugin.id);
-  plugin.status = 'installed';
-  plugin.version = pathGetVersion(pluginPath);
-  return plugin;
+async function pluginGetLocal(id: string) {
+  const plugins = await pluginsGetLocal();
+  return plugins.filter((plugin: Plugin) => {
+    return plugin.id === id;
+  })[0];
 }
 
 async function pluginsGet() {
@@ -76,11 +69,12 @@ async function pluginsGetLocal() {
   const pluginPaths = dirRead(PLUGIN_LOCAL);
   pluginPaths.forEach((pluginPath: string) => {
     const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
+    const relativePath = pluginPath.replace(pluginFolder(true) + '/', '');
     let plugin = fileJsonLoad(jsonPath);
     if (!plugin) {
       plugin = validatePlugin(pluginPath, { files: true, json: true });
     }
-    plugin.id = pathGetId(pluginPath);
+    plugin.id = `${pathGetRepo(relativePath)}/${pathGetId(relativePath)}`;
     plugin.path = pluginPath;
     plugin.slug = idToSlug(plugin.id);
     plugin.status = 'installed';

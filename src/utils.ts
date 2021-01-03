@@ -27,7 +27,10 @@ function pathGetId(pathItem: string) {
 
 function pathGetRepo(pathItem: string) {
   const pathParts = pathItem.split('/');
-  return slugify(`${pathParts[0]}/${pathParts[1]}`, { lower: true, remove: URLSAFE_REGEX });
+  if (pathParts.length > 1) {
+    return slugify(`${pathParts[0]}/${pathParts[1]}`, { lower: true, remove: URLSAFE_REGEX });
+  }
+  return slugify(baseName(pathItem), { lower: true, remove: URLSAFE_REGEX });
 }
 
 function pathGetVersion(pathItem: string) {
