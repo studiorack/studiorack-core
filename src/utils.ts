@@ -4,7 +4,7 @@ const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function baseName(str: string) {
-  let base = new String(str).substring(str.lastIndexOf('/') + 1); 
+  let base = str.substring(str.lastIndexOf('/') + 1); 
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }

@@ -50,8 +50,7 @@ async function pluginGet(id: string) {
   return plugins[id] || false;
 }
 
-function pluginGetLocal(pluginSlug: string) {
-  const pluginPath = `${pluginFolder(true)}/${idToSlug(pluginSlug)}.vst3`;
+function pluginGetLocal(pluginPath: string) {
   const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
   let plugin = fileJsonLoad(jsonPath);
   if (!plugin) {
