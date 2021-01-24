@@ -1,7 +1,27 @@
+import { dirExists, fileSize } from './file';
 import slugify from 'slugify';
 
 const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
+
+function fileAdd(filePath: string, fileName: string, fileType: string, json: any) {
+  if (dirExists(filePath)) {
+    // Ensure file type object exists
+    if (!json.files[fileType]) {
+      json.files[fileType] = {};
+    }
+    // Add file name
+    if (fileName) {
+      json.files[fileType].name = fileName;
+    }
+    // Add file size
+    const size = fileSize(filePath);
+    if (size) {
+      json.files[fileType].size = size;
+    }
+  }
+  return json;
+}
 
 function baseName(str: string) {
   let base = str.substring(str.lastIndexOf('/') + 1); 
@@ -39,6 +59,7 @@ function pathGetVersion(pathItem: string) {
 }
 
 export {
+  fileAdd,
   idToSlug,
   slugToId,
   pathGetId,
