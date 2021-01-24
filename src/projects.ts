@@ -2,11 +2,17 @@ import { dirRead, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './fil
 import { fileAdd, idToSlug, pathGetId, pathGetRepo } from './utils';
 import path from 'path';
 
-const PROJECT_LOCAL = `./test/**/*.als`;
+// List of notable DAWs
+// https://en.wikipedia.org/wiki/Digital_audio_workstation#List_of_notable_commercial_DAWs
+
+const PROJECT_LOCAL = `./test/**/*.{als,cpr,flp,logic,ptx,rpp}`;
 const PROJECT_TYPES: { [property: string]: string } = {
   '.als': 'ableton',
   '.cpr': 'cubase',
-  '.flp': 'fl-studio'
+  '.flp': 'fl-studio',
+  '.logic': 'logic',
+  '.ptx': 'pro-tools',
+  '.rpp': 'reaper'
 }
 
 function projectCreateJson() {
