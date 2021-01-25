@@ -1,6 +1,7 @@
 import { dirRead, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
 import { pluginCreate, pluginInstall, pluginSearch, pluginUninstall } from './registry';
 import { pathGetId, pathGetVersion } from './utils';
+import { Project } from './types';
 
 const readline = require('readline-sync');
 const validator = require('./validator');
@@ -9,7 +10,7 @@ const PROJECT_CONFIG = `${process.cwd()}/project.json`;
 const REGISTRY_PUBLISH =
   'https://github.com/studiorack/studiorack-site/issues/new?title=Publish%20my%20plugin&body=Github%20repo%3A%20&labels=enhancement';
 
-function askQuestion(label: string, input: string, fallback: string) {
+function askQuestion(label: string, input: any, fallback: string) {
   return readline.question(`${label}: ($<defaultInput>) `, {
     defaultInput: input || fallback,
   });
@@ -23,18 +24,19 @@ async function projectCreate(folder: string) {
 }
 
 function projectInit() {
-  const project = projectLoad();
+  const project: Project = projectLoad();
   project.name = askQuestion('Name', project.name, 'My Project');
-  project.version = askQuestion('Version', project.version, '0.0.1');
+  project.version = askQuestion('Version', project.version, '1.0.0');
   project.description = askQuestion('Description', project.description, 'My project description');
-  project.main = askQuestion('Main', project.main, 'Song.als');
-  project.audio = askQuestion('Audio', project.audio, 'Song.wav');
-  project.image = askQuestion('Image', project.image, 'Song.png');
+  project.files = {};
+  project.files.audio = askQuestion('Audio', project.files.audio, 'Song.wav');
+  project.files.image = askQuestion('Image', project.files.image, 'Song.png');
+  project.files.project = askQuestion('Main', project.files.project, 'Song.als');
   return projectSave(project);
 }
 
 async function projectInstall(input: string, options: any) {
-  const project = projectLoad();
+  const project: Project = projectLoad();
   if (input) {
     const id = pathGetId(input);
     const version = pathGetVersion(input);
@@ -53,7 +55,7 @@ async function projectInstall(input: string, options: any) {
   return projectSave(project);
 }
 
-function projectLoad() {
+function projectLoad(): Project {
   const projectJson = fileJsonLoad(PROJECT_CONFIG) || {};
   if (!projectJson.plugins) {
     projectJson.plugins = {};
@@ -76,8 +78,8 @@ async function projectSearch(query: string) {
 }
 
 async function projectStart(path: string) {
-  const project = await projectLoad();
-  return fileLoad(path || project.main);
+  const project: Project = await projectLoad();
+  return fileLoad(path || project.files.project?.name || '');
 }
 
 function projectUninstall(input: string, options: any) {

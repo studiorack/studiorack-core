@@ -29,11 +29,15 @@ interface Plugin {
 }
 
 export interface PluginFiles {
-  audio: {
+  audio?: {
     name: string;
     size: number;
   };
-  image: {
+  image?: {
+    name: string;
+    size: number;
+  };
+  project?: {
     name: string;
     size: number;
   };
@@ -51,4 +55,20 @@ export interface PluginFiles {
   };
 }
 
-export { Plugin, PluginEntry, PluginPack, PluginVersion };
+interface Project {
+  author: string;
+  date: string;
+  description: string;
+  homepage: string;
+  id?: string;
+  name: string;
+  path?: string;
+  files: PluginFiles;
+  plugins: { [property: string]: string };
+  slug?: string;
+  tags: string[];
+  type: string;
+  version: string;
+}
+
+export { Plugin, PluginEntry, PluginPack, PluginVersion, Project };

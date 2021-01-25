@@ -1,11 +1,12 @@
-import { dirRead, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
+import { dirRead, fileDate, fileJsonCreate, fileJsonLoad } from './file';
 import { fileAdd, idToSlug, pathGetId, pathGetRepo } from './utils';
+import { Project } from './types';
 import path from 'path';
 
 // List of notable DAWs
 // https://en.wikipedia.org/wiki/Digital_audio_workstation#List_of_notable_commercial_DAWs
-
-const PROJECT_LOCAL = `./test/**/*.{als,cpr,flp,logic,ptx,rpp}`;
+let PROJECT_ROOT = '.';
+const PROJECT_LOCAL = `/**/*.{als,cpr,flp,logic,ptx,rpp}`;
 const PROJECT_TYPES: { [property: string]: string } = {
   '.als': 'ableton',
   '.cpr': 'cubase',
@@ -15,17 +16,20 @@ const PROJECT_TYPES: { [property: string]: string } = {
   '.rpp': 'reaper'
 }
 
-function projectCreateJson() {
+function projectCreateJson(): Project {
   return {
     "author": "StudioRack",
     "homepage": "https://studiorack.github.io/studiorack-site/",
-    "name": 'StudioRack project',
-    "description": "StudioRack description",
+    "name": 'My Project',
+    "description": "My project description",
     "tags": [
       "StudioRack"
     ],
-    "version": "1.0",
-    "files": {}
+    "version": "1.0.0",
+    "date": "2000-01-01T00:00:00.000Z",
+    "type": "ableton",
+    "files": {},
+    "plugins": {}
   }
 }
 
@@ -44,10 +48,17 @@ function projectAddFiles(pathItem: string, json: any) {
   return json;
 }
 
+async function projectGet(id: string) {
+  const projects = await projectsGet();
+  return projects.filter((project: Project) => {
+    return project.id === id;
+  })[0];
+}
+
 async function projectsGet() {
   // Proof-of-concept code
   const list: any = [];
-  const projectPaths = dirRead(PROJECT_LOCAL);
+  const projectPaths = dirRead(`${PROJECT_ROOT}${PROJECT_LOCAL}`);
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('Backup')) {
       return;
@@ -75,6 +86,13 @@ async function projectsGet() {
   return list;
 }
 
-export { 
-  projectsGet
+function projectRoot(dir: string) {
+  PROJECT_ROOT = dir;
+  return PROJECT_ROOT;
+}
+
+export {
+  projectGet,
+  projectsGet,
+  projectRoot
 };
