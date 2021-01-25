@@ -1,5 +1,5 @@
-import { dirRead, fileDate, fileJsonCreate, fileJsonLoad } from './file';
-import { fileAdd, idToSlug, pathGetId, pathGetRepo } from './utils';
+import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad } from './file';
+import { idToSlug, pathGetId, pathGetRepo } from './utils';
 import { Project } from './types';
 import path from 'path';
 

@@ -1,11 +1,11 @@
-import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
+import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
 import { execSync } from 'child_process';
 import { getRaw } from './api';
 import { Plugin } from './types';
 import path from 'path';
 import * as semver from 'semver';
 import slugify from 'slugify';
-import { fileAdd, pathGetId } from './utils';
+import { pathGetId } from './utils';
 
 const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
 const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
