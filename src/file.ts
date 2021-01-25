@@ -37,6 +37,25 @@ function dirRename(oldPath: string, newPath: string) {
   return fs.renameSync(oldPath, newPath);
 }
 
+function fileAdd(filePath: string, fileName: string, fileType: string, json: any) {
+  if (dirExists(filePath)) {
+    // Ensure file type object exists
+    if (!json.files[fileType]) {
+      json.files[fileType] = {};
+    }
+    // Add file name
+    if (fileName) {
+      json.files[fileType].name = fileName;
+    }
+    // Add file size
+    const size = fileSize(filePath);
+    if (size) {
+      json.files[fileType].size = size;
+    }
+  }
+  return json;
+}
+
 function fileCreate(filePath: string, data: any) {
   return fs.writeFileSync(filePath, data);
 }
@@ -116,6 +135,7 @@ export {
   dirExists,
   dirRead,
   dirRename,
+  fileAdd,
   fileCreate,
   fileDate,
   fileExec,

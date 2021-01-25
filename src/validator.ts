@@ -1,4 +1,4 @@
-import { dirExists, fileCreate, fileDate, fileExec, fileJsonCreate, fileSize, zipCreate, zipExtract } from './file';
+import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
 import { execSync } from 'child_process';
 import { getRaw } from './api';
 import { Plugin } from './types';
@@ -40,30 +40,11 @@ function validateFiles(pathItem: string, json: any) {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = addFile(`${folder}/${id}.wav`, `${id}.wav`, 'audio', json);
-  json = addFile(`${folder}/${id}.png`, `${id}.png`, 'image', json);
-  json = addFile(pathItem, `${id}-linux.zip`, 'linux', json);
-  json = addFile(pathItem, `${id}-mac.zip`, 'mac', json);
-  json = addFile(pathItem, `${id}-win.zip`, 'win', json);
-  return json;
-}
-
-function addFile(filePath: string, fileName: string, fileType: string, json: any) {
-  if (dirExists(filePath)) {
-    // Ensure file type object exists
-    if (!json.files[fileType]) {
-      json.files[fileType] = {};
-    }
-    // Add file name
-    if (fileName) {
-      json.files[fileType].name = fileName;
-    }
-    // Add file size
-    const size = fileSize(filePath);
-    if (size) {
-      json.files[fileType].size = size;
-    }
-  }
+  json = fileAdd(`${folder}/${id}.wav`, `${id}.wav`, 'audio', json);
+  json = fileAdd(`${folder}/${id}.png`, `${id}.png`, 'image', json);
+  json = fileAdd(pathItem, `${id}-linux.zip`, 'linux', json);
+  json = fileAdd(pathItem, `${id}-mac.zip`, 'mac', json);
+  json = fileAdd(pathItem, `${id}-win.zip`, 'win', json);
   return json;
 }
 
