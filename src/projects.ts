@@ -1,6 +1,7 @@
 import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad } from './file';
 import { idToSlug, pathGetId, pathGetRepo } from './utils';
 import { Project } from './types';
+import os from 'os';
 import path from 'path';
 
 // List of notable DAWs
@@ -16,18 +17,18 @@ const PROJECT_TYPES: { [property: string]: string } = {
   '.rpp': 'reaper'
 }
 
-function projectCreateJson(): Project {
+function projectCreateJson(pathItem: string): Project {
   return {
-    "author": "StudioRack",
+    "author": os.userInfo().username,
     "homepage": "https://studiorack.github.io/studiorack-site/",
-    "name": 'My Project',
-    "description": "My project description",
+    "name": path.basename(pathItem, path.extname(pathItem)),
+    "description": "Created using StudioRack",
     "tags": [
-      "StudioRack"
+      PROJECT_TYPES[path.extname(pathItem)]
     ],
     "version": "1.0.0",
     "date": "2000-01-01T00:00:00.000Z",
-    "type": "ableton",
+    "type": "none",
     "files": {},
     "plugins": {}
   }
@@ -67,7 +68,7 @@ async function projectsGet() {
     const relativePath = projectPath.replace('./test/', '').replace('.als', '');
     let project = fileJsonLoad(jsonPath);
     if (!project) {
-      project = projectCreateJson();
+      project = projectCreateJson(projectPath);
     }
     const date = fileDate(projectPath);
     if (date) {
