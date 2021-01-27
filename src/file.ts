@@ -100,7 +100,7 @@ function fileOpen(filePath: string) {
       command = 'xdg-open';
       break;
   }
-  return execSync(`${command} ${filePath}`);
+  return execSync(`${command} "${filePath}"`);
 }
 
 function fileSize(filePath: string) {
