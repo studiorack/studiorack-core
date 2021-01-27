@@ -87,8 +87,10 @@ async function projectsGet() {
   return list;
 }
 
-function projectRoot(dir: string) {
-  PROJECT_ROOT = dir;
+function projectRoot(dir?: string) {
+  if (dir) {
+    PROJECT_ROOT = dir;
+  }
   return PROJECT_ROOT;
 }
 

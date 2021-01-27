@@ -39,6 +39,7 @@ function pathGetVersion(pathItem: string) {
 }
 
 export {
+  baseName,
   idToSlug,
   slugToId,
   pathGetId,
