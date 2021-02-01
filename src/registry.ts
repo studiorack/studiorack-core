@@ -7,8 +7,9 @@ import { Plugin, PluginEntry } from './types';
 
 const PLUGIN_BRANCH = 'main';
 const homedir = os.homedir();
+let PLUGIN_ROOT = pluginFolder(true);
 const PLUGIN_DIR = './plugins';
-const PLUGIN_LOCAL = `${pluginFolder(true)}/**/*.{vst,vst3}`;
+const PLUGIN_LOCAL = `/**/*.{vst,vst3}`;
 const PLUGIN_PREFIX = 'studiorack-plugin';
 const PLUGIN_TEMPLATE = 'https://github.com/studiorack/';
 const REGISTRY_PATH = process.env.REGISTRY_PATH || 'https://studiorack.github.io/studiorack-registry/';
@@ -66,7 +67,7 @@ async function pluginsGet() {
 async function pluginsGetLocal() {
   await validateInstall();
   const list: any = [];
-  const pluginPaths = dirRead(PLUGIN_LOCAL);
+  const pluginPaths = dirRead(`${PLUGIN_ROOT}${PLUGIN_LOCAL}`);
   pluginPaths.forEach((pluginPath: string) => {
     const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
     const relativePath = pluginPath.replace(pluginFolder(true) + '/', '');
@@ -154,6 +155,13 @@ async function pluginUninstall(id: string, version: string, global: boolean) {
   return plugin;
 }
 
+function pluginRoot(dir?: string) {
+  if (dir) {
+    PLUGIN_ROOT = dir;
+  }
+  return PLUGIN_ROOT;
+}
+
 async function pluginSearch(query: string) {
   query = query.toLowerCase();
   const plugins = await pluginsGet();
@@ -198,6 +206,7 @@ export {
   pluginsGetLocal,
   pluginInstall,
   pluginLatest,
+  pluginRoot,
   pluginSearch,
   pluginSource,
   pluginUninstall,
