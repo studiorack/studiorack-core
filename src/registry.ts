@@ -205,6 +205,7 @@ export {
   pluginsGet,
   pluginsGetLocal,
   pluginInstall,
+  pluginInstalled,
   pluginLatest,
   pluginRoot,
   pluginSearch,
