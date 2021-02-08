@@ -70,7 +70,7 @@ async function pluginsGetLocal() {
   const pluginPaths = dirRead(`${PLUGIN_ROOT}${PLUGIN_LOCAL}`);
   pluginPaths.forEach((pluginPath: string) => {
     const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
-    const relativePath = pluginPath.replace(pluginFolder(true) + '/', '');
+    const relativePath = pluginPath.replace(PLUGIN_ROOT + '/', '');
     let plugin = fileJsonLoad(jsonPath);
     if (!plugin) {
       plugin = validatePlugin(pluginPath, { files: true, json: true });
@@ -106,19 +106,19 @@ async function pluginInstall(id: string, version: string, global: boolean) {
     return console.error(`Unsupported file type ${source.slice(-4)}`);
   }
   if (pluginInstalled(repoId, pluginId, version, global)) {
-    console.error(`Plugin already installed ${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
+    console.error(`Plugin already installed ${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
   } else {
     const data = await getRaw(source);
-    dirCreate(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
-    zipExtract(data, `${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
+    dirCreate(`${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
+    zipExtract(data, `${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
   }
-  plugin.path = `${pluginFolder(true)}/${repoId}/${pluginId}/${plugin.version}`;
+  plugin.path = `${PLUGIN_ROOT}/${repoId}/${pluginId}/${plugin.version}`;
   plugin.status = 'installed';
   return plugin;
 }
 
 function pluginInstalled(repoId: string, pluginId: string, version: string, global: boolean) {
-  return dirExists(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
+  return dirExists(`${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
 }
 
 function pluginLatest(plugin: PluginEntry) {
@@ -134,18 +134,18 @@ async function pluginUninstall(id: string, version: string, global: boolean) {
   const pluginId = pathGetId(id);
   const repoId = pathGetRepo(id);
   if (!pluginInstalled(repoId, pluginId, version, global)) {
-    console.error(`Plugin not installed ${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
+    console.error(`Plugin not installed ${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
   } else {
-    dirDelete(`${pluginFolder(global)}/${repoId}/${pluginId}/${version}`);
-    const pluginDir = `${pluginFolder(global)}/${repoId}/${pluginId}`;
+    dirDelete(`${PLUGIN_ROOT}/${repoId}/${pluginId}/${version}`);
+    const pluginDir = `${PLUGIN_ROOT}/${repoId}/${pluginId}`;
     if (dirEmpty(pluginDir)) {
       dirDelete(pluginDir);
     }
-    const parentDir = `${pluginFolder(global)}/${repoId}`;
+    const parentDir = `${PLUGIN_ROOT}/${repoId}`;
     if (dirEmpty(parentDir)) {
       dirDelete(parentDir);
     }
-    const grandparentDir = `${pluginFolder(global)}/${repoId.split('/')[0]}`;
+    const grandparentDir = `${PLUGIN_ROOT}/${repoId.split('/')[0]}`;
     if (dirEmpty(grandparentDir)) {
       dirDelete(grandparentDir);
     }
