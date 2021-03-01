@@ -1,18 +1,6 @@
-interface ConfigType {
-  extAudio: string;
-  extFile: string;
-  extImage: string;
-  extZip: string;
-  ignoredFolders: Array<string>;
-  pluginFile: string;
-  pluginFolder: string;
-  pluginRegistry: string;
-  projectFile: string;
-  projectFolder: string;
-  projectRegistry: string;
-}
+import { ConfigInterface } from './types/config';
 
-const config: ConfigType = {
+const config: ConfigInterface = {
   extAudio: '.wav',
   extFile: '.json',
   extImage: '.png',
@@ -26,11 +14,11 @@ const config: ConfigType = {
   projectRegistry: 'https://studiorack.github.io/studiorack-registry/'
 };
 
-function configGet(key: keyof ConfigType) {
+function configGet(key: keyof ConfigInterface): any {
   return config[key];
 }
 
-function configSet(key: keyof ConfigType, val: any) {
+function configSet(key: keyof ConfigInterface, val: any): any {
   config[key] = val;
   return configGet(key);
 }
