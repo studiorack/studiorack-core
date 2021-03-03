@@ -1,24 +1,21 @@
-interface PluginInterface {
-  author: string;
-  date: string;
-  description: string;
-  homepage: string;
-  id?: string;
-  name: string;
-  path?: string;
-  release?: string;
-  files: PluginFiles;
-  slug?: string;
-  status?: string;
-  tags: string[];
-  type: PluginType;
-  version: string;
+interface PlatformTypes {
+  aix: keyof PluginFiles;
+  android: keyof PluginFiles;
+  cygwin: keyof PluginFiles;
+  darwin: keyof PluginFiles;
+  freebsd: keyof PluginFiles;
+  linux: keyof PluginFiles;
+  netbsd: keyof PluginFiles;
+  openbsd: keyof PluginFiles;
+  sunos: keyof PluginFiles;
+  win32: keyof PluginFiles;
+  win64: keyof PluginFiles;
 }
 
 interface PluginEntry {
   id: string;
   version: string;
-  versions: { [version: string]: PluginInterface };
+  versions: { [version: string]: PluginVersion };
 }
 
 interface PluginFile {
@@ -32,6 +29,18 @@ interface PluginFiles {
   linux: PluginFile;
   mac: PluginFile;
   win: PluginFile;
+}
+
+interface PluginInterface {
+  author: string;
+  date: string;
+  description: string;
+  homepage: string;
+  name: string;
+  files: PluginFiles;
+  tags: string[];
+  type: PluginType;
+  version: string;
 }
 
 interface PluginPack {
@@ -59,13 +68,24 @@ interface PluginTypes {
   virtualStudioTechnology3: PluginType;
 }
 
+interface PluginVersion extends PluginInterface {
+  id: string;
+  path: string;
+  release: string;
+  repo: string;
+  slug: string;
+  status: string;
+}
+
 export {
-  PluginInterface,
+  PlatformTypes,
   PluginEntry,
   PluginFile,
   PluginFiles,
+  PluginInterface,
   PluginPack,
   PluginTemplate,
   PluginType,
-  PluginTypes
+  PluginTypes,
+  PluginVersion
 };
