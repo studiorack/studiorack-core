@@ -36,8 +36,10 @@ interface PluginInterface {
   date: string;
   description: string;
   homepage: string;
+  id: string;
   name: string;
   files: PluginFiles;
+  release: string;
   tags: string[];
   type: PluginType;
   version: string;
@@ -69,9 +71,7 @@ interface PluginTypes {
 }
 
 interface PluginVersion extends PluginInterface {
-  id: string;
   path: string;
-  release: string;
   repo: string;
   slug: string;
   status: string;

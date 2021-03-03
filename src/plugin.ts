@@ -50,7 +50,7 @@ const pluginExts: string[] = Object.keys(pluginTypes).map((pluginTypeKey: string
 const pluginFolderExts: string = `/**/*.{${pluginExts.join(',')}}`;
 
 
-async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg') {
+async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg'): Promise<Boolean> {
   if (dirExists(path)) {
     console.error(`Directory already exists: ${path}`);
     return false;
@@ -61,34 +61,34 @@ async function pluginCreate(path: string, template: keyof PluginTemplate = 'stei
   return true;
 }
 
-async function pluginGet(id: string) {
+async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
   const plugins: { [id: string]: PluginEntry } = await pluginSearch();
-  return plugins[id] || false;
-}
-
-async function pluginInstall(id: string, version: string) {
-  const plugin: PluginEntry = await pluginGet(id);
-  if (!plugin) {
-    return console.error(`Plugin not found ${id}`);
+  if (!plugins[id]) {
+    throw Error(`Plugin not found ${id}`);
   }
   if (!version) {
-    version = plugin.version;
+    version = plugins[id].version;
   }
-  const platformName: keyof PluginFiles = platformTypes[process.platform];
-  const pluginVersion: PluginVersion = plugin.versions[version];
+  const pluginVersion: PluginVersion = plugins[id].versions[version];
   if (!pluginVersion) {
-    return console.error(`Plugin version not found ${version}`);
+    throw Error(`Plugin version not found ${version}`);
   }
+  return pluginVersion;
+}
+
+async function pluginInstall(id: string, version?: string): Promise<PluginVersion> {
+  const platformName: keyof PluginFiles = platformTypes[process.platform];
+  const pluginVersion: PluginVersion = await pluginGet(id);
   if (!pluginVersion.files && !pluginVersion.files[platformName]) {
-    return console.error(`Plugin not available for your system ${id}`);
+    throw Error(`Plugin not available for your system ${id}`);
   }
   const pluginUrl: string = `https://github.com/${pluginVersion.repo}/releases/download/${pluginVersion.release}/${pluginVersion.files[platformName].name}`;
   if (pluginUrl.slice(-4) !== '.zip') {
-    return console.error(`Unsupported file type ${pluginUrl.slice(-4)}`);
+    throw Error(`Unsupported file type ${pluginUrl.slice(-4)}`);
   }
   const pluginPath = `${configGet('pluginFolder')}/${pluginVersion.repo}/${pluginVersion.id}/${pluginVersion.version}`;
   if (dirExists(pluginPath)) {
-    console.error(`Plugin already installed ${pluginPath}`);
+    throw Error(`Plugin already installed ${pluginPath}`);
   } else {
     const data = await getRaw(pluginUrl);
     dirCreate(pluginPath);
@@ -99,11 +99,29 @@ async function pluginInstall(id: string, version: string) {
   return pluginVersion;
 }
 
-function pluginInstalled(repoId: string, pluginId: string, version: string) {
-  return dirExists(`${configGet('pluginFolder')}/${repoId}/${pluginId}/${version}`);
+function pluginInstalled(pluginVersion: PluginVersion): Boolean {
+  return dirExists(`${configGet('pluginFolder')}/${pluginVersion.repo}/${pluginVersion.id}/${pluginVersion.version}`);
 }
 
 async function pluginList() {
+  // await pluginValidatorInstall();
+  // const list: any = [];
+  // const pluginPaths = dirRead(`${configGet('pluginFolder')}${pluginFolderExts}`);
+  // pluginPaths.forEach((pluginPath: string) => {
+  //   const jsonPath = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
+  //   const relativePath = pluginPath.replace(PLUGIN_ROOT + '/', '');
+  //   let plugin = fileJsonLoad(jsonPath);
+  //   if (!plugin) {
+  //     plugin = validatePlugin(pluginPath, { files: true, json: true });
+  //   }
+  //   plugin.id = `${pathGetRepo(relativePath)}/${pathGetId(relativePath)}`;
+  //   plugin.path = pluginPath;
+  //   plugin.slug = idToSlug(plugin.id);
+  //   plugin.status = 'installed';
+  //   plugin.version = pathGetVersion(pluginPath);
+  //   list.push(plugin);
+  // });
+  // return list;
 }
 
 async function pluginSearch(query?: string) {
@@ -124,6 +142,17 @@ function pluginValidate(path: string) {
 }
 
 async function pluginValidatorInstall() {
+  // // If binary does not exist, download Steinberg VST3 SDK validator binary
+  // if (!dirExists(VALIDATOR_DIR)) {
+  //   const data = await getRaw(
+  //     `https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${pathGetPlatform()}.zip`
+  //   );
+  //   console.log(`Installed validator: ${VALIDATOR_PATH}`);
+  //   zipExtract(data, VALIDATOR_DIR);
+  //   fileExec(VALIDATOR_PATH);
+  //   return true;
+  // }
+  // return false;
 }
 
 export {
