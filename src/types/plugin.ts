@@ -15,7 +15,7 @@ interface PlatformTypes {
 interface PluginEntry {
   id: string;
   version: string;
-  versions: { [version: string]: PluginVersion };
+  versions: { [version: string]: PluginInterface };
 }
 
 interface PluginFile {
@@ -40,9 +40,15 @@ interface PluginInterface {
   name: string;
   files: PluginFiles;
   release: string;
+  repo: string;
   tags: string[];
-  type: PluginType;
+  type?: PluginType;
   version: string;
+}
+
+interface PluginLocal extends PluginInterface {
+  path: string;
+  status: string;
 }
 
 interface PluginPack {
@@ -70,22 +76,15 @@ interface PluginTypes {
   virtualStudioTechnology3: PluginType;
 }
 
-interface PluginVersion extends PluginInterface {
-  path: string;
-  repo: string;
-  slug: string;
-  status: string;
-}
-
 export {
   PlatformTypes,
   PluginEntry,
   PluginFile,
   PluginFiles,
   PluginInterface,
+  PluginLocal,
   PluginPack,
   PluginTemplate,
   PluginType,
-  PluginTypes,
-  PluginVersion
+  PluginTypes
 };
