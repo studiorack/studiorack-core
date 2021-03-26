@@ -2,10 +2,11 @@ import {
   configGet,
   configSet
 } from '../src/config';
+import { ConfigInterface } from '../src/types/config';
 
-const CONFIG_KEY = 'pluginFile';
-const CONFIG_DEFAULT_VALUE = 'plugin.json';
-const CONFIG_NEW_VALUE = 'metadata.json';
+const CONFIG_KEY: keyof ConfigInterface = 'pluginFile';
+const CONFIG_DEFAULT_VALUE: string = 'plugin.json';
+const CONFIG_NEW_VALUE: string = 'metadata.json';
 
 test('Get default value', () => {
   expect(configGet(CONFIG_KEY)).toBe(CONFIG_DEFAULT_VALUE);

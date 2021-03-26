@@ -2,19 +2,19 @@ import { configSet } from '../src/config';
 import { dirDelete } from '../src/file';
 import {
   pluginCreate,
-	pluginDirectory,
+  pluginDirectory,
   pluginGet,
+  pluginsGetLocal,
   pluginInstall,
   pluginInstalled,
-	pluginList,
-	pluginSearch,
-	pluginUninstall
+  pluginSearch,
+  pluginUninstall
 } from '../src/plugin';
-import { PluginInterface, PluginLocal } from '../src/types/plugin';
+import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
-const PLUGIN_DIR = './test/plugins';
-const PLUGIN_ID = 'studiorack/studiorack-plugin-steinberg/adelay';
-const PLUGIN_TEMPLATE = 'dplug';
+const PLUGIN_DIR: string = './test/plugins';
+const PLUGIN_ID: string = 'studiorack/studiorack-plugin-steinberg/adelay';
+const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
 const PLUGIN: PluginInterface = {
   author: 'Steinberg Media Technologies',
   homepage: 'http://www.steinberg.net',
@@ -104,7 +104,7 @@ test('Check if plugin is installed', async () => {
 });
 
 test('List plugins locally', async () => {
-  expect(pluginList()).toBeDefined();
+  expect(pluginsGetLocal()).toBeDefined();
 });
 
 test('Search plugin registry', async () => {

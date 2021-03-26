@@ -15,11 +15,11 @@ const platformTypes: PlatformTypes = {
   win32: 'win',
   win64: 'win',
 };
-const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
-const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
+const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
+const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
-function baseName(str: string) {
-  let base = str.substring(str.lastIndexOf('/') + 1); 
+function baseName(str: string): string {
+  let base: string = str.substring(str.lastIndexOf('/') + 1); 
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
@@ -30,31 +30,35 @@ function getPlatform(): keyof PluginFiles {
   return platformTypes[process.platform];
 }
 
-function idToSlug(id: string) {
-  return slugify(id.replace(/\//g, '_'), { lower: true, remove: URLSAFE_REGEX });
+function idToSlug(id: string): string {
+  return safeSlug(id.replace(/\//g, '_'));
 }
 
-function slugToId(slug: string) {
-  return slugify(slug.replace(/_/g, '/'), { lower: true, remove: URLSAFE_REGEX });
+function slugToId(slug: string): string {
+  return safeSlug(slug.replace(/_/g, '/'));
 }
 
-function pathGetId(pathItem: string) {
-  const splitMatch = pathItem.split('@');
+function pathGetId(pathItem: string): string {
+  const splitMatch: string[] = pathItem.split('@');
   pathItem = splitMatch ? splitMatch[0] : pathItem;
-  return slugify(baseName(pathItem), { lower: true, remove: URLSAFE_REGEX });
+  return safeSlug(baseName(pathItem));
 }
 
-function pathGetRepo(pathItem: string) {
-  const pathParts = pathItem.split('/');
+function pathGetRepo(pathItem: string): string {
+  const pathParts: string[] = pathItem.split('/');
   if (pathParts.length > 1) {
-    return slugify(`${pathParts[0]}/${pathParts[1]}`, { lower: true, remove: URLSAFE_REGEX });
+    return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
-  return slugify(baseName(pathItem), { lower: true, remove: URLSAFE_REGEX });
+  return safeSlug(baseName(pathItem));
 }
 
-function pathGetVersion(pathItem: string) {
-  const matches = pathItem.match(VERSION_REGEX);
+function pathGetVersion(pathItem: string): string {
+  const matches: any = pathItem.match(VERSION_REGEX);
   return matches ? matches[0] : '0.0.0';
+}
+
+function safeSlug(val: string): string {
+  return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 
 export {
@@ -64,5 +68,6 @@ export {
   slugToId,
   pathGetId,
   pathGetRepo,
-  pathGetVersion
+  pathGetVersion,
+  safeSlug
 };

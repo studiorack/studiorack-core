@@ -9,12 +9,30 @@ interface ConfigInterface {
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;
+  pluginRelease: string;
+  pluginTemplate: string;
   pluginTypes: PluginTypes;
   projectFile: string;
   projectFolder: string;
   projectRegistry: string;
+  validatorUrl: string;
+}
+
+interface PlatformsSupported {
+  aix: string;
+  android: string;
+  cygwin: string;
+  darwin: string;
+  freebsd: string;
+  linux: string;
+  netbsd: string;
+  openbsd: string;
+  sunos: string;
+  win32: string;
+  win64: string;
 }
 
 export {
-  ConfigInterface
+  ConfigInterface,
+  PlatformsSupported
 }

@@ -18,10 +18,10 @@ import {
   zipExtract,
 } from '../src/file';
 
-const DIR_PATH = './tests/new-directory';
-const DIR_RENAME = './tests/new-directory-renamed';
+const DIR_PATH: string = './tests/new-directory';
+const DIR_RENAME: string = './tests/new-directory-renamed';
 
-const FILE_PATH = './tests/new-directory/file.txt';
+const FILE_PATH: string = './tests/new-directory/file.txt';
 
 test('Create new directory', () => {
   expect(dirCreate(DIR_PATH)).toBe(DIR_PATH);

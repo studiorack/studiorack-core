@@ -1,4 +1,5 @@
 import { ConfigInterface } from './types/config';
+import { dirRoot } from './file';
 
 const config: ConfigInterface = {
   extAudio: '.wav',
@@ -7,8 +8,10 @@ const config: ConfigInterface = {
   extZip: '.zip',
   ignoredFolders: ['Backup'],
   pluginFile: 'plugin.json',
-  pluginFolder: '/Library/Audio/Plug-ins/VST3',
+  pluginFolder: dirRoot(),
   pluginRegistry: 'https://studiorack.github.io/studiorack-registry/',
+  pluginRelease: 'https://github.com/${repo}/releases/download',
+  pluginTemplate: 'https://github.com/studiorack/studiorack-plugin-${template}/archive/main.zip',
   pluginTypes: {
     audioUnits: {
       name: "Audio Units",
@@ -38,6 +41,7 @@ const config: ConfigInterface = {
   projectFile: 'project.json',
   projectFolder: '/Users/username/Documents',
   projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
+  validatorUrl: 'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip'
 };
 
 function configGet(key: keyof ConfigInterface): any {
