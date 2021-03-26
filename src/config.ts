@@ -41,6 +41,32 @@ const config: ConfigInterface = {
   projectFile: 'project.json',
   projectFolder: '/Users/username/Documents',
   projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
+  projectTypes: {
+    ableton: {
+      name: "Ableton",
+      ext: "als"
+    },
+    cubase: {
+      name: "Cubase",
+      ext: "cpr"
+    },
+    flStudio: {
+      name: "FL Studio",
+      ext: "flp"
+    },
+    logic: {
+      name: "Logic",
+      ext: "logic"
+    },
+    proTools: {
+      name: "Pro Tools",
+      ext: "ptx"
+    },
+    reaper: {
+      name: "Reaper",
+      ext: "rpp"
+    }
+  },
   validatorUrl: 'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip'
 };
 

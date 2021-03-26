@@ -1,4 +1,5 @@
 import { PluginTypes } from "./plugin";
+import { ProjectTypes } from "./project";
 
 interface ConfigInterface {
   extAudio: string;
@@ -15,6 +16,7 @@ interface ConfigInterface {
   projectFile: string;
   projectFolder: string;
   projectRegistry: string;
+  projectTypes: ProjectTypes
   validatorUrl: string;
 }
 
