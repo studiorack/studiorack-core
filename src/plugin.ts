@@ -23,7 +23,7 @@ function pluginDirectory(plugin: PluginInterface, depth?: number): string {
     plugin.version
   ];
   if (depth) {
-    return pluginPaths.slice(depth).join('/');
+    return pluginPaths.slice(0, depth).join('/');
   }
   return pluginPaths.join('/');
 }
@@ -72,8 +72,8 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   return plugin;
 }
 
-function pluginInstalled(pluginVersion: PluginInterface): boolean {
-  return dirExists(pluginDirectory(pluginVersion));
+function pluginInstalled(plugin: PluginInterface): boolean {
+  return dirExists(pluginDirectory(plugin));
 }
 
 async function pluginList(): Promise<PluginLocal[]> {
@@ -123,32 +123,29 @@ async function pluginSearch(query?: string): Promise<PluginInterface[]> {
 }
 
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
-  const pluginVersion: PluginLocal = await pluginGet(id, version) as PluginLocal;
-  if (!pluginInstalled(pluginVersion)) {
-    console.error(`Plugin not installed ${pluginDirectory(pluginVersion)}`);
+  const plugin: PluginLocal = await pluginGet(id, version) as PluginLocal;
+  if (!pluginInstalled(plugin)) {
+    console.error(`Plugin not installed ${pluginDirectory(plugin)}`);
   } else {
-    const versionDir = pluginDirectory(pluginVersion, 3);
+    const versionDir = pluginDirectory(plugin, 3);
     console.log('versionDir', versionDir);
     if (dirEmpty(versionDir)) {
       dirDelete(versionDir);
     }
-    const idDir = pluginDirectory(pluginVersion, 2);
+    const idDir = pluginDirectory(plugin, 2);
     console.log('idDir', idDir);
     if (dirEmpty(idDir)) {
       dirDelete(idDir);
     }
-    const repoDir = pluginDirectory(pluginVersion, 1);
+    const repoDir = pluginDirectory(plugin, 1);
     console.log('repoDir', repoDir);
     if (dirEmpty(repoDir)) {
       dirDelete(repoDir);
     }
   }
-  pluginVersion.status = 'available';
-  return pluginVersion;
+  plugin.status = 'available';
+  return plugin;
 }
-
-// function pluginValidate(path: string) {
-// }
 
 export {
   pluginCreate,
@@ -158,6 +155,5 @@ export {
   pluginInstalled,
   pluginList,
   pluginSearch,
-  pluginUninstall,
-  // pluginValidate
+  pluginUninstall
 };

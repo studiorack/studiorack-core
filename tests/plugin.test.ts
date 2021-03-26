@@ -2,16 +2,20 @@ import { configSet } from '../src/config';
 import { dirDelete } from '../src/file';
 import {
   pluginCreate,
+	pluginDirectory,
   pluginGet,
   pluginInstall,
-  pluginInstalled
+  pluginInstalled,
+	pluginList,
+	pluginSearch,
+	pluginUninstall
 } from '../src/plugin';
 import { PluginInterface, PluginLocal } from '../src/types/plugin';
 
 const PLUGIN_DIR = './test/plugins';
 const PLUGIN_ID = 'studiorack/studiorack-plugin-steinberg/adelay';
 const PLUGIN_TEMPLATE = 'dplug';
-const PLUGIN_VERSION: PluginInterface = {
+const PLUGIN: PluginInterface = {
   author: 'Steinberg Media Technologies',
   homepage: 'http://www.steinberg.net',
   name: 'ADelayTest Factory',
@@ -76,8 +80,15 @@ test('Create a plugin from a valid template', async () => {
   expect(await pluginCreate(PLUGIN_DIR, PLUGIN_TEMPLATE)).toBe(true);
 });
 
+test('Get plugin directory', () => {
+  expect(pluginDirectory(PLUGIN)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
+  expect(pluginDirectory(PLUGIN, 3)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}`);
+  expect(pluginDirectory(PLUGIN, 2)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}`);
+  expect(pluginDirectory(PLUGIN, 1)).toBe(`${PLUGIN_DIR}`);
+});
+
 test('Get valid plugin by id', async () => {
-  expect(await pluginGet(PLUGIN_ID)).toMatchObject(PLUGIN_VERSION);
+  expect(await pluginGet(PLUGIN_ID)).toMatchObject(PLUGIN);
 });
 
 test('Get invalid plugin by id', async () => {
@@ -89,5 +100,24 @@ test('Install plugin by id', async () => {
 });
 
 test('Check if plugin is installed', async () => {
-  expect(pluginInstalled(PLUGIN_VERSION)).toBe(true);
+  expect(pluginInstalled(PLUGIN)).toBe(true);
+});
+
+test('List plugins locally', async () => {
+  expect(pluginList()).toBeDefined();
+});
+
+test('Search plugin registry', async () => {
+  expect(pluginSearch('delay')).toBeDefined();
+});
+
+test('Search plugin registry', async () => {
+  expect(pluginSearch('delay')).toBeDefined();
+});
+
+test('Uninstall plugin by id', async () => {
+  const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
+  delete PLUGIN_LOCAL_UPDATED.path;
+  PLUGIN_LOCAL_UPDATED.status = 'available';
+  expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
