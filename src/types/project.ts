@@ -23,6 +23,11 @@ interface ProjectInterface {
   version: string;
 }
 
+interface ProjectLocal extends ProjectInterface {
+  path: string;
+  status: string;
+}
+
 interface ProjectType {
   name: string;
   ext: string;
@@ -41,6 +46,7 @@ export {
   ProjectFile,
   ProjectFiles,
   ProjectInterface,
+  ProjectLocal,
   ProjectType,
   ProjectTypes
 };
