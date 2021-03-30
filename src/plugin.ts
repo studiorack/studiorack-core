@@ -2,7 +2,15 @@ import { configGet } from './config';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import { getJSON, getRaw } from './api';
 import { getPlatform, pathGetId, pathGetRepo, pathGetVersion } from './utils';
-import { PluginEntry, PluginFile, PluginInterface, PluginLocal, PluginPack, PluginTemplate, PluginTypes } from './types/plugin';
+import {
+  PluginEntry,
+  PluginFile,
+  PluginInterface,
+  PluginLocal,
+  PluginPack,
+  PluginTemplate,
+  PluginTypes,
+} from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
 
 async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
@@ -16,12 +24,7 @@ async function pluginCreate(path: string, template: keyof PluginTemplate = 'stei
 }
 
 function pluginDirectory(plugin: PluginInterface, depth?: number): string {
-  const pluginPaths: string[] = [
-    configGet('pluginFolder'),
-    plugin.repo,
-    plugin.id,
-    plugin.version
-  ];
+  const pluginPaths: string[] = [configGet('pluginFolder'), plugin.repo, plugin.id, plugin.version];
   if (depth) {
     return pluginPaths.slice(0, depth).join('/');
   }
@@ -85,7 +88,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
 }
 
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
-  const plugin: PluginLocal = await pluginGet(id, version) as PluginLocal;
+  const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   const pluginUrl: string = pluginSource(plugin);
   if (pluginUrl.slice(-4) !== '.zip') {
     throw Error(`Unsupported file type ${pluginUrl.slice(-4)}`);
@@ -119,12 +122,14 @@ async function pluginSearch(query?: string): Promise<PluginInterface[]> {
     if (query) {
       Object.keys(pluginPack).filter((pluginId: string) => {
         const plugin: PluginInterface = pluginLatest(pluginPack[pluginId]);
-        if (plugin.name.toLowerCase().indexOf(query) !== -1 ||
+        if (
+          plugin.name.toLowerCase().indexOf(query) !== -1 ||
           plugin.description.toLowerCase().indexOf(query) !== -1 ||
-          plugin.tags.includes(query)) {
+          plugin.tags.includes(query)
+        ) {
           plugins.push(plugin);
         }
-      })
+      });
     }
     return plugins;
   });
@@ -141,7 +146,7 @@ function pluginSource(plugin: PluginInterface): string {
 }
 
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
-  const plugin: PluginLocal = await pluginGet(id, version) as PluginLocal;
+  const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   if (!pluginInstalled(plugin)) {
     console.error(`Plugin not installed ${pluginDirectory(plugin)}`);
   } else {
@@ -177,5 +182,5 @@ export {
   pluginLatest,
   pluginSearch,
   pluginSource,
-  pluginUninstall
+  pluginUninstall,
 };

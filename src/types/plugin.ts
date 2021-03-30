@@ -86,5 +86,5 @@ export {
   PluginPack,
   PluginTemplate,
   PluginType,
-  PluginTypes
+  PluginTypes,
 };

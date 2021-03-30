@@ -19,7 +19,7 @@ const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function baseName(str: string): string {
-  let base: string = str.substring(str.lastIndexOf('/') + 1); 
+  let base: string = str.substring(str.lastIndexOf('/') + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
@@ -61,13 +61,4 @@ function safeSlug(val: string): string {
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 
-export {
-  baseName,
-  getPlatform,
-  idToSlug,
-  slugToId,
-  pathGetId,
-  pathGetRepo,
-  pathGetVersion,
-  safeSlug
-};
+export { baseName, getPlatform, idToSlug, slugToId, pathGetId, pathGetRepo, pathGetVersion, safeSlug };

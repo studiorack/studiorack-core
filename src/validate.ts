@@ -170,5 +170,5 @@ export {
   validatePluginField,
   validatePluginSchema,
   validateProcess,
-  validateRun
+  validateRun,
 };

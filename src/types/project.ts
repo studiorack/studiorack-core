@@ -34,19 +34,12 @@ interface ProjectType {
 }
 
 interface ProjectTypes {
-  ableton: ProjectType,
-  cubase: ProjectType,
-  flStudio: ProjectType,
-  logic: ProjectType,
-  proTools: ProjectType,
-  reaper: ProjectType
+  ableton: ProjectType;
+  cubase: ProjectType;
+  flStudio: ProjectType;
+  logic: ProjectType;
+  proTools: ProjectType;
+  reaper: ProjectType;
 }
 
-export {
-  ProjectFile,
-  ProjectFiles,
-  ProjectInterface,
-  ProjectLocal,
-  ProjectType,
-  ProjectTypes
-};
+export { ProjectFile, ProjectFiles, ProjectInterface, ProjectLocal, ProjectType, ProjectTypes };

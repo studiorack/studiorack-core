@@ -14,60 +14,61 @@ const config: ConfigInterface = {
   pluginTemplate: 'https://github.com/studiorack/studiorack-plugin-${template}/archive/main.zip',
   pluginTypes: {
     audioUnits: {
-      name: "Audio Units",
-      ext: "au"
+      name: 'Audio Units',
+      ext: 'au',
     },
     avidAudioExtension: {
-      name: "Avid Audio Extension",
-      ext: "aax"
+      name: 'Avid Audio Extension',
+      ext: 'aax',
     },
     realtimeAudiosuite: {
-      name: "Real-Time AudioSuite",
-      ext: "rta"
+      name: 'Real-Time AudioSuite',
+      ext: 'rta',
     },
     timeDivisionMultiplexing: {
-      name: "Time-Division-Multiplexing",
-      ext: "tdm"
+      name: 'Time-Division-Multiplexing',
+      ext: 'tdm',
     },
     virtualStudioTechnology: {
-      name: "Virtual Studio Technology",
-      ext: "vst"
+      name: 'Virtual Studio Technology',
+      ext: 'vst',
     },
     virtualStudioTechnology3: {
-      name: "Virtual Studio Technology 3",
-      ext: "vst3"
-    }
+      name: 'Virtual Studio Technology 3',
+      ext: 'vst3',
+    },
   },
   projectFile: 'project.json',
   projectFolder: '/Users/username/Documents',
   projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
   projectTypes: {
     ableton: {
-      name: "Ableton",
-      ext: "als"
+      name: 'Ableton',
+      ext: 'als',
     },
     cubase: {
-      name: "Cubase",
-      ext: "cpr"
+      name: 'Cubase',
+      ext: 'cpr',
     },
     flStudio: {
-      name: "FL Studio",
-      ext: "flp"
+      name: 'FL Studio',
+      ext: 'flp',
     },
     logic: {
-      name: "Logic",
-      ext: "logic"
+      name: 'Logic',
+      ext: 'logic',
     },
     proTools: {
-      name: "Pro Tools",
-      ext: "ptx"
+      name: 'Pro Tools',
+      ext: 'ptx',
     },
     reaper: {
-      name: "Reaper",
-      ext: "rpp"
-    }
+      name: 'Reaper',
+      ext: 'rpp',
+    },
   },
-  validatorUrl: 'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip'
+  validatorUrl:
+    'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip',
 };
 
 function configGet(key: keyof ConfigInterface): any {
@@ -79,7 +80,4 @@ function configSet(key: keyof ConfigInterface, val: any): any {
   return configGet(key);
 }
 
-export {
-  configGet,
-  configSet
-};
+export { configGet, configSet };

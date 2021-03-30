@@ -1,7 +1,7 @@
-import { configGet } from "./config";
+import { configGet } from './config';
 import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad } from './file';
 import { pathGetId, pathGetRepo, pathGetVersion } from './utils';
-import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from "./types/project";
+import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
 
 async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
   const projects: ProjectLocal[] = await projectsGetLocal();
@@ -43,8 +43,8 @@ function projectValidate(path: string, options?: any): ProjectInterface {
   const filename: string = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
   const projectTypes: ProjectTypes = configGet('projectTypes');
   let projectType: ProjectType = {
-    "name": "Ableton",
-    "ext": "als"
+    name: 'Ableton',
+    ext: 'als',
   };
   Object.keys(projectTypes).forEach((key: string) => {
     const currentType: ProjectType = projectTypes[key as keyof ProjectTypes];
@@ -53,33 +53,33 @@ function projectValidate(path: string, options?: any): ProjectInterface {
     }
   });
   let projectJson: ProjectLocal = {
-    "id": pathGetId(path),
-    "author": "studiorack-user",
-    "homepage": "https://studiorack.github.io/studiorack-site/",
-    "name": filename,
-    "description": "Created using StudioRack",
-    "tags": [ projectType.name ],
-    "version": "1.0.0",
-    "date": fileDate(path).toISOString(),
-    "type": projectType,
-    "path": path,
-    "status": "installed",
-    "files": {
-      "audio": {
-        "name": "",
-        "size": 0,
+    id: pathGetId(path),
+    author: 'studiorack-user',
+    homepage: 'https://studiorack.github.io/studiorack-site/',
+    name: filename,
+    description: 'Created using StudioRack',
+    tags: [projectType.name],
+    version: '1.0.0',
+    date: fileDate(path).toISOString(),
+    type: projectType,
+    path: path,
+    status: 'installed',
+    files: {
+      audio: {
+        name: '',
+        size: 0,
       },
-      "image": {
-        "name": "",
-        "size": 0,
+      image: {
+        name: '',
+        size: 0,
       },
-      "project": {
-        "name": "",
-        "size": 0,
-      }
+      project: {
+        name: '',
+        size: 0,
+      },
     },
-    "plugins": {}
-  }
+    plugins: {},
+  };
   if (options && options.files) {
     projectJson = projectValidateFiles(path, projectJson);
   }
@@ -104,9 +104,4 @@ function projectValidateFiles(path: string, json: any): any {
   return json;
 }
 
-export {
-  projectGetLocal,
-  projectsGetLocal,
-  projectValidate,
-  projectValidateFiles
-};
+export { projectGetLocal, projectsGetLocal, projectValidate, projectValidateFiles };

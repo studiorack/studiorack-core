@@ -1,5 +1,5 @@
-import { PluginTypes } from "./plugin";
-import { ProjectTypes } from "./project";
+import { PluginTypes } from './plugin';
+import { ProjectTypes } from './project';
 
 interface ConfigInterface {
   extAudio: string;
@@ -16,7 +16,7 @@ interface ConfigInterface {
   projectFile: string;
   projectFolder: string;
   projectRegistry: string;
-  projectTypes: ProjectTypes
+  projectTypes: ProjectTypes;
   validatorUrl: string;
 }
 
@@ -34,7 +34,4 @@ interface PlatformsSupported {
   win64: string;
 }
 
-export {
-  ConfigInterface,
-  PlatformsSupported
-}
+export { ConfigInterface, PlatformsSupported };
