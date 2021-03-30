@@ -53,5 +53,5 @@ test('List projects locally', async () => {
 });
 
 test('Validate project json', async () => {
-  expect(await projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toBe(PROJECT_LOCAL);
+  expect(await projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toEqual(PROJECT_LOCAL);
 });

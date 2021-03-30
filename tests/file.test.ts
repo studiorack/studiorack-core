@@ -24,19 +24,19 @@ const DIR_RENAME: string = './tests/new-directory-renamed';
 const FILE_PATH: string = './tests/new-directory/file.txt';
 
 test('Create new directory', () => {
-  expect(dirCreate(DIR_PATH)).toBe(DIR_PATH);
+  expect(dirCreate(DIR_PATH)).toEqual(DIR_PATH);
 });
 
 test('Create existing directory', () => {
-  expect(dirCreate(DIR_PATH)).toBe(false);
+  expect(dirCreate(DIR_PATH)).toEqual(false);
 });
 
 test('Directory is empty', () => {
-  expect(dirEmpty(DIR_PATH)).toBe(true);
+  expect(dirEmpty(DIR_PATH)).toEqual(true);
 });
 
 test('Directory exists', () => {
-  expect(dirExists(DIR_PATH)).toBe(true);
+  expect(dirExists(DIR_PATH)).toEqual(true);
 });
 
 test('Read directory', () => {
@@ -56,5 +56,5 @@ test('Delete existing directory', () => {
 });
 
 test('Delete missing directory', () => {
-  expect(dirDelete(DIR_RENAME)).toBe(false);
+  expect(dirDelete(DIR_RENAME)).toEqual(false);
 });

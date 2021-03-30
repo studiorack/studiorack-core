@@ -77,14 +77,14 @@ beforeAll(() => {
 });
 
 test('Create a plugin from a valid template', async () => {
-  expect(await pluginCreate(PLUGIN_DIR, PLUGIN_TEMPLATE)).toBe(true);
+  expect(await pluginCreate(PLUGIN_DIR, PLUGIN_TEMPLATE)).toEqual(true);
 });
 
 test('Get plugin directory', () => {
-  expect(pluginDirectory(PLUGIN)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
-  expect(pluginDirectory(PLUGIN, 3)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}`);
-  expect(pluginDirectory(PLUGIN, 2)).toBe(`${PLUGIN_DIR}/${PLUGIN.repo}`);
-  expect(pluginDirectory(PLUGIN, 1)).toBe(`${PLUGIN_DIR}`);
+  expect(pluginDirectory(PLUGIN)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
+  expect(pluginDirectory(PLUGIN, 3)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}`);
+  expect(pluginDirectory(PLUGIN, 2)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}`);
+  expect(pluginDirectory(PLUGIN, 1)).toEqual(`${PLUGIN_DIR}`);
 });
 
 test('Get valid plugin by id', async () => {
@@ -100,7 +100,7 @@ test('Install plugin by id', async () => {
 });
 
 test('Check if plugin is installed', async () => {
-  expect(pluginInstalled(PLUGIN)).toBe(true);
+  expect(pluginInstalled(PLUGIN)).toEqual(true);
 });
 
 test('List plugins locally', async () => {
