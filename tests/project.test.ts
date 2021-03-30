@@ -1,13 +1,15 @@
 import { configSet } from '../src/config';
-import { dirDelete } from '../src/file';
 import {
+  projectGetLocal,
+  projectsGetLocal,
   projectValidate
 } from '../src/project';
 import { ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = './test/projects';
+const PROJECT_ID: string = 'banwer';
 const PROJECT_LOCAL: ProjectLocal = {
-  "id": "studiorack-project",
+  "id": "banwer",
   "author": "studiorack-user",
   "homepage": "https://studiorack.github.io/studiorack-site/",
   "name": "Banwer",
@@ -40,6 +42,14 @@ const PROJECT_LOCAL: ProjectLocal = {
 
 beforeAll(() => {
   configSet('projectFolder', PROJECT_DIR);
+});
+
+test('Get projects locally', async () => {
+  expect(projectGetLocal(PROJECT_ID)).toBeDefined();
+});
+
+test('List projects locally', async () => {
+  expect(projectsGetLocal()).toBeDefined();
 });
 
 test('Validate project json', async () => {

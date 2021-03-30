@@ -11,7 +11,7 @@ async function projectGetLocal(id: string, version?: string): Promise<ProjectLoc
 }
 
 async function projectsGetLocal(): Promise<ProjectLocal[]> {
-  const projectTypes: ProjectTypes = configGet('pluginTypes');
+  const projectTypes: ProjectTypes = configGet('projectTypes');
   const projectExts: string[] = Object.keys(projectTypes).map((projectTypeKey: string) => {
     return projectTypes[projectTypeKey as keyof ProjectTypes].ext;
   });
@@ -19,6 +19,7 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   const projectPaths: string[] = dirRead(`${configGet('projectFolder')}${projectFolderExts}`);
   const projects: ProjectLocal[] = [];
   projectPaths.forEach((projectPath: string) => {
+    if (projectPath.includes('/Backup/')) return;
     const jsonPath: string = projectPath.substring(0, projectPath.lastIndexOf('.')) + '.json';
     const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
     let project: any = fileJsonLoad(jsonPath);
@@ -52,7 +53,7 @@ function projectValidate(path: string, options?: any): ProjectInterface {
     }
   });
   let projectJson: ProjectLocal = {
-    "id": "studiorack-project",
+    "id": pathGetId(path),
     "author": "studiorack-user",
     "homepage": "https://studiorack.github.io/studiorack-site/",
     "name": filename,
