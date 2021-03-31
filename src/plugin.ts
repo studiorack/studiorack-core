@@ -166,6 +166,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       dirDelete(repoDir);
     }
   }
+  plugin.path = pluginDirectory(plugin);
   plugin.status = 'available';
   return plugin;
 }

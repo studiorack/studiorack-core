@@ -1,7 +1,68 @@
 import { configGet } from './config';
-import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad } from './file';
+import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
 import { pathGetId, pathGetRepo, pathGetVersion } from './utils';
+import { pluginInstall, pluginUninstall } from './plugin';
+import { PluginLocal } from './types/plugin';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
+const readline = require('readline-sync');
+
+function askQuestion(label: string, input: any, fallback: string) {
+  return readline.question(`${label}: ($<defaultInput>) `, {
+    defaultInput: input || fallback,
+  });
+}
+
+function projectCreate(): ProjectLocal {
+  const project: ProjectLocal = projectLoad();
+  project.name = askQuestion('Name', project.name, 'My Project');
+  project.version = askQuestion('Version', project.version, '1.0.0');
+  project.description = askQuestion('Description', project.description, 'My project description');
+  project.files.audio = askQuestion('Audio', project.files.audio, 'Song.wav');
+  project.files.image = askQuestion('Image', project.files.image, 'Song.png');
+  project.files.project = askQuestion('Main', project.files.project, 'Song.als');
+  projectSave(project);
+  return project;
+}
+
+function projectDefault(): ProjectInterface {
+  return {
+    id: 'studiorack-project',
+    author: 'studiorack-user',
+    homepage: 'https://studiorack.github.io/studiorack-site/',
+    name: 'StudioRack Project',
+    description: 'Created using StudioRack',
+    tags: ['StudioRack'],
+    version: '1.0.0',
+    date: new Date().toISOString(),
+    type: {
+      name: 'Ableton',
+      ext: 'als',
+    },
+    files: {
+      audio: {
+        name: '',
+        size: 0,
+      },
+      image: {
+        name: '',
+        size: 0,
+      },
+      project: {
+        name: '',
+        size: 0,
+      },
+    },
+    plugins: {},
+  };
+}
+
+function projectDirectory(project: ProjectInterface, depth?: number): string {
+  const projectPaths: string[] = [configGet('projectFolder'), project.id, project.version];
+  if (depth) {
+    return projectPaths.slice(0, depth).join('/');
+  }
+  return projectPaths.join('/');
+}
 
 async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
   const projects: ProjectLocal[] = await projectsGetLocal();
@@ -37,6 +98,67 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   return projects;
 }
 
+async function projectInstall(input: string): Promise<void> {
+  const project: ProjectLocal = projectLoad();
+  if (input) {
+    const pluginId: string = pathGetId(input);
+    const pluginVersion: string = pathGetVersion(input);
+    const pluginLocal: PluginLocal = await pluginInstall(pluginId, pluginVersion);
+    if (pluginLocal) {
+      project.plugins[pluginId] = pluginLocal.version;
+    }
+  } else {
+    for (const pluginId in project.plugins) {
+      const pluginLocal: PluginLocal = await pluginInstall(pluginId, project.plugins[pluginId]);
+      if (pluginLocal) {
+        project.plugins[pluginId] = pluginLocal.version;
+      }
+    }
+  }
+  return projectSave(project);
+}
+
+function projectLoad(): ProjectLocal {
+  const projectJson: ProjectLocal = fileJsonLoad(`${process.cwd()}/${configGet('projectFile')}`) || projectDefault();
+  if (!projectJson.plugins) {
+    projectJson.plugins = {};
+  }
+  return projectJson;
+}
+
+function projectSave(config: object): void {
+  return fileJsonCreate(`${process.cwd()}/${configGet('projectFile')}`, config);
+}
+
+async function projectStart(path: string): Promise<Buffer> {
+  const project: ProjectLocal = await projectLoad();
+  return fileLoad(path || project.files.project?.name || '');
+}
+
+async function projectUninstall(input: string): Promise<void> {
+  const project = projectLoad();
+  if (input) {
+    const pluginId: string = pathGetId(input);
+    const pluginVersion: string = pathGetVersion(input);
+    let result = pluginVersion;
+    if (!pluginVersion) {
+      result = project.plugins[pluginId];
+    }
+    const pluginLocal: PluginLocal = await pluginUninstall(pluginId, result);
+    if (pluginLocal) {
+      delete project.plugins[pluginId];
+    }
+  } else {
+    for (const pluginId in project.plugins) {
+      const pluginLocal: PluginLocal = await pluginUninstall(pluginId, project.plugins[pluginId]);
+      if (pluginLocal) {
+        delete project.plugins[pluginId];
+      }
+    }
+  }
+  return projectSave(project);
+}
+
 function projectValidate(path: string, options?: any): ProjectInterface {
   const ext: string = path.substring(path.lastIndexOf('.') + 1);
   const folder: string = path.substring(0, path.lastIndexOf('/'));
@@ -52,41 +174,22 @@ function projectValidate(path: string, options?: any): ProjectInterface {
       projectType = currentType;
     }
   });
-  let projectJson: ProjectLocal = {
-    id: pathGetId(path),
-    author: 'studiorack-user',
-    homepage: 'https://studiorack.github.io/studiorack-site/',
-    name: filename,
-    description: 'Created using StudioRack',
-    tags: [projectType.name],
-    version: '1.0.0',
-    date: fileDate(path).toISOString(),
-    type: projectType,
-    path: path,
-    status: 'installed',
-    files: {
-      audio: {
-        name: '',
-        size: 0,
-      },
-      image: {
-        name: '',
-        size: 0,
-      },
-      project: {
-        name: '',
-        size: 0,
-      },
-    },
-    plugins: {},
-  };
+  let project: ProjectLocal = projectDefault() as ProjectLocal;
+  project.date = fileDate(path).toISOString();
+  project.id = pathGetId(path);
+  project.name = filename;
+  project.path = path;
+  project.status = 'installed';
+  project.tags = [projectType.name];
+  project.type = projectType;
+
   if (options && options.files) {
-    projectJson = projectValidateFiles(path, projectJson);
+    project = projectValidateFiles(path, project);
   }
   if (options && options.json) {
-    fileJsonCreate(`${folder}/${filename}.json`, projectJson);
+    fileJsonCreate(`${folder}/${filename}.json`, project);
   }
-  return projectJson;
+  return project;
 }
 
 function projectValidateFiles(path: string, json: any): any {
@@ -104,4 +207,17 @@ function projectValidateFiles(path: string, json: any): any {
   return json;
 }
 
-export { projectGetLocal, projectsGetLocal, projectValidate, projectValidateFiles };
+export {
+  projectCreate,
+  projectDefault,
+  projectDirectory,
+  projectGetLocal,
+  projectsGetLocal,
+  projectInstall,
+  projectLoad,
+  projectSave,
+  projectStart,
+  projectUninstall,
+  projectValidate,
+  projectValidateFiles,
+};
