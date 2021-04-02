@@ -1,13 +1,52 @@
 import { configSet } from '../src/config';
 import {
+  projectCreate,
+  projectDefault,
+  projectDirectory,
   projectGetLocal,
   projectsGetLocal,
-  projectValidate
+  projectInstall,
+  projectLoad,
+  projectSave,
+  projectStart,
+  projectUninstall,
+  projectValidate,
+  projectValidateFiles,
 } from '../src/project';
-import { ProjectLocal } from '../src/types/project';
+import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = './test/projects';
 const PROJECT_ID: string = 'banwer';
+const PROJECT_FILE: string = 'Banwer.json';
+const PROJECT_DEFAULT: ProjectInterface = {
+  "author": "studiorack-user",
+  "homepage": "https://studiorack.github.io/studiorack-site/",
+  "description": "Created using StudioRack",
+  "tags": [ "StudioRack" ],
+  "version": "1.0.0",
+  "date": "2020-11-21T06:51:57.879Z",
+  "type": {
+    "ext": "als",
+    "name": "Ableton"
+  },
+  "id": "studiorack-project",
+  "name": "StudioRack Project",
+  "files": {
+    "audio": {
+      "name": "",
+      "size": 0,
+    },
+    "image": {
+      "name": "",
+      "size": 0,
+    },
+    "project": {
+      "name": "",
+      "size": 0,
+    }
+  },
+    "plugins": {}
+};
 const PROJECT_LOCAL: ProjectLocal = {
   "id": "banwer",
   "author": "studiorack-user",
@@ -44,12 +83,46 @@ beforeAll(() => {
   configSet('projectFolder', PROJECT_DIR);
 });
 
-test('Get projects locally', async () => {
-  expect(projectGetLocal(PROJECT_ID)).toBeDefined();
+test('Create project locally', () => {
+  const result = projectCreate(`${PROJECT_DIR}/example.json`, false);
+  result.date = new Date().toISOString();
+  PROJECT_DEFAULT.date = new Date().toISOString();
+  expect(result).toMatchObject(PROJECT_DEFAULT);
 });
 
-test('List projects locally', async () => {
+test('Create project default', () => {
+  const result = projectDefault();
+  result.date = new Date().toISOString();
+  PROJECT_DEFAULT.date = new Date().toISOString();
+  expect(result).toMatchObject(PROJECT_DEFAULT);
+});
+
+test('Get project directory', () => {
+  expect(projectDirectory(PROJECT_LOCAL)).toEqual(`${PROJECT_DIR}/banwer/1.0.0`);
+});
+
+test('Get project locally', async () => {
+  expect(await projectGetLocal(PROJECT_ID)).toEqual(PROJECT_LOCAL);
+});
+
+test('Get projects locally', () => {
   expect(projectsGetLocal()).toBeDefined();
+});
+
+test('Install project plugins locally', async () => {
+  expect(await projectInstall(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toEqual(PROJECT_LOCAL);
+});
+
+test('Load project json', () => {
+  expect(projectLoad(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toEqual(PROJECT_LOCAL);
+});
+
+test('Save project json', () => {
+  expect(projectSave(`${PROJECT_DIR}/Banwer Project/Banwer.json`, PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
+});
+
+test('Start project', async () => {
+  expect(await projectStart(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toBeDefined();
 });
 
 test('Validate project json', async () => {
