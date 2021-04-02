@@ -102,15 +102,15 @@ test('Get project directory', () => {
   expect(projectDirectory(PROJECT_LOCAL)).toEqual(`${PROJECT_DIR}/banwer/1.0.0`);
 });
 
-test('Get project locally', async () => {
+test('Get project', async () => {
   expect(await projectGetLocal(PROJECT_ID)).toEqual(PROJECT_LOCAL);
 });
 
-test('Get projects locally', () => {
+test('Get projects', () => {
   expect(projectsGetLocal()).toBeDefined();
 });
 
-test('Install project plugins locally', async () => {
+test('Install project plugins', async () => {
   expect(await projectInstall(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
 });
 
@@ -126,6 +126,23 @@ test('Start project', async () => {
   expect(await projectStart(`${PROJECT_DIR}/${PROJECT_FILE}`)).toBeDefined();
 });
 
+test('Get project type', () => {
+  expect(projectType('cpr')).toEqual({
+    name: 'Cubase',
+    ext: 'cpr',
+  });
+});
+
+test('Uninstall project plugins', async () => {
+  expect(await projectUninstall(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
+});
+
 test('Validate project', () => {
   expect(projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toEqual(PROJECT_LOCAL);
+});
+
+test('Validate project files', () => {
+  expect(projectValidateFiles(`${PROJECT_DIR}/Banwer Project/Banwer.als`, {})).toEqual({
+    files: PROJECT_LOCAL.files
+  });
 });
