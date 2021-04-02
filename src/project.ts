@@ -222,6 +222,7 @@ export {
   projectLoad,
   projectSave,
   projectStart,
+  projectType,
   projectUninstall,
   projectValidate,
   projectValidateFiles,

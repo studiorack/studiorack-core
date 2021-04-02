@@ -9,6 +9,7 @@ import {
   projectLoad,
   projectSave,
   projectStart,
+  projectType,
   projectUninstall,
   projectValidate,
   projectValidateFiles,
@@ -17,7 +18,7 @@ import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = './test/projects';
 const PROJECT_ID: string = 'banwer';
-const PROJECT_FILE: string = 'Banwer.json';
+const PROJECT_FILE: string = 'Banwer Project/Banwer.json';
 const PROJECT_DEFAULT: ProjectInterface = {
   "author": "studiorack-user",
   "homepage": "https://studiorack.github.io/studiorack-site/",
@@ -110,21 +111,21 @@ test('Get projects locally', () => {
 });
 
 test('Install project plugins locally', async () => {
-  expect(await projectInstall(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toEqual(PROJECT_LOCAL);
+  expect(await projectInstall(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
 });
 
 test('Load project json', () => {
-  expect(projectLoad(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toEqual(PROJECT_LOCAL);
+  expect(projectLoad(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
 });
 
 test('Save project json', () => {
-  expect(projectSave(`${PROJECT_DIR}/Banwer Project/Banwer.json`, PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
+  expect(projectSave(`${PROJECT_DIR}/${PROJECT_FILE}`, PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
 });
 
 test('Start project', async () => {
-  expect(await projectStart(`${PROJECT_DIR}/Banwer Project/Banwer.json`)).toBeDefined();
+  expect(await projectStart(`${PROJECT_DIR}/${PROJECT_FILE}`)).toBeDefined();
 });
 
-test('Validate project json', async () => {
-  expect(await projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toEqual(PROJECT_LOCAL);
+test('Validate project', () => {
+  expect(projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toEqual(PROJECT_LOCAL);
 });
