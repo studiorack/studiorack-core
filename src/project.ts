@@ -1,6 +1,6 @@
 import { configGet } from './config';
-import { dirRead, fileAdd, fileDate, fileExists, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
-import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetId, pathGetRepo, pathGetVersion } from './utils';
+import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
+import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetId, pathGetVersion, pathGetWithoutExt } from './utils';
 import { pluginInstall, pluginUninstall } from './plugin';
 import { PluginLocal } from './types/plugin';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
@@ -84,9 +84,8 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   const projects: ProjectLocal[] = [];
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('/Backup/')) return;
-    const jsonPath: string = projectPath.substring(0, projectPath.lastIndexOf('.')) + '.json';
     const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
-    let project: any = fileJsonLoad(jsonPath);
+    let project: any = fileJsonLoad(`${pathGetWithoutExt(projectPath)}.json`);
     if (!project) {
       project = projectValidate(projectPath, { files: true, json: true });
     }
@@ -197,18 +196,18 @@ function projectValidate(path: string, options?: any): ProjectInterface {
   return project;
 }
 
-function projectValidateFiles(path: string, json: any): any {
-  const ext: string = pathGetExt(path);
-  const dir: string = pathGetDirectory(path);
-  const file: string = pathGetFilename(path);
+function projectValidateFiles(pathItem: string, json: any): any {
+  const ext: string = pathGetExt(pathItem);
+  const directory: string = pathGetDirectory(pathItem);
+  const filename: string = pathGetFilename(pathItem);
   // Ensure files object exists
   if (!json.files) {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = fileAdd(`${dir}/${file}.wav`, `${file}.wav`, 'audio', json);
-  json = fileAdd(`${dir}/${file}.png`, `${file}.png`, 'image', json);
-  json = fileAdd(`${dir}/${file}.${ext}`, `${file}.${ext}`, 'project', json);
+  json = fileAdd(`${directory}/${filename}.wav`, `${filename}.wav`, 'audio', json);
+  json = fileAdd(`${directory}/${filename}.png`, `${filename}.png`, 'image', json);
+  json = fileAdd(`${directory}/${filename}.${ext}`, `${filename}.${ext}`, 'project', json);
   return json;
 }
 

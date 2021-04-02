@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 
 import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
-import { getPlatform, pathGetId, safeSlug } from './utils';
+import { getPlatform, pathGetDirectory, pathGetFilename, pathGetId, pathGetWithoutExt, safeSlug } from './utils';
 import { getRaw } from './api';
 import { PluginLocal } from './types/plugin';
 import { configGet } from './config';
@@ -20,18 +20,18 @@ const validatorFolder: string = path.join(__dirname.substring(0, __dirname.lastI
 const validatorPath: string = path.join(validatorFolder, 'validator' + (getPlatform() === 'win' ? '.exe' : ''));
 
 function validateFiles(pathItem: string, json: any): any {
-  const folder: string = pathItem.substring(0, pathItem.lastIndexOf('/'));
-  const id: string = safeSlug(path.basename(pathItem, path.extname(pathItem)));
+  const directory: string = pathGetDirectory(pathItem);
+  const slug: string = safeSlug(pathGetFilename(pathItem));
   // Ensure files object exists
   if (!json.files) {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = fileAdd(`${folder}/${id}.wav`, `${id}.wav`, 'audio', json);
-  json = fileAdd(`${folder}/${id}.png`, `${id}.png`, 'image', json);
-  json = fileAdd(pathItem, `${id}-linux.zip`, 'linux', json);
-  json = fileAdd(pathItem, `${id}-mac.zip`, 'mac', json);
-  json = fileAdd(pathItem, `${id}-win.zip`, 'win', json);
+  json = fileAdd(`${directory}/${slug}.wav`, `${slug}.wav`, 'audio', json);
+  json = fileAdd(`${directory}/${slug}.png`, `${slug}.png`, 'image', json);
+  json = fileAdd(`${directory}/${slug}-linux.zip`, `${slug}-linux.zip`, 'linux', json);
+  json = fileAdd(`${directory}/${slug}-mac.zip`, `${slug}-mac.zip`, 'mac', json);
+  json = fileAdd(`${directory}/${slug}-win.zip`, `${slug}-win.zip`, 'win', json);
   return json;
 }
 
@@ -57,7 +57,7 @@ function validatePlugin(pathItem: string, options?: any): PluginLocal {
   if (options && options.files) {
     pluginJson = validateFiles(pathItem, pluginJson);
   }
-  const filepath: string = pathItem.substring(0, pathItem.lastIndexOf('.'));
+  const filepath: string = pathGetWithoutExt(pathItem);
   if (options && options.txt) {
     console.log(outputText);
     fileCreate(`${filepath}.txt`, outputText);

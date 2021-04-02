@@ -1,7 +1,7 @@
 import { configGet } from './config';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, pathGetId, pathGetRepo, pathGetVersion } from './utils';
+import { getPlatform, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -70,9 +70,8 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginPaths: string[] = dirRead(`${configGet('pluginFolder')}${pluginFolderExts}`);
   const plugins: PluginLocal[] = [];
   pluginPaths.forEach((pluginPath: string) => {
-    const jsonPath: string = pluginPath.substring(0, pluginPath.lastIndexOf('.')) + '.json';
     const relativePath: string = pluginPath.replace(configGet('pluginFolder') + '/', '');
-    let plugin: any = fileJsonLoad(jsonPath);
+    let plugin: any = fileJsonLoad(`${pathGetWithoutExt(pluginPath)}.json`);
     if (!plugin) {
       plugin = validatePlugin(pluginPath, { files: true, json: true });
     }

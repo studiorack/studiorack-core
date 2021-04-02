@@ -26,10 +26,6 @@ function idToSlug(id: string): string {
   return safeSlug(id.replace(/\//g, '_'));
 }
 
-function slugToId(slug: string): string {
-  return safeSlug(slug.replace(/_/g, '/'));
-}
-
 function pathGetDirectory(pathItem: string): string {
   return pathItem.substring(0, pathItem.lastIndexOf('/'));
 }
@@ -65,19 +61,28 @@ function pathGetVersion(pathItem: string): string {
   return matches ? matches[0] : '0.0.0';
 }
 
+function pathGetWithoutExt(pathItem: string): string {
+  return pathItem.substring(0, pathItem.lastIndexOf('.'));
+}
+
 function safeSlug(val: string): string {
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
+}
+
+function slugToId(slug: string): string {
+  return safeSlug(slug.replace(/_/g, '/'));
 }
 
 export {
   getPlatform,
   idToSlug,
-  slugToId,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,
   pathGetId,
   pathGetRepo,
   pathGetVersion,
+  pathGetWithoutExt,
   safeSlug,
+  slugToId,
 };
