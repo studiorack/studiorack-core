@@ -1,48 +1,88 @@
 import slugify from 'slugify';
 
-const URLSAFE_REGEX = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
-const VERSION_REGEX = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
+import { PlatformTypes, PluginFiles } from './types/plugin';
 
-function baseName(str: string) {
-  let base = str.substring(str.lastIndexOf('/') + 1); 
+const platformTypes: PlatformTypes = {
+  aix: 'linux',
+  android: 'linux',
+  cygwin: 'linux',
+  darwin: 'mac',
+  freebsd: 'linux',
+  linux: 'linux',
+  netbsd: 'linux',
+  openbsd: 'linux',
+  sunos: 'linux',
+  win32: 'win',
+  win64: 'win',
+};
+const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
+const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
+
+function getPlatform(): keyof PluginFiles {
+  return platformTypes[process.platform];
+}
+
+function idToSlug(id: string): string {
+  return safeSlug(id.replace(/\//g, '_'));
+}
+
+function pathGetDirectory(pathItem: string): string {
+  return pathItem.substring(0, pathItem.lastIndexOf('/'));
+}
+
+function pathGetExt(pathItem: string): string {
+  return pathItem.substring(pathItem.lastIndexOf('.') + 1);
+}
+
+function pathGetFilename(str: string): string {
+  let base: string = str.substring(str.lastIndexOf('/') + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
   return base;
 }
 
-function idToSlug(id: string) {
-  return slugify(id.replace(/\//g, '_'), { lower: true, remove: URLSAFE_REGEX });
-}
-
-function slugToId(slug: string) {
-  return slugify(slug.replace(/_/g, '/'), { lower: true, remove: URLSAFE_REGEX });
-}
-
-function pathGetId(pathItem: string) {
-  const splitMatch = pathItem.split('@');
+function pathGetId(pathItem: string): string {
+  const splitMatch: string[] = pathItem.split('@');
   pathItem = splitMatch ? splitMatch[0] : pathItem;
-  return slugify(baseName(pathItem), { lower: true, remove: URLSAFE_REGEX });
+  return safeSlug(pathGetFilename(pathItem));
 }
 
-function pathGetRepo(pathItem: string) {
-  const pathParts = pathItem.split('/');
+function pathGetRepo(pathItem: string): string {
+  const pathParts: string[] = pathItem.split('/');
   if (pathParts.length > 1) {
-    return slugify(`${pathParts[0]}/${pathParts[1]}`, { lower: true, remove: URLSAFE_REGEX });
+    return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
-  return slugify(baseName(pathItem), { lower: true, remove: URLSAFE_REGEX });
+  return safeSlug(pathGetFilename(pathItem));
 }
 
-function pathGetVersion(pathItem: string) {
-  const matches = pathItem.match(VERSION_REGEX);
+function pathGetVersion(pathItem: string): string {
+  const matches: any = pathItem.match(VERSION_REGEX);
   return matches ? matches[0] : '0.0.0';
 }
 
+function pathGetWithoutExt(pathItem: string): string {
+  return pathItem.substring(0, pathItem.lastIndexOf('.'));
+}
+
+function safeSlug(val: string): string {
+  return slugify(val, { lower: true, remove: URLSAFE_REGEX });
+}
+
+function slugToId(slug: string): string {
+  return safeSlug(slug.replace(/_/g, '/'));
+}
+
 export {
-  baseName,
+  getPlatform,
   idToSlug,
-  slugToId,
+  pathGetDirectory,
+  pathGetExt,
+  pathGetFilename,
   pathGetId,
   pathGetRepo,
-  pathGetVersion
+  pathGetVersion,
+  pathGetWithoutExt,
+  safeSlug,
+  slugToId,
 };

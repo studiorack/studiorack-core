@@ -1,14 +1,10 @@
-import { dirRead, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
-import { pluginCreate, pluginInstall, pluginSearch, pluginUninstall } from './registry';
-import { pathGetId, pathGetVersion } from './utils';
-import { Project } from './types';
-
+import { configGet } from './config';
+import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
+import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetId, pathGetVersion, pathGetWithoutExt } from './utils';
+import { pluginInstall, pluginUninstall } from './plugin';
+import { PluginLocal } from './types/plugin';
+import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
 const readline = require('readline-sync');
-const validator = require('./validator');
-
-const PROJECT_CONFIG = `${process.cwd()}/project.json`;
-const REGISTRY_PUBLISH =
-  'https://github.com/studiorack/studiorack-site/issues/new?title=Publish%20my%20plugin&body=Github%20repo%3A%20&labels=enhancement';
 
 function askQuestion(label: string, input: any, fallback: string) {
   return readline.question(`${label}: ($<defaultInput>) `, {
@@ -16,128 +12,217 @@ function askQuestion(label: string, input: any, fallback: string) {
   });
 }
 
-async function projectCreate(folder: string) {
-  const result = await pluginCreate(folder);
-  if (result) {
-    console.log(`Created new plugin at: ${folder}`);
+function projectCreate(path: string, prompt: boolean = true): ProjectLocal {
+  const project: ProjectLocal = projectDefault() as ProjectLocal;
+  if (prompt) {
+    project.name = askQuestion('Name', project.name, 'My Project');
+    project.version = askQuestion('Version', project.version, '1.0.0');
+    project.description = askQuestion('Description', project.description, 'My project description');
+    project.files.audio = askQuestion('Audio', project.files.audio, 'Song.wav');
+    project.files.image = askQuestion('Image', project.files.image, 'Song.png');
+    project.files.project = askQuestion('Main', project.files.project, 'Song.als');
   }
+  project.path = path;
+  project.status = 'installed';
+  return projectSave(path, project);
 }
 
-function projectInit() {
-  const project: Project = projectLoad();
-  project.name = askQuestion('Name', project.name, 'My Project');
-  project.version = askQuestion('Version', project.version, '1.0.0');
-  project.description = askQuestion('Description', project.description, 'My project description');
-  project.files = {};
-  project.files.audio = askQuestion('Audio', project.files.audio, 'Song.wav');
-  project.files.image = askQuestion('Image', project.files.image, 'Song.png');
-  project.files.project = askQuestion('Main', project.files.project, 'Song.als');
-  return projectSave(project);
+function projectDefault(): ProjectInterface {
+  return {
+    id: 'studiorack-project',
+    author: 'studiorack-user',
+    homepage: 'https://studiorack.github.io/studiorack-site/',
+    name: 'StudioRack Project',
+    description: 'Created using StudioRack',
+    tags: ['StudioRack'],
+    version: '1.0.0',
+    date: new Date().toISOString(),
+    type: {
+      name: 'Ableton',
+      ext: 'als',
+    },
+    files: {
+      audio: {
+        name: '',
+        size: 0,
+      },
+      image: {
+        name: '',
+        size: 0,
+      },
+      project: {
+        name: '',
+        size: 0,
+      },
+    },
+    plugins: {},
+  };
 }
 
-async function projectInstall(input: string, options: any) {
-  const project: Project = projectLoad();
+function projectDirectory(project: ProjectInterface, depth?: number): string {
+  const projectPaths: string[] = [configGet('projectFolder'), project.id, project.version];
+  if (depth) {
+    return projectPaths.slice(0, depth).join('/');
+  }
+  return projectPaths.join('/');
+}
+
+async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
+  const projects: ProjectLocal[] = await projectsGetLocal();
+  return projects.filter((project: ProjectLocal) => {
+    return project.id === id;
+  })[0];
+}
+
+async function projectsGetLocal(): Promise<ProjectLocal[]> {
+  const projectTypes: ProjectTypes = configGet('projectTypes');
+  const projectExts: string[] = Object.keys(projectTypes).map((projectTypeKey: string) => {
+    return projectTypes[projectTypeKey as keyof ProjectTypes].ext;
+  });
+  const projectFolderExts: string = `/**/*.{${projectExts.join(',')}}`;
+  const projectPaths: string[] = dirRead(`${configGet('projectFolder')}${projectFolderExts}`);
+  const projects: ProjectLocal[] = [];
+  projectPaths.forEach((projectPath: string) => {
+    if (projectPath.includes('/Backup/')) return;
+    const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
+    let project: any = fileJsonLoad(`${pathGetWithoutExt(projectPath)}.json`);
+    if (!project) {
+      project = projectValidate(projectPath, { files: true, json: true });
+    }
+    // Use installed path for id, repo and version (instead of autogenerated json)
+    project.id = pathGetId(relativePath);
+    project.path = projectPath;
+    // project.repo = pathGetRepo(relativePath);
+    project.status = 'installed';
+    // project.version = pathGetVersion(projectPath);
+    projects.push(project);
+  });
+  return projects;
+}
+
+async function projectInstall(path: string, input?: string): Promise<ProjectLocal> {
+  const project: ProjectLocal = projectLoad(path);
   if (input) {
-    const id = pathGetId(input);
-    const version = pathGetVersion(input);
-    const installedVersion = await pluginInstall(id, version, options.global);
-    if (installedVersion) {
-      project.plugins[id] = installedVersion;
+    const pluginId: string = pathGetId(input);
+    const pluginVersion: string = pathGetVersion(input);
+    const pluginLocal: PluginLocal = await pluginInstall(pluginId, pluginVersion);
+    if (pluginLocal) {
+      project.plugins[pluginId] = pluginLocal.version;
     }
   } else {
     for (const pluginId in project.plugins) {
-      const installedVersion = await pluginInstall(pluginId, project.plugins[pluginId], options.global);
-      if (installedVersion) {
-        project.plugins[pluginId] = installedVersion;
+      const pluginLocal: PluginLocal = await pluginInstall(pluginId, project.plugins[pluginId]);
+      if (pluginLocal) {
+        project.plugins[pluginId] = pluginLocal.version;
       }
     }
   }
-  return projectSave(project);
+  return projectSave(path, project);
 }
 
-function projectLoad(): Project {
-  const projectJson = fileJsonLoad(PROJECT_CONFIG) || {};
+function projectLoad(path: string): ProjectLocal {
+  const projectJson: ProjectLocal = fileJsonLoad(path);
   if (!projectJson.plugins) {
     projectJson.plugins = {};
   }
   return projectJson;
 }
 
-async function projectPublish() {
-  await open(REGISTRY_PUBLISH);
+function projectSave(path: string, config: ProjectLocal): ProjectLocal {
+  fileJsonCreate(path, config);
+  return config;
 }
 
-function projectSave(config: object) {
-  return fileJsonCreate(PROJECT_CONFIG, config);
+async function projectStart(path: string): Promise<Buffer> {
+  const project: ProjectLocal = projectLoad(path);
+  return fileLoad(`${pathGetDirectory(path)}/${project.files.project?.name}`);
 }
 
-async function projectSearch(query: string) {
-  const results = await pluginSearch(query);
-  console.log(JSON.stringify(results, null, 2));
-  console.log(`${results.length} results found.`);
-}
-
-async function projectStart(path: string) {
-  const project: Project = await projectLoad();
-  return fileLoad(path || project.files.project?.name || '');
-}
-
-function projectUninstall(input: string, options: any) {
-  const project = projectLoad();
-  if (input) {
-    const id = pathGetId(input);
-    const version = pathGetVersion(input);
-    let result = version;
-    if (!version) {
-      result = project.plugins[id];
+function projectType(ext: string): ProjectType {
+  const projectTypes: ProjectTypes = configGet('projectTypes');
+  let type: ProjectType = {
+    name: 'Ableton',
+    ext: 'als',
+  };
+  Object.keys(projectTypes).forEach((key: string) => {
+    const currentType: ProjectType = projectTypes[key as keyof ProjectTypes];
+    if (currentType.ext === ext) {
+      type = currentType;
     }
-    const success = pluginUninstall(id, result, options.global);
-    if (success) {
-      delete project.plugins[id];
+  });
+  return type;
+}
+
+async function projectUninstall(path: string, input?: string): Promise<ProjectLocal> {
+  const project = projectLoad(path);
+  if (input) {
+    const pluginId: string = pathGetId(input);
+    const pluginVersion: string = pathGetVersion(input);
+    let result = pluginVersion;
+    if (!pluginVersion) {
+      result = project.plugins[pluginId];
+    }
+    const pluginLocal: PluginLocal = await pluginUninstall(pluginId, result);
+    if (pluginLocal) {
+      delete project.plugins[pluginId];
     }
   } else {
     for (const pluginId in project.plugins) {
-      const success = pluginUninstall(pluginId, project.plugins[pluginId], options.global);
-      if (success) {
+      const pluginLocal: PluginLocal = await pluginUninstall(pluginId, project.plugins[pluginId]);
+      if (pluginLocal) {
         delete project.plugins[pluginId];
       }
     }
   }
-  return projectSave(project);
+  return projectSave(path, project);
 }
 
-async function projectValidate(pluginPath: string, options: any) {
-  const pluginRack: any = {
-    plugins: [],
-  };
-  await validator.install();
-  if (pluginPath.includes('*')) {
-    const pathList = dirRead(pluginPath);
-    pathList.forEach((pathItem) => {
-      const plugin = validator.readPlugin(pathItem, options);
-      pluginRack.plugins.push(plugin);
-    });
-  } else {
-    const plugin = validator.readPlugin(pluginPath, options);
-    pluginRack.plugins.push(plugin);
+function projectValidate(path: string, options?: any): ProjectInterface {
+  const type: ProjectType = projectType(pathGetExt(path));
+  let project: ProjectLocal = projectDefault() as ProjectLocal;
+  project.date = fileDate(path).toISOString();
+  project.id = pathGetId(path);
+  project.name = pathGetFilename(path);
+  project.path = path;
+  project.status = 'installed';
+  project.tags = [type.name];
+  project.type = type;
+  if (options && options.files) {
+    project = projectValidateFiles(path, project);
   }
-  if (options.summary) {
-    const rootPath = pluginPath.replace('**/*.{vst,vst3}', '').substring(0, pluginPath.lastIndexOf('/'));
-    fileJsonCreate(`${rootPath}plugins.json`, pluginRack);
-    console.log(`Generated: ${rootPath}plugins.json`);
+  if (options && options.json) {
+    fileJsonCreate(`${pathGetDirectory(path)}/${pathGetFilename(path)}.json`, project);
   }
-  return pluginRack;
+  return project;
+}
+
+function projectValidateFiles(pathItem: string, json: any): any {
+  const ext: string = pathGetExt(pathItem);
+  const directory: string = pathGetDirectory(pathItem);
+  const filename: string = pathGetFilename(pathItem);
+  // Ensure files object exists
+  if (!json.files) {
+    json.files = {};
+  }
+  // Add audio, image and zip files
+  json = fileAdd(`${directory}/${filename}.wav`, `${filename}.wav`, 'audio', json);
+  json = fileAdd(`${directory}/${filename}.png`, `${filename}.png`, 'image', json);
+  json = fileAdd(`${directory}/${filename}.${ext}`, `${filename}.${ext}`, 'project', json);
+  return json;
 }
 
 export {
   projectCreate,
-  projectInit,
+  projectDefault,
+  projectDirectory,
+  projectGetLocal,
+  projectsGetLocal,
   projectInstall,
   projectLoad,
-  projectPublish,
   projectSave,
-  projectSearch,
   projectStart,
+  projectType,
   projectUninstall,
   projectValidate,
+  projectValidateFiles,
 };

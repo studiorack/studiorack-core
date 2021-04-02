@@ -1,15 +1,12 @@
-import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
-import { execSync } from 'child_process';
-import { getRaw } from './api';
-import { Plugin } from './types';
-import path from 'path';
 import * as semver from 'semver';
-import slugify from 'slugify';
-import { pathGetId } from './utils';
+import { execSync } from 'child_process';
+import path from 'path';
 
-const VALIDATOR_DIR = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
-const VALIDATOR_EXT = pathGetPlatform() === 'win' ? '.exe' : '';
-const VALIDATOR_PATH = path.join(VALIDATOR_DIR, 'validator' + VALIDATOR_EXT);
+import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
+import { getPlatform, pathGetDirectory, pathGetFilename, pathGetId, pathGetWithoutExt, safeSlug } from './utils';
+import { getRaw } from './api';
+import { PluginLocal } from './types/plugin';
+import { configGet } from './config';
 
 const map: { [property: string]: string } = {
   category: 'description',
@@ -19,79 +16,66 @@ const map: { [property: string]: string } = {
   vendor: 'author',
   version: 'version',
 };
+const validatorFolder: string = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
+const validatorPath: string = path.join(validatorFolder, 'validator' + (getPlatform() === 'win' ? '.exe' : ''));
 
-function pathGetPlatform() {
-  switch (process.platform) {
-    case 'darwin':
-      return 'mac';
-    case 'win32':
-      return 'win';
-    default:
-      return 'linux';
-  }
-}
-
-function validateFiles(pathItem: string, json: any) {
-  const folder = pathItem.substring(0, pathItem.lastIndexOf('/'));
-  const id = slugify(path.basename(pathItem, path.extname(pathItem)), { lower: true });
-
+function validateFiles(pathItem: string, json: any): any {
+  const directory: string = pathGetDirectory(pathItem);
+  const slug: string = safeSlug(pathGetFilename(pathItem));
   // Ensure files object exists
   if (!json.files) {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = fileAdd(`${folder}/${id}.wav`, `${id}.wav`, 'audio', json);
-  json = fileAdd(`${folder}/${id}.png`, `${id}.png`, 'image', json);
-  json = fileAdd(pathItem, `${id}-linux.zip`, 'linux', json);
-  json = fileAdd(pathItem, `${id}-mac.zip`, 'mac', json);
-  json = fileAdd(pathItem, `${id}-win.zip`, 'win', json);
+  json = fileAdd(`${directory}/${slug}.wav`, `${slug}.wav`, 'audio', json);
+  json = fileAdd(`${directory}/${slug}.png`, `${slug}.png`, 'image', json);
+  json = fileAdd(`${directory}/${slug}-linux.zip`, `${slug}-linux.zip`, 'linux', json);
+  json = fileAdd(`${directory}/${slug}-mac.zip`, `${slug}-mac.zip`, 'mac', json);
+  json = fileAdd(`${directory}/${slug}-win.zip`, `${slug}-win.zip`, 'win', json);
   return json;
 }
 
-async function validateInstall() {
+async function validateInstall(): Promise<boolean> {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
-  if (!dirExists(VALIDATOR_DIR)) {
-    const data = await getRaw(
-      `https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${pathGetPlatform()}.zip`
-    );
-    console.log(`Installed validator: ${VALIDATOR_PATH}`);
-    zipExtract(data, VALIDATOR_DIR);
-    fileExec(VALIDATOR_PATH);
+  if (!dirExists(validatorFolder)) {
+    const data: Buffer = await getRaw(configGet('validatorUrl').replace('${platform}', getPlatform()));
+    console.log(`Installed validator: ${validatorPath}`);
+    zipExtract(data, validatorFolder);
+    fileExec(validatorPath);
     return true;
   }
   return false;
 }
 
-function validatePlugin(pathItem: string, options?: any) {
+function validatePlugin(pathItem: string, options?: any): PluginLocal {
   if (!dirExists(pathItem)) {
-    console.error(`File does not exist: ${pathItem}`);
-    return false;
+    throw Error(`File does not exist: ${pathItem}`);
   }
   console.log(`Reading: ${pathItem}`);
-  const outputText = validateRun(pathItem);
-  let outputJson: any = validateProcess(pathItem, outputText);
+  const outputText: string = validateRun(pathItem);
+  let pluginJson: PluginLocal = validateProcess(pathItem, outputText);
   if (options && options.files) {
-    outputJson = validateFiles(pathItem, outputJson);
+    pluginJson = validateFiles(pathItem, pluginJson);
   }
-  const filepath = pathItem.substring(0, pathItem.lastIndexOf('.'));
+  const filepath: string = pathGetWithoutExt(pathItem);
   if (options && options.txt) {
     console.log(outputText);
     fileCreate(`${filepath}.txt`, outputText);
     console.log(`Generated: ${filepath}.txt`);
   }
   if (options && options.json) {
-    console.log(outputJson);
-    fileJsonCreate(`${filepath}.json`, outputJson);
+    console.log(pluginJson);
+    fileJsonCreate(`${filepath}.json`, pluginJson);
     console.log(`Generated: ${filepath}.json`);
   }
   if (options && options.zip) {
     zipCreate(`${filepath}.*`, `${filepath}.zip`);
     console.log(`Generated: ${filepath}.zip`);
   }
-  return outputJson;
+  return pluginJson;
 }
 
-function validatePluginField(obj: any, field: string, type: string) {
+function validatePluginField(obj: any, field: string, type: string): string {
   if (obj && !obj[field]) {
     return `- ${field} field missing\n`;
   }
@@ -101,7 +85,7 @@ function validatePluginField(obj: any, field: string, type: string) {
   return '';
 }
 
-function validatePluginSchema(plugin: Plugin) {
+function validatePluginSchema(plugin: PluginLocal): string | boolean {
   let error: string = '';
   error += validatePluginField(plugin, 'author', 'string');
   error += validatePluginField(plugin, 'homepage', 'string');
@@ -124,9 +108,7 @@ function validatePluginSchema(plugin: Plugin) {
   return error.length === 0 ? false : error;
 }
 
-function validateProcess(pathItem: string, log: string) {
-  const folder = pathItem.substring(0, pathItem.lastIndexOf('/'));
-  // console.log('processLog', pathItem);
+function validateProcess(pathItem: string, log: string): any {
   const json: { [property: string]: any } = {};
   // loop through validator output
   for (let line of log.split('\n')) {
@@ -134,7 +116,7 @@ function validateProcess(pathItem: string, log: string) {
     line = line.trim();
     // only process lines assigning values
     if (line.includes(' = ')) {
-      const [key, val] = line.split(' = ');
+      const [key, val]: string[] = line.split(' = ');
       let result: any = val;
       // ignore keys with spaces
       if (!key.includes(' ')) {
@@ -153,14 +135,13 @@ function validateProcess(pathItem: string, log: string) {
       }
     }
   }
-
   // Generate the id from the filename
-  const id = pathGetId(pathItem);
+  const id: string = pathGetId(pathItem);
   if (id) {
     json.id = id;
   }
   // Get date then add to json
-  const date = fileDate(pathItem);
+  const date: Date = fileDate(pathItem);
   if (date) {
     json.date = date.toISOString();
   }
@@ -168,14 +149,14 @@ function validateProcess(pathItem: string, log: string) {
   if (json.version) {
     json.version = semver.coerce(json.version)?.version || '0.0.0';
   }
-
   return json;
 }
 
-function validateRun(filePath: string) {
+function validateRun(filePath: string): string {
   // Run Steinberg VST3 SDK validator binary
   try {
-    const sdout = execSync(`${VALIDATOR_PATH} "${filePath}"`);
+    console.log(`${validatorPath} "${filePath}"`);
+    const sdout: Buffer = execSync(`${validatorPath} "${filePath}"`);
     return sdout.toString();
   } catch (error) {
     return error.output ? error.output.toString() : error.toString();
