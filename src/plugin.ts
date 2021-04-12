@@ -50,7 +50,7 @@ async function pluginGet(id: string, version?: string): Promise<PluginInterface>
 async function pluginGetLocal(id: string, version?: string): Promise<PluginLocal> {
   const plugins: PluginLocal[] = await pluginsGetLocal();
   return plugins.filter((plugin: PluginLocal) => {
-    return plugin.id === id;
+    return id === `${plugin.repo}/${plugin.id}`;
   })[0];
 }
 

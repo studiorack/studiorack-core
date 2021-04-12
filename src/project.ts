@@ -79,7 +79,7 @@ function projectDirectory(project: ProjectInterface, depth?: number): string {
 async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
   const projects: ProjectLocal[] = await projectsGetLocal();
   return projects.filter((project: ProjectLocal) => {
-    return project.id === id;
+    return id === `${project.repo}/${project.id}`;
   })[0];
 }
 

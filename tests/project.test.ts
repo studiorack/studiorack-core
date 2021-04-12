@@ -17,7 +17,7 @@ import {
 import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = './test/projects';
-const PROJECT_ID: string = 'banwer';
+const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = 'Banwer Project/Banwer.json';
 const PROJECT_DEFAULT: ProjectInterface = {
   "author": "studiorack-user",
