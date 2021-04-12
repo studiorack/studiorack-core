@@ -49,11 +49,16 @@ function pathGetId(pathItem: string): string {
 }
 
 function pathGetRepo(pathItem: string): string {
-  const pathParts: string[] = pathItem.split('/');
+  const pathParts: string[] = pathGetDirectory(pathItem).split('/');
+  // Plugins should be stored in the following directory format:
+  // {userId}/{repoId}/{pluginId}
+  // For example:
+  // studiorack/studiorack-plugin-steinberg/adelay
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
-  return safeSlug(pathGetFilename(pathItem));
+  // Otherwise return full path
+  return safeSlug(pathGetDirectory(pathItem));
 }
 
 function pathGetVersion(pathItem: string): string {

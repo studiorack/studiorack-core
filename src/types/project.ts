@@ -18,6 +18,7 @@ interface ProjectInterface {
   name: string;
   files: ProjectFiles;
   plugins: { [property: string]: string };
+  repo: string;
   tags: string[];
   type?: ProjectType;
   version: string;

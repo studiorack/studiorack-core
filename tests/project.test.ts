@@ -32,6 +32,7 @@ const PROJECT_DEFAULT: ProjectInterface = {
   },
   "id": "studiorack-project",
   "name": "StudioRack Project",
+  "repo": "studiorack/studiorack-project",
   "files": {
     "audio": {
       "name": "",
@@ -61,6 +62,7 @@ const PROJECT_LOCAL: ProjectLocal = {
     "ext": "als",
     "name": "Ableton"
   },
+  "repo": "banwer-project",
   "path": "./test/projects/Banwer Project/Banwer.als",
   "status": "installed",
   "files": {
@@ -77,7 +79,7 @@ const PROJECT_LOCAL: ProjectLocal = {
       "size": 236613,
     }
   },
-    "plugins": {}
+  "plugins": {}
 };
 
 beforeAll(() => {
