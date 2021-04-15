@@ -119,8 +119,8 @@ async function pluginSearch(query?: string): Promise<PluginInterface[]> {
   return await pluginsGet().then((pluginPack: PluginPack) => {
     const plugins: PluginInterface[] = [];
     if (query) {
-      Object.keys(pluginPack).filter((pluginId: string) => {
-        const plugin: PluginInterface = pluginLatest(pluginPack[pluginId]);
+      Object.keys(pluginPack).filter((id: string) => {
+        const plugin: PluginInterface = pluginLatest(pluginPack[id]);
         if (
           plugin.name.toLowerCase().indexOf(query) !== -1 ||
           plugin.description.toLowerCase().indexOf(query) !== -1 ||
@@ -149,23 +149,33 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
   if (!pluginInstalled(plugin)) {
     console.error(`Plugin not installed ${pluginDirectory(plugin)}`);
   } else {
-    const versionDir: string = pluginDirectory(plugin, 3);
+    // Always delete specific plugin version
+    const versionDir: string = pluginDirectory(plugin);
     console.log('versionDir', versionDir);
-    if (dirEmpty(versionDir)) {
-      dirDelete(versionDir);
-    }
-    const idDir: string = pluginDirectory(plugin, 2);
+    dirDelete(versionDir);
+
+    // If no other plugins versions by same id exist, then remove plugin id
+    const idDir: string = pluginDirectory(plugin, 3);
     console.log('idDir', idDir);
     if (dirEmpty(idDir)) {
       dirDelete(idDir);
     }
-    const repoDir: string = pluginDirectory(plugin, 1);
+
+    // If no other plugins by same repo exist, then remove plugin repo
+    const repoDir: string = pluginDirectory(plugin, 2);
     console.log('repoDir', repoDir);
     if (dirEmpty(repoDir)) {
       dirDelete(repoDir);
     }
+
+    // If no other plugins by same repo root exist, then remove plugin repo root
+    const repoRootDir: string = pluginDirectory(plugin, 1) + '/' + plugin.repo.split('/')[0];
+    console.log('repoRootDir', repoRootDir);
+    if (dirEmpty(repoRootDir)) {
+      dirDelete(repoRootDir);
+    }
   }
-  plugin.path = pluginDirectory(plugin);
+  plugin.path = '';
   plugin.status = 'available';
   return plugin;
 }
