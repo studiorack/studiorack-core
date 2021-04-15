@@ -10,7 +10,7 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "dev": "npm run build && node index.js",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "test": "jest --config jestconfig.json --coverage"
