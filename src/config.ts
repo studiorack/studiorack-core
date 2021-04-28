@@ -80,4 +80,4 @@ function configSet(key: keyof ConfigInterface, val: any): any {
   return configGet(key);
 }
 
-export { configGet, configSet };
+export { config, configGet, configSet };
