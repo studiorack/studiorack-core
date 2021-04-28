@@ -26,6 +26,16 @@ function idToSlug(id: string): string {
   return safeSlug(id.replace(/\//g, '_'));
 }
 
+function inputGetParts(input: string): string[] {
+  return input.split('@');
+}
+
+// Plugin paths are assumed to follow the following format:
+// {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
+//
+// For example:
+// studiorack/studiorack-plugin-steinberg/adelay/1.1.0/adelay.vst3
+
 function pathGetDirectory(pathItem: string): string {
   return pathItem.substring(0, pathItem.lastIndexOf('/'));
 }
@@ -43,17 +53,16 @@ function pathGetFilename(str: string): string {
 }
 
 function pathGetId(pathItem: string): string {
-  const splitMatch: string[] = pathItem.split('@');
-  pathItem = splitMatch ? splitMatch[0] : pathItem;
-  return safeSlug(pathGetFilename(pathItem));
+  const pathParts: string[] = pathGetDirectory(pathItem).split('/');
+  if (pathParts.length > 2) {
+    return safeSlug(pathParts[2]);
+  }
+  // Otherwise return full path
+  return safeSlug(pathGetDirectory(pathItem));
 }
 
 function pathGetRepo(pathItem: string): string {
   const pathParts: string[] = pathGetDirectory(pathItem).split('/');
-  // Plugins should be stored in the following directory format:
-  // {userId}/{repoId}/{pluginId}
-  // For example:
-  // studiorack/studiorack-plugin-steinberg/adelay
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
@@ -81,6 +90,7 @@ function slugToId(slug: string): string {
 export {
   getPlatform,
   idToSlug,
+  inputGetParts,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,
