@@ -18,9 +18,9 @@ function projectCreate(path: string, prompt: boolean = true): ProjectLocal {
     project.name = askQuestion('Name', project.name, 'My Project');
     project.version = askQuestion('Version', project.version, '1.0.0');
     project.description = askQuestion('Description', project.description, 'My project description');
-    project.files.audio = askQuestion('Audio', project.files.audio, 'Song.wav');
-    project.files.image = askQuestion('Image', project.files.image, 'Song.png');
-    project.files.project = askQuestion('Main', project.files.project, 'Song.als');
+    project.files.audio.name = askQuestion('Audio', project.files.audio.name, 'Song.wav');
+    project.files.image.name = askQuestion('Image', project.files.image.name, 'Song.png');
+    project.files.project.name = askQuestion('Main', project.files.project.name, 'Song.als');
   }
   project.path = path;
   project.status = 'installed';
