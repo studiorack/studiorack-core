@@ -46,16 +46,16 @@ function dirExists(dirPath: string): boolean {
   return fs.existsSync(dirPath);
 }
 
+function dirPlugins(): string {
+  return platformsSupported[process.platform];
+}
+
 function dirRead(dirPath: string, options?: any): string[] {
   return glob.sync(dirPath, options);
 }
 
 function dirRename(oldPath: string, newPath: string): void {
   return fs.renameSync(oldPath, newPath);
-}
-
-function dirRoot(): string {
-  return platformsSupported[process.platform];
 }
 
 function fileAdd(filePath: string, fileName: string, fileType: string, json: any): any {
@@ -154,9 +154,9 @@ export {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirPlugins,
   dirRead,
   dirRename,
-  dirRoot,
   fileAdd,
   fileCreate,
   fileDate,
