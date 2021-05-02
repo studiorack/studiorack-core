@@ -9,7 +9,7 @@ import { PlatformsSupported } from './types/config';
 const fsUtils: any = require('nodejs-fs-utils');
 const homeDir: string = os.homedir();
 
-const platformsSupported: PlatformsSupported = {
+const pluginDirectories: PlatformsSupported = {
   aix: homeDir + '/.vst3',
   android: homeDir + '/.vst3',
   cygwin: homeDir + '/.vst3',
@@ -21,6 +21,20 @@ const platformsSupported: PlatformsSupported = {
   sunos: homeDir + '/.vst3',
   win32: '/Program Files/Common Files/VST3',
   win64: '/Program Files/Common Files/VST3',
+};
+
+const projectDirectories: PlatformsSupported = {
+  aix: homeDir,
+  android: homeDir,
+  cygwin: homeDir,
+  darwin: homeDir,
+  freebsd: homeDir,
+  linux: homeDir,
+  netbsd: homeDir,
+  openbsd: homeDir,
+  sunos: homeDir,
+  win32: homeDir,
+  win64: homeDir,
 };
 
 function dirCreate(dirPath: string): string | boolean {
@@ -47,7 +61,11 @@ function dirExists(dirPath: string): boolean {
 }
 
 function dirPlugins(): string {
-  return platformsSupported[process.platform];
+  return pluginDirectories[process.platform];
+}
+
+function dirProjects(): string {
+  return projectDirectories[process.platform];
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
@@ -155,6 +173,7 @@ export {
   dirEmpty,
   dirExists,
   dirPlugins,
+  dirProjects,
   dirRead,
   dirRename,
   fileAdd,

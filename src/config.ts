@@ -1,5 +1,5 @@
 import { ConfigInterface } from './types/config';
-import { dirPlugins, fileJsonCreate, fileJsonLoad } from './file';
+import { dirPlugins, dirProjects, fileJsonCreate, fileJsonLoad } from './file';
 
 const CONFIG_FILE_PATH = './config.json';
 let config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH);
@@ -42,7 +42,7 @@ if (!config) {
       },
     },
     projectFile: 'project.json',
-    projectFolder: '/Users/username/Documents',
+    projectFolder: dirProjects(),
     projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
     projectTypes: {
       ableton: {

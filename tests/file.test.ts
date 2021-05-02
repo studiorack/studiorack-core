@@ -3,6 +3,8 @@ import {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirPlugins,
+  dirProjects,
   dirRead,
   dirRename,
   fileCreate,
@@ -38,6 +40,14 @@ test('Directory is empty', () => {
 test('Directory exists', () => {
   expect(dirExists(DIR_PATH)).toEqual(true);
 });
+
+// test('Directory plugins', () => {
+//   expect(dirPlugins()).toEqual('/Library/Audio/Plug-ins/VST3');
+// });
+
+// test('Directory projects', () => {
+//   expect(dirProjects()).toEqual('/Users/username');
+// });
 
 test('Read directory', () => {
   expect(dirRead(DIR_PATH)).toMatchObject([DIR_PATH]);
