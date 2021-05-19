@@ -121,7 +121,7 @@ async function projectInstall(path: string, id?: string, version?: string): Prom
 
 function projectLoad(path: string): ProjectLocal {
   const projectJson: ProjectLocal = fileJsonLoad(path);
-  if (!projectJson.plugins) {
+  if (projectJson && !projectJson.plugins) {
     projectJson.plugins = {};
   }
   return projectJson;
