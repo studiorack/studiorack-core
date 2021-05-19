@@ -1,5 +1,5 @@
 import { configGet } from './config';
-import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad } from './file';
+import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad, fileOpen } from './file';
 import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetRepo, pathGetWithoutExt, safeSlug } from './utils';
 import { pluginInstall, pluginUninstall } from './plugin';
 import { PluginLocal } from './types/plugin';
@@ -134,7 +134,7 @@ function projectSave(path: string, config: ProjectLocal): ProjectLocal {
 
 async function projectStart(path: string): Promise<Buffer> {
   const project: ProjectLocal = projectLoad(path);
-  return fileLoad(`${pathGetDirectory(path)}/${project.files.project?.name}`);
+  return fileOpen(`${pathGetDirectory(path)}/${project.files.project?.name}`);
 }
 
 function projectType(ext: string): ProjectType {
