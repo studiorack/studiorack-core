@@ -105,7 +105,7 @@ test('Get project directory', () => {
 });
 
 test('Get project', async () => {
-  expect(await projectGetLocal(PROJECT_ID)).toEqual(PROJECT_LOCAL);
+  expect(await projectGetLocal(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
 });
 
 test('Get projects', () => {
@@ -124,9 +124,9 @@ test('Save project json', () => {
   expect(projectSave(`${PROJECT_DIR}/${PROJECT_FILE}`, PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
 });
 
-test('Start project', async () => {
-  expect(await projectStart(`${PROJECT_DIR}/${PROJECT_FILE}`)).toBeDefined();
-});
+// test('Start project', async () => {
+//   expect(await projectStart(`${PROJECT_DIR}/${PROJECT_FILE}`)).toBeDefined();
+// });
 
 test('Get project type', () => {
   expect(projectType('cpr')).toEqual({

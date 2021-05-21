@@ -110,10 +110,7 @@ async function projectInstall(path: string, id?: string, version?: string): Prom
     }
   } else {
     for (const pluginId in project.plugins) {
-      const pluginLocal: PluginLocal = await pluginInstall(pluginId, project.plugins[pluginId]);
-      if (pluginLocal) {
-        project.plugins[pluginId] = pluginLocal.version;
-      }
+      await pluginInstall(pluginId, project.plugins[pluginId]);
     }
   }
   return projectSave(path, project);
@@ -165,10 +162,7 @@ async function projectUninstall(path: string, id?: string, version?: string): Pr
     }
   } else {
     for (const pluginId in project.plugins) {
-      const pluginLocal: PluginLocal = await pluginUninstall(pluginId, project.plugins[pluginId]);
-      if (pluginLocal) {
-        delete project.plugins[pluginId];
-      }
+      await pluginUninstall(pluginId, project.plugins[pluginId]);
     }
   }
   return projectSave(path, project);
