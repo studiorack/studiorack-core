@@ -39,6 +39,7 @@ const projectDirectories: PlatformsSupported = {
 
 function dirCreate(dirPath: string): string | boolean {
   if (!fs.existsSync(dirPath)) {
+    console.log('+', dirPath);
     return fs.mkdirSync(dirPath, { recursive: true });
   }
   return false;
@@ -46,6 +47,7 @@ function dirCreate(dirPath: string): string | boolean {
 
 function dirDelete(dirPath: string): void | boolean {
   if (fs.existsSync(dirPath)) {
+    console.log('-', dirPath);
     return fs.rmdirSync(dirPath, { recursive: true });
   }
   return false;
@@ -69,6 +71,7 @@ function dirProjects(): string {
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
+  console.log('🔍', dirPath);
   return glob.sync(dirPath, options);
 }
 
@@ -96,6 +99,7 @@ function fileAdd(filePath: string, fileName: string, fileType: string, json: any
 }
 
 function fileCreate(filePath: string, data: any): void {
+  console.log('+', filePath);
   return fs.writeFileSync(filePath, data);
 }
 

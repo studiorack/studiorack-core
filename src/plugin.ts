@@ -145,30 +145,26 @@ function pluginSource(plugin: PluginInterface): string {
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   if (!pluginInstalled(plugin)) {
-    console.error(`Plugin not installed ${pluginDirectory(plugin)}`);
+    throw Error(`Plugin not installed ${pluginDirectory(plugin)}`);
   } else {
     // Always delete specific plugin version
     const versionDir: string = pluginDirectory(plugin);
-    console.log('versionDir', versionDir);
     dirDelete(versionDir);
 
     // If no other plugins versions by same id exist, then remove plugin id
     const idDir: string = pluginDirectory(plugin, 3);
-    console.log('idDir', idDir);
     if (dirEmpty(idDir)) {
       dirDelete(idDir);
     }
 
     // If no other plugins by same repo exist, then remove plugin repo
     const repoDir: string = pluginDirectory(plugin, 2);
-    console.log('repoDir', repoDir);
     if (dirEmpty(repoDir)) {
       dirDelete(repoDir);
     }
 
     // If no other plugins by same repo root exist, then remove plugin repo root
     const repoRootDir: string = pluginDirectory(plugin, 1) + '/' + plugin.repo.split('/')[0];
-    console.log('repoRootDir', repoRootDir);
     if (dirEmpty(repoRootDir)) {
       dirDelete(repoRootDir);
     }
