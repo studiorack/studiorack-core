@@ -93,9 +93,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     throw Error(`Unsupported file type ${pluginUrl.slice(-4)}`);
   }
   const pluginPath: string = pluginDirectory(plugin);
-  if (dirExists(pluginPath)) {
-    throw Error(`Plugin already installed ${pluginPath}`);
-  } else {
+  if (!dirExists(pluginPath)) {
     const data: Buffer = await getRaw(pluginUrl);
     dirCreate(pluginPath);
     zipExtract(data, pluginPath);
