@@ -1,4 +1,5 @@
 import {
+  configDelete,
   configGet,
   configSet
 } from '../src/config';
@@ -7,6 +8,10 @@ import { ConfigInterface } from '../src/types/config';
 const CONFIG_KEY: keyof ConfigInterface = 'pluginFile';
 const CONFIG_DEFAULT_VALUE: string = 'plugin.json';
 const CONFIG_NEW_VALUE: string = 'metadata.json';
+
+beforeAll(() => {
+  configDelete();
+});
 
 test('Get default value', () => {
   expect(configGet(CONFIG_KEY)).toEqual(CONFIG_DEFAULT_VALUE);

@@ -107,6 +107,14 @@ function fileDate(filePath: string): Date {
   return fs.statSync(filePath).mtime;
 }
 
+function fileDelete(filePath: string): boolean | void {
+  if (fileExists(filePath)) {
+    console.log('-', filePath);
+    return fs.unlinkSync(filePath);
+  }
+  return false;
+}
+
 function fileExec(filePath: string): void {
   return fs.chmodSync(filePath, '755');
 }
@@ -184,6 +192,7 @@ export {
   fileAdd,
   fileCreate,
   fileDate,
+  fileDelete,
   fileExec,
   fileExists,
   fileJsonCreate,

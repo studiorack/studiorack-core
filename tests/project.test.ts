@@ -63,7 +63,7 @@ const PROJECT_LOCAL: ProjectLocal = {
     "name": "Ableton"
   },
   "repo": "banwer-project",
-  "path": "./test/projects/Banwer Project/Banwer.als",
+  "path": "./test/projects/Banwer Project",
   "status": "installed",
   "files": {
     "audio": {
@@ -105,7 +105,7 @@ test('Get project directory', () => {
 });
 
 test('Get project', async () => {
-  expect(await projectGetLocal(`${PROJECT_ID}`)).toEqual(PROJECT_LOCAL);
+  expect(await projectGetLocal(PROJECT_ID)).toEqual(PROJECT_LOCAL);
 });
 
 test('Get projects', () => {

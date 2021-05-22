@@ -1,10 +1,11 @@
 import { ConfigInterface } from './types/config';
-import { dirPlugins, dirProjects, fileJsonCreate, fileJsonLoad } from './file';
+import { dirPlugins, dirProjects, fileDelete, fileJsonCreate, fileJsonLoad } from './file';
 
 const CONFIG_FILE_PATH = './config.json';
-let config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH);
-if (!config) {
-  config = {
+const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefault();
+
+function configDefault(): ConfigInterface {
+  return {
     extAudio: '.wav',
     extFile: '.json',
     extImage: '.png',
@@ -75,6 +76,10 @@ if (!config) {
   };
 }
 
+function configDelete(): boolean | void {
+  return fileDelete(CONFIG_FILE_PATH);
+}
+
 function configGet(key: keyof ConfigInterface): any {
   return config[key];
 }
@@ -85,4 +90,4 @@ function configSet(key: keyof ConfigInterface, val: any): any {
   return configGet(key);
 }
 
-export { config, configGet, configSet };
+export { configDefault, configDelete, configGet, configSet };
