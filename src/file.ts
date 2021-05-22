@@ -71,7 +71,7 @@ function dirProjects(): string {
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
-  console.log('🔍', dirPath);
+  console.log('⌕', dirPath);
   return glob.sync(dirPath, options);
 }
 
@@ -143,6 +143,7 @@ function fileOpen(filePath: string): Buffer {
       command = 'xdg-open';
       break;
   }
+  console.log('⎋', `${command} "${filePath}"`);
   return execSync(`${command} "${filePath}"`);
 }
 
