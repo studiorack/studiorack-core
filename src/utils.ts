@@ -76,7 +76,16 @@ function pathGetVersion(pathItem: string): string {
 }
 
 function pathGetWithoutExt(pathItem: string): string {
-  return pathItem.substring(0, pathItem.lastIndexOf('.'));
+  const extIndex = pathItem.lastIndexOf('.');
+  // If string contains a period
+  if (extIndex !== -1) {
+    const extLength = pathItem.length - extIndex;
+    // If the period + ext is 4-5 characters long
+    if (extLength === 4 || extLength === 5) {
+      return pathItem.substring(0, pathItem.lastIndexOf('.'));
+    }
+  }
+  return pathItem;
 }
 
 function safeSlug(val: string): string {

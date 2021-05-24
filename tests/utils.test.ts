@@ -20,6 +20,7 @@ import {
 // studiorack/studiorack-plugin-steinberg/adelay/1.1.0/adelay.vst3
 
 const PLUGIN_PATH = 'studiorack/studiorack-plugin-steinberg/adelay/1.1.0/adelay.vst3';
+const PLUGIN_PATH_DIR = 'studiorack/studiorack-plugin-steinberg/adelay/1.1.0';
 const PLUGIN_REPO = 'studiorack/studiorack-plugin-steinberg';
 const PLUGIN_REPO_INCORRECT = 'Studiorack/studiorack-plugin-Steinberg/Adelay';
 const PLUGIN_ID = 'adelay';
@@ -66,6 +67,7 @@ test('Path get version', () => {
 
 test('Path without ext', () => {
   expect(pathGetWithoutExt(PLUGIN_PATH)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}/${PLUGIN_FILENAME}`);
+  expect(pathGetWithoutExt(PLUGIN_PATH_DIR)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}`);
 });
 
 test('Slug safe', () => {

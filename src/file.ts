@@ -129,12 +129,14 @@ function fileJsonCreate(filePath: string, data: object): void {
 
 function fileJsonLoad(filePath: string): any {
   if (fs.existsSync(filePath)) {
+    console.log('⎋', filePath);
     return JSON.parse(fs.readFileSync(filePath).toString());
   }
   return false;
 }
 
 function fileLoad(filePath: string): Buffer {
+  console.log('⎋', filePath);
   return fs.readFileSync(filePath);
 }
 
