@@ -46,7 +46,7 @@ function validateFiles(pathItem: string, json: any): any {
 }
 
 async function validateFolder(pluginPath: string, options: any): Promise<PluginLocal[]> {
-  if (!pluginPath || !dirExists(pluginPath)) {
+  if (!pluginPath) {
     throw Error(`Path does not exist: ${pluginPath}`);
   }
   const plugins: PluginLocal[] = [];
