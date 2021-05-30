@@ -12,8 +12,9 @@ function askQuestion(label: string, input: any, fallback: string) {
   });
 }
 
-function projectCreate(path: string, prompt: boolean = true): ProjectLocal {
+function projectCreate(projectPath: string, prompt: boolean = true): ProjectLocal {
   const project: ProjectLocal = projectDefault() as ProjectLocal;
+  const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
   if (prompt) {
     project.name = askQuestion('Name', project.name, 'My Project');
     project.version = askQuestion('Version', project.version, '1.0.0');
@@ -22,9 +23,11 @@ function projectCreate(path: string, prompt: boolean = true): ProjectLocal {
     project.files.image.name = askQuestion('Image', project.files.image.name, 'Song.png');
     project.files.project.name = askQuestion('Main', project.files.project.name, 'Song.als');
   }
-  project.path = pathGetDirectory(path);
+  project.id = safeSlug(pathGetFilename(relativePath));
+  project.path = pathGetDirectory(projectPath);
+  project.repo = pathGetRepo(relativePath);
   project.status = 'installed';
-  return projectSave(path, project);
+  return projectSave(projectPath, project);
 }
 
 function projectDefault(): ProjectInterface {

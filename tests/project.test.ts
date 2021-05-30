@@ -30,9 +30,9 @@ const PROJECT_DEFAULT: ProjectInterface = {
     "ext": "als",
     "name": "Ableton"
   },
-  "id": "studiorack-project",
+  "id": "example",
   "name": "StudioRack Project",
-  "repo": "studiorack/studiorack-project",
+  "repo": "songs",
   "files": {
     "audio": {
       "name": "",
@@ -87,7 +87,7 @@ beforeAll(() => {
 });
 
 test('Create project locally', () => {
-  const result = projectCreate(`${PROJECT_DIR}/example.json`, false);
+  const result = projectCreate(`${PROJECT_DIR}/songs/example.json`, false);
   result.date = new Date().toISOString();
   PROJECT_DEFAULT.date = new Date().toISOString();
   expect(result).toMatchObject(PROJECT_DEFAULT);
@@ -95,6 +95,8 @@ test('Create project locally', () => {
 
 test('Create project default', () => {
   const result = projectDefault();
+  result.id = 'example';
+  result.repo = 'songs';
   result.date = new Date().toISOString();
   PROJECT_DEFAULT.date = new Date().toISOString();
   expect(result).toMatchObject(PROJECT_DEFAULT);
