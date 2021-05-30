@@ -162,6 +162,7 @@ function fileSize(filePath: string): number {
 }
 
 function zipCreate(filesPath: string, zipPath: string): void {
+  console.log('+', zipPath);
   if (fs.existsSync(zipPath)) {
     fs.unlinkSync(zipPath);
   }
@@ -178,6 +179,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
 }
 
 function zipExtract(content: any, dirPath: string): void {
+  console.log('⎋', dirPath);
   const zip: AdmZip = new AdmZip(content);
   return zip.extractAllTo(dirPath);
 }

@@ -46,6 +46,9 @@ function validateFiles(pathItem: string, json: any): any {
 }
 
 async function validateFolder(pluginPath: string, options: any): Promise<PluginLocal[]> {
+  if (!pluginPath || !dirExists(pluginPath)) {
+    throw Error(`Path does not exist: ${pluginPath}`);
+  }
   const plugins: PluginLocal[] = [];
   await validateInstall();
   if (pluginPath.includes('*')) {
@@ -66,7 +69,6 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
     let rootPath = pluginPath.replace('**/*.{vst,vst3}', '').substring(0, pluginPath.lastIndexOf('/'));
     rootPath += rootPath.endsWith('/') ? '' : '/';
     fileJsonCreate(`${rootPath}plugins.json`, { plugins });
-    console.log(`Generated: ${rootPath}plugins.json`);
   }
   return plugins;
 }
@@ -75,7 +77,6 @@ async function validateInstall(): Promise<boolean> {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
   if (!dirExists(validatorFolder)) {
     const data: Buffer = await getRaw(configGet('validatorUrl').replace('${platform}', getPlatform()));
-    console.log(`Installed validator: ${validatorPath}`);
     zipExtract(data, validatorFolder);
     fileExec(validatorPath);
     return true;
@@ -84,10 +85,9 @@ async function validateInstall(): Promise<boolean> {
 }
 
 function validatePlugin(pathItem: string, options?: any): PluginLocal {
-  if (!dirExists(pathItem)) {
+  if (!pathItem || !dirExists(pathItem)) {
     throw Error(`File does not exist: ${pathItem}`);
   }
-  console.log(`Reading: ${pathItem}`);
   const outputText: string = validateRun(pathItem);
   let pluginJson: PluginLocal = validateProcess(pathItem, outputText);
   if (options && options.files) {
@@ -97,16 +97,13 @@ function validatePlugin(pathItem: string, options?: any): PluginLocal {
   if (options && options.txt) {
     console.log(outputText);
     fileCreate(`${filepath}.txt`, outputText);
-    console.log(`Generated: ${filepath}.txt`);
   }
   if (options && options.json) {
     console.log(pluginJson);
     fileJsonCreate(`${filepath}.json`, pluginJson);
-    console.log(`Generated: ${filepath}.json`);
   }
   if (options && options.zip) {
     zipCreate(`${filepath}.*`, `${filepath}.zip`);
-    console.log(`Generated: ${filepath}.zip`);
   }
   return pluginJson;
 }
@@ -191,7 +188,7 @@ function validateProcess(pathItem: string, log: string): any {
 function validateRun(filePath: string): string {
   // Run Steinberg VST3 SDK validator binary
   try {
-    console.log(`${validatorPath} "${filePath}"`);
+    console.log('⎋', `${validatorPath} "${filePath}"`);
     const sdout: Buffer = execSync(`${validatorPath} "${filePath}"`);
     return sdout.toString();
   } catch (error) {
