@@ -1,6 +1,14 @@
 import { configGet } from './config';
-import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad, fileOpen } from './file';
-import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetRepo, pathGetWithoutExt, safeSlug } from './utils';
+import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileOpen } from './file';
+import {
+  pathGetDirectory,
+  pathGetExt,
+  pathGetFilename,
+  pathGetId,
+  pathGetRepo,
+  pathGetWithoutExt,
+  safeSlug,
+} from './utils';
 import { pluginInstall, pluginUninstall } from './plugin';
 import { PluginLocal } from './types/plugin';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
@@ -14,13 +22,14 @@ function askQuestion(label: string, input: any, fallback: string) {
 
 function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   const project: ProjectLocal = projectDefault() as ProjectLocal;
+  const projectId = pathGetId(id);
   if (prompt) {
-    project.name = askQuestion('Name', project.name, 'My Project');
+    project.name = askQuestion('Name', project.name, projectId);
     project.version = askQuestion('Version', project.version, '1.0.0');
-    project.description = askQuestion('Description', project.description, 'My project description');
-    project.files.audio.name = askQuestion('Audio', project.files.audio.name, 'Song.wav');
-    project.files.image.name = askQuestion('Image', project.files.image.name, 'Song.png');
-    project.files.project.name = askQuestion('Main', project.files.project.name, 'Song.als');
+    project.description = askQuestion('Description', project.description, `${projectId} description`);
+    project.files.audio.name = askQuestion('Audio', project.files.audio.name, `${projectId}.wav`);
+    project.files.image.name = askQuestion('Image', project.files.image.name, `${projectId}.png`);
+    project.files.project.name = askQuestion('Main', project.files.project.name, `${projectId}.als`);
   }
   project.id = safeSlug(pathGetFilename(id));
   project.path = pathGetDirectory(id);
