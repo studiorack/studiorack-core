@@ -22,7 +22,7 @@ function askQuestion(label: string, input: any, fallback: string) {
 
 function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   const project: ProjectLocal = projectDefault() as ProjectLocal;
-  const projectId = pathGetId(id);
+  const projectId = pathGetFilename(id);
   if (prompt) {
     project.name = askQuestion('Name', project.name, projectId);
     project.version = askQuestion('Version', project.version, '1.0.0');
