@@ -1,5 +1,5 @@
 import { configGet } from './config';
-import { dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad, fileOpen } from './file';
+import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileLoad, fileOpen } from './file';
 import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetRepo, pathGetWithoutExt, safeSlug } from './utils';
 import { pluginInstall, pluginUninstall } from './plugin';
 import { PluginLocal } from './types/plugin';
@@ -12,9 +12,8 @@ function askQuestion(label: string, input: any, fallback: string) {
   });
 }
 
-function projectCreate(projectPath: string, prompt: boolean = true): ProjectLocal {
+function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   const project: ProjectLocal = projectDefault() as ProjectLocal;
-  const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
   if (prompt) {
     project.name = askQuestion('Name', project.name, 'My Project');
     project.version = askQuestion('Version', project.version, '1.0.0');
@@ -23,11 +22,12 @@ function projectCreate(projectPath: string, prompt: boolean = true): ProjectLoca
     project.files.image.name = askQuestion('Image', project.files.image.name, 'Song.png');
     project.files.project.name = askQuestion('Main', project.files.project.name, 'Song.als');
   }
-  project.id = safeSlug(pathGetFilename(relativePath));
-  project.path = pathGetDirectory(projectPath);
-  project.repo = pathGetRepo(relativePath);
+  project.id = safeSlug(pathGetFilename(id));
+  project.path = pathGetDirectory(id);
+  project.repo = pathGetRepo(id);
   project.status = 'installed';
-  return projectSave(projectPath, project);
+  dirCreate(pathGetDirectory(`${configGet('projectFolder')}/${id}.json`));
+  return projectSave(`${configGet('projectFolder')}/${id}.json`, project);
 }
 
 function projectDefault(): ProjectInterface {
