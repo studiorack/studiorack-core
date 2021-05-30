@@ -162,7 +162,6 @@ function fileSize(filePath: string): number {
 }
 
 function zipCreate(filesPath: string, zipPath: string): void {
-  console.log('+', zipPath);
   if (fs.existsSync(zipPath)) {
     fs.unlinkSync(zipPath);
   }
@@ -175,6 +174,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
       zip.addLocalFile(pathItem);
     }
   });
+  console.log('+', zipPath);
   return zip.writeZip(zipPath);
 }
 
