@@ -2,7 +2,17 @@ import * as semver from 'semver';
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirExists, fileAdd, fileCreate, fileDate, fileExec, fileJsonCreate, zipCreate, zipExtract } from './file';
+import {
+  dirExists,
+  dirRead,
+  fileAdd,
+  fileCreate,
+  fileDate,
+  fileExec,
+  fileJsonCreate,
+  zipCreate,
+  zipExtract,
+} from './file';
 import { getPlatform, pathGetDirectory, pathGetFilename, pathGetId, pathGetWithoutExt, safeSlug } from './utils';
 import { getRaw } from './api';
 import { PluginLocal } from './types/plugin';
@@ -33,6 +43,32 @@ function validateFiles(pathItem: string, json: any): any {
   json = fileAdd(`${directory}/${slug}-mac.zip`, `${slug}-mac.zip`, 'mac', json);
   json = fileAdd(`${directory}/${slug}-win.zip`, `${slug}-win.zip`, 'win', json);
   return json;
+}
+
+async function validateFolder(pluginPath: string, options: any): Promise<PluginLocal[]> {
+  const plugins: PluginLocal[] = [];
+  await validateInstall();
+  if (pluginPath.includes('*')) {
+    const pathList = dirRead(pluginPath);
+    pathList.forEach((pathItem: string) => {
+      const plugin: any = validatePlugin(pathItem, options);
+      if (plugin.version) {
+        plugins.push(plugin);
+      }
+    });
+  } else {
+    const plugin: any = validatePlugin(pluginPath, options);
+    if (plugin.version) {
+      plugins.push(plugin);
+    }
+  }
+  if (options.summary) {
+    let rootPath = pluginPath.replace('**/*.{vst,vst3}', '').substring(0, pluginPath.lastIndexOf('/'));
+    rootPath += rootPath.endsWith('/') ? '' : '/';
+    fileJsonCreate(`${rootPath}plugins.json`, { plugins });
+    console.log(`Generated: ${rootPath}plugins.json`);
+  }
+  return plugins;
 }
 
 async function validateInstall(): Promise<boolean> {
@@ -165,6 +201,7 @@ function validateRun(filePath: string): string {
 
 export {
   validateFiles,
+  validateFolder,
   validateInstall,
   validatePlugin,
   validatePluginField,
