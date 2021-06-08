@@ -31,6 +31,13 @@ function pluginDirectory(plugin: PluginInterface, depth?: number): string {
   return pluginPaths.join('/');
 }
 
+function pluginFileUrl(plugin: PluginInterface, file: PluginFile): string {
+  if (file.name.startsWith('https://')) {
+    return file.name;
+  }
+  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${file.name}`;
+}
+
 async function pluginGet(id: string, version?: string): Promise<PluginInterface> {
   const pluginPack: PluginPack = await pluginsGet();
   if (!pluginPack[id]) {
@@ -177,6 +184,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
 export {
   pluginCreate,
   pluginDirectory,
+  pluginFileUrl,
   pluginGet,
   pluginGetLocal,
   pluginsGet,
