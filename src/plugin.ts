@@ -5,7 +5,6 @@ import { getPlatform, pathGetDirectory, pathGetId, pathGetRepo, pathGetVersion, 
 import {
   PluginEntry,
   PluginFile,
-  PluginFiles,
   PluginInterface,
   PluginLocal,
   PluginPack,
@@ -30,14 +29,6 @@ function pluginDirectory(plugin: PluginInterface, depth?: number): string {
     return pluginPaths.slice(0, depth).join('/');
   }
   return pluginPaths.join('/');
-}
-
-function pluginFileUrl(plugin: PluginInterface, type: keyof PluginFiles): string {
-  const file = plugin.files[type];
-  if (file.name.startsWith('https://')) {
-    return file.name;
-  }
-  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${file.name}`;
 }
 
 async function pluginGet(id: string, version?: string): Promise<PluginInterface> {
@@ -186,7 +177,6 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
 export {
   pluginCreate,
   pluginDirectory,
-  pluginFileUrl,
   pluginGet,
   pluginGetLocal,
   pluginsGet,

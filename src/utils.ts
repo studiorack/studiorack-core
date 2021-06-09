@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 
-import { PlatformTypes, PluginFiles } from './types/plugin';
+import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
 
 const platformTypes: PlatformTypes = {
   aix: 'linux',
@@ -88,6 +88,14 @@ function pathGetWithoutExt(pathItem: string): string {
   return pathItem;
 }
 
+function pluginFileUrl(plugin: PluginInterface, type: keyof PluginFiles): string {
+  const file = plugin.files[type];
+  if (file.name.startsWith('https://')) {
+    return file.name;
+  }
+  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${file.name}`;
+}
+
 function safeSlug(val: string): string {
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
@@ -107,6 +115,7 @@ export {
   pathGetRepo,
   pathGetVersion,
   pathGetWithoutExt,
+  pluginFileUrl,
   safeSlug,
   slugToId,
 };
