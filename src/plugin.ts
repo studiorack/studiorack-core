@@ -5,6 +5,7 @@ import { getPlatform, pathGetDirectory, pathGetId, pathGetRepo, pathGetVersion, 
 import {
   PluginEntry,
   PluginFile,
+  PluginFiles,
   PluginInterface,
   PluginLocal,
   PluginPack,
@@ -31,7 +32,8 @@ function pluginDirectory(plugin: PluginInterface, depth?: number): string {
   return pluginPaths.join('/');
 }
 
-function pluginFileUrl(plugin: PluginInterface, file: PluginFile): string {
+function pluginFileUrl(plugin: PluginInterface, type: keyof PluginFiles): string {
+  const file = plugin.files[type];
   if (file.name.startsWith('https://')) {
     return file.name;
   }
