@@ -103,7 +103,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   if (pluginExt === 'zip') {
     zipExtract(data, pluginPath);
   } else {
-    fileCreate(pluginPath, data);
+    fileCreate(`${pluginPath}/${plugin.files[getPlatform()].name}`, data);
   }
   plugin.path = pluginPath;
   plugin.status = 'installed';
