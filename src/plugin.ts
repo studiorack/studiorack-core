@@ -1,5 +1,5 @@
 import { configGet } from './config';
-import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
+import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileCreate, fileJsonLoad, zipExtract } from './file';
 import { getJSON, getRaw } from './api';
 import { getPlatform, pathGetDirectory, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
@@ -97,9 +97,13 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   }
   const pluginPath: string = pluginDirectory(plugin);
   if (!dirExists(pluginPath)) {
-    const data: Buffer = await getRaw(pluginUrl);
     dirCreate(pluginPath);
+  }
+  const data: Buffer = await getRaw(pluginUrl);
+  if (pluginExt === 'zip') {
     zipExtract(data, pluginPath);
+  } else {
+    fileCreate(pluginPath, data);
   }
   plugin.path = pluginPath;
   plugin.status = 'installed';
