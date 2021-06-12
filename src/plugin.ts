@@ -1,7 +1,7 @@
 import { configGet } from './config';
 import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileJsonLoad, zipExtract } from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, pathGetDirectory, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
+import { getPlatform, pathGetDirectory, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -12,6 +12,8 @@ import {
   PluginTypes,
 } from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
+
+const validPluginExt = ['deb', 'dmg', 'exe', 'zip'];
 
 async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
   if (dirExists(path)) {
@@ -89,8 +91,9 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   const pluginUrl: string = pluginSource(plugin);
-  if (pluginUrl.slice(-4) !== '.zip') {
-    throw Error(`Unsupported file type ${pluginUrl.slice(-4)}`);
+  const pluginExt = pathGetExt(pluginUrl);
+  if (!validPluginExt.includes(pluginExt)) {
+    throw Error(`Unsupported file type ${pluginExt}`);
   }
   const pluginPath: string = pluginDirectory(plugin);
   if (!dirExists(pluginPath)) {
