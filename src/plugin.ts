@@ -1,7 +1,26 @@
 import { configGet } from './config';
-import { dirCreate, dirDelete, dirEmpty, dirExists, dirRead, dirRename, fileCreate, fileJsonLoad, zipExtract } from './file';
+import {
+  dirCreate,
+  dirDelete,
+  dirEmpty,
+  dirExists,
+  dirOpen,
+  dirRead,
+  dirRename,
+  fileCreate,
+  fileJsonLoad,
+  zipExtract,
+} from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, pathGetDirectory, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
+import {
+  getPlatform,
+  pathGetDirectory,
+  pathGetExt,
+  pathGetId,
+  pathGetRepo,
+  pathGetVersion,
+  pathGetWithoutExt,
+} from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -105,6 +124,8 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   } else {
     fileCreate(`${pluginPath}/${plugin.files[getPlatform()].name}`, data);
   }
+  // Reveal plugin folder in file browser
+  dirOpen(`${pluginPath}/${plugin.files[getPlatform()].name}`);
   plugin.path = pluginPath;
   plugin.status = 'installed';
   return plugin;
