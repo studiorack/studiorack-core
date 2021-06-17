@@ -62,6 +62,23 @@ function dirExists(dirPath: string): boolean {
   return fs.existsSync(dirPath);
 }
 
+function dirOpen(dirPath: string): Buffer {
+  let command: string = '';
+  switch (process.platform) {
+    case 'darwin':
+      command = 'open';
+      break;
+    case 'win32':
+      command = 'explore';
+      break;
+    default:
+      command = 'xdg-open';
+      break;
+  }
+  console.log('⎋', `${command} "${dirPath}"`);
+  return execSync(`${command} "${dirPath}"`);
+}
+
 function dirPlugins(): string {
   return pluginDirectories[process.platform];
 }
@@ -189,6 +206,7 @@ export {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirOpen,
   dirPlugins,
   dirProjects,
   dirRead,

@@ -3,6 +3,7 @@ import {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirOpen,
   dirPlugins,
   dirProjects,
   dirRead,
@@ -39,6 +40,10 @@ test('Directory is empty', () => {
 
 test('Directory exists', () => {
   expect(dirExists(DIR_PATH)).toEqual(true);
+});
+
+test('Directory open', () => {
+  expect(dirOpen(DIR_PATH)).toEqual(new Buffer(''));
 });
 
 // test('Directory plugins', () => {
