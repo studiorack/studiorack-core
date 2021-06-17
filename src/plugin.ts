@@ -125,7 +125,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     fileCreate(`${pluginPath}/${plugin.files[getPlatform()].name}`, data);
   }
   // Reveal plugin folder in file browser
-  dirOpen(`${pluginPath}/${plugin.files[getPlatform()].name}`);
+  dirOpen(pluginPath);
   plugin.path = pluginPath;
   plugin.status = 'installed';
   return plugin;
