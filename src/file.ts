@@ -62,6 +62,10 @@ function dirExists(dirPath: string): boolean {
   return fs.existsSync(dirPath);
 }
 
+function dirIs(dirPath: string): boolean {
+  return fs.statSync(dirPath).isDirectory();
+}
+
 function dirOpen(dirPath: string): Buffer {
   let command: string = '';
   switch (process.platform) {
@@ -179,16 +183,21 @@ function fileSize(filePath: string): number {
 }
 
 function zipCreate(filesPath: string, zipPath: string): void {
-  if (fs.existsSync(zipPath)) {
+  if (fileExists(zipPath)) {
     fs.unlinkSync(zipPath);
   }
   const zip: AdmZip = new AdmZip();
   const pathList: string[] = dirRead(filesPath);
   pathList.forEach((pathItem) => {
-    if (fs.lstatSync(pathItem).isDirectory()) {
-      zip.addLocalFolder(pathItem, path.basename(pathItem));
-    } else {
-      zip.addLocalFile(pathItem);
+    console.log('⎋', pathItem);
+    try {
+      if (dirIs(pathItem)) {
+        zip.addLocalFolder(pathItem, path.basename(pathItem));
+      } else {
+        zip.addLocalFile(pathItem);
+      }
+    } catch(error) {
+      console.log(error);
     }
   });
   console.log('+', zipPath);
@@ -206,6 +215,7 @@ export {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirIs,
   dirOpen,
   dirPlugins,
   dirProjects,
