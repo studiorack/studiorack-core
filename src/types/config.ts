@@ -7,7 +7,7 @@ interface ConfigInterface {
   extImage: string;
   extZip: string;
   ignoredFolders: string[];
-  licenses: License[];
+  licenses: LicenseInterface[];
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;
@@ -21,7 +21,7 @@ interface ConfigInterface {
   validatorUrl: string;
 }
 
-interface License {
+interface LicenseInterface {
   key: string;
   name: string;
   url: string;
@@ -41,4 +41,4 @@ interface PlatformsSupported {
   win64: string;
 }
 
-export { ConfigInterface, PlatformsSupported };
+export { ConfigInterface, LicenseInterface, PlatformsSupported };
