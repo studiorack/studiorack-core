@@ -65,14 +65,6 @@ async function pluginGet(id: string, version?: string): Promise<PluginInterface>
   if (!plugin) {
     throw Error(`Plugin version not found ${version}`);
   }
-  const licenses: PluginLicense[] = configGet('licenses');
-  licenses.forEach((license: PluginLicense) => {
-    if (pluginPack[id].license === license.key) {
-      plugin.license = license;
-      return;
-    }
-  });
-  plugin.repo = pathGetRepo(id);
   return plugin;
 }
 
@@ -145,6 +137,13 @@ function pluginInstalled(plugin: PluginInterface): boolean {
 
 function pluginLatest(pluginEntry: PluginEntry): PluginInterface {
   const plugin: PluginInterface = pluginEntry.versions[pluginEntry.version];
+  const licenses: PluginLicense[] = configGet('licenses');
+  licenses.forEach((license: PluginLicense) => {
+    if (pluginEntry.license === license.key) {
+      plugin.license = license;
+      return;
+    }
+  });
   plugin.repo = pathGetRepo(pluginEntry.id);
   return plugin;
 }
