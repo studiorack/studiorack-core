@@ -14,6 +14,7 @@ interface PlatformTypes {
 
 interface PluginEntry {
   id: string;
+  license: string;
   version: string;
   versions: { [version: string]: PluginInterface };
 }

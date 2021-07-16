@@ -7,6 +7,7 @@ interface ConfigInterface {
   extImage: string;
   extZip: string;
   ignoredFolders: string[];
+  licenses: License[];
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;
@@ -18,6 +19,12 @@ interface ConfigInterface {
   projectRegistry: string;
   projectTypes: ProjectTypes;
   validatorUrl: string;
+}
+
+interface License {
+  key: string;
+  name: string;
+  url: string;
 }
 
 interface PlatformsSupported {

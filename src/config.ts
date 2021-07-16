@@ -11,6 +11,43 @@ function configDefault(): ConfigInterface {
     extImage: '.png',
     extZip: '.zip',
     ignoredFolders: ['Backup'],
+    licenses: [
+      {
+        key: 'mit',
+        name: 'MIT License',
+        url: 'https://api.github.com/licenses/mit'
+      },
+      {
+        key: 'lgpl-3.0',
+        name: 'GNU Lesser General Public License v3.0',
+        url: 'https://api.github.com/licenses/lgpl-3.0',
+      },
+      {
+        key: 'mpl-2.0',
+        name: 'Mozilla Public License 2.0',
+        url: 'https://api.github.com/licenses/mpl-2.0',
+      },
+      {
+        key: 'agpl-3.0',
+        name: 'GNU Affero General Public License v3.0',
+        url: 'https://api.github.com/licenses/agpl-3.0',
+      },
+      {
+        key: 'unlicense',
+        name: 'The Unlicense',
+        url: 'https://api.github.com/licenses/unlicense',
+      },
+      {
+        key: 'apache-2.0',
+        name: 'Apache License 2.0',
+        url: 'https://api.github.com/licenses/apache-2.0',
+      },
+      {
+        key: 'gpl-3.0',
+        name: 'GNU General Public License v3.0',
+        url: 'https://api.github.com/licenses/gpl-3.0',
+      }
+    ],
     pluginFile: 'plugin.json',
     pluginFolder: dirPlugins(),
     pluginRegistry: 'https://studiorack.github.io/studiorack-registry/',
