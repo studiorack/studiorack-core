@@ -40,12 +40,18 @@ interface PluginInterface {
   id: string;
   name: string;
   files: PluginFiles;
-  license?: string;
+  license?: PluginLicense;
   release: string;
   repo: string;
   tags: string[];
   type?: PluginType;
   version: string;
+}
+
+interface PluginLicense {
+  key: string;
+  name: string;
+  url: string;
 }
 
 interface PluginLocal extends PluginInterface {
@@ -84,6 +90,7 @@ export {
   PluginFile,
   PluginFiles,
   PluginInterface,
+  PluginLicense,
   PluginLocal,
   PluginPack,
   PluginTemplate,

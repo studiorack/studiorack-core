@@ -25,6 +25,7 @@ import {
   PluginEntry,
   PluginFile,
   PluginInterface,
+  PluginLicense,
   PluginLocal,
   PluginPack,
   PluginTemplate,
@@ -64,7 +65,13 @@ async function pluginGet(id: string, version?: string): Promise<PluginInterface>
   if (!plugin) {
     throw Error(`Plugin version not found ${version}`);
   }
-  plugin.license = pluginPack[id].license;
+  const licenses: PluginLicense[] = configGet('licenses');
+  licenses.forEach((license: PluginLicense) => {
+    if (pluginPack[id].license === license.key) {
+      plugin.license = license;
+      return;
+    }
+  });
   plugin.repo = pathGetRepo(id);
   return plugin;
 }

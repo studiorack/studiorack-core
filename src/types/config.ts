@@ -1,4 +1,4 @@
-import { PluginTypes } from './plugin';
+import { PluginLicense, PluginTypes } from './plugin';
 import { ProjectTypes } from './project';
 
 interface ConfigInterface {
@@ -7,7 +7,7 @@ interface ConfigInterface {
   extImage: string;
   extZip: string;
   ignoredFolders: string[];
-  licenses: LicenseInterface[];
+  licenses: PluginLicense[];
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;
@@ -19,12 +19,6 @@ interface ConfigInterface {
   projectRegistry: string;
   projectTypes: ProjectTypes;
   validatorUrl: string;
-}
-
-interface LicenseInterface {
-  key: string;
-  name: string;
-  url: string;
 }
 
 interface PlatformsSupported {
@@ -41,4 +35,4 @@ interface PlatformsSupported {
   win64: string;
 }
 
-export { ConfigInterface, LicenseInterface, PlatformsSupported };
+export { ConfigInterface, PlatformsSupported };
