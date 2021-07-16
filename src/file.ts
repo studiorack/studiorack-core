@@ -196,7 +196,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
       } else {
         zip.addLocalFile(pathItem);
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   });

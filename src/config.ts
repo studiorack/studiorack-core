@@ -15,7 +15,7 @@ function configDefault(): ConfigInterface {
       {
         key: 'mit',
         name: 'MIT License',
-        url: 'https://api.github.com/licenses/mit'
+        url: 'https://api.github.com/licenses/mit',
       },
       {
         key: 'lgpl-3.0',
@@ -46,7 +46,7 @@ function configDefault(): ConfigInterface {
         key: 'gpl-3.0',
         name: 'GNU General Public License v3.0',
         url: 'https://api.github.com/licenses/gpl-3.0',
-      }
+      },
     ],
     pluginFile: 'plugin.json',
     pluginFolder: dirPlugins(),
