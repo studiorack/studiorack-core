@@ -13,62 +13,85 @@ import {
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
 const PLUGIN_DIR: string = './test/plugins';
-const PLUGIN_ID: string = 'studiorack/studiorack-plugin-steinberg/adelay';
+const PLUGIN_ID: string = 'studiorack/plugin-oxe/oxe';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
 const PLUGIN: PluginInterface = {
-  author: 'Steinberg Media Technologies',
-  homepage: 'http://www.steinberg.net',
-  name: 'ADelayTest Factory',
-  description: 'Test Class',
-  tags: [ 'Fx', 'Delay' ],
-  version: '1.1.0',
-  id: 'adelay',
-  date: '2020-12-25T00:37:16.868Z',
+  author: 'Oxe Software',
+  homepage: 'https://github.com/oxesoft/oxefmsynth',
+  name: 'Oxe',
+  description: '8 operator frequency modulation synthesizer.',
+  tags: [
+    'FM',
+    'Synth',
+    'LFO'
+  ],
+  version: '1.3.5',
+  id: 'oxe',
+  date: '2016-04-19T08:00:00.000Z',
   files: {
-    audio: { name: 'adelay.wav', size: 352844 },
-    image: { name: 'adelay.png', size: 9588 },
-    linux: { name: 'adelay-linux.zip', size: 322192 },
-    mac: { name: 'adelay-mac.zip', size: 322192 },
-    win: { name: 'adelay-win.zip', size: 322192 }
+    audio: {
+      name: 'oxe.wav',
+      size: 352844
+    },
+    image: {
+      name: 'oxe.png',
+      size: 98712
+    },
+    linux: {
+      name: 'oxe-linux.zip',
+      size: 411823
+    },
+    mac: {
+      name: 'oxe-mac.zip',
+      size: 188225
+    },
+    win: {
+      name: 'oxe-win.zip',
+      size: 232072
+    }
   },
-  release: 'v0.0.1',
-  repo: 'studiorack/studiorack-plugin-steinberg'
+  release: 'v1.3.5',
+  repo: 'studiorack/plugin-oxe'
 };
 const PLUGIN_LOCAL: PluginLocal = {
-	"author": "Steinberg Media Technologies",
-	"date": "2020-12-25T00:37:16.868Z",
-	"description": "Test Class",
-	"files": {
-		"audio": {
-			"name": "adelay.wav",
-			"size": 352844
-		},
-		"image": {
-			"name": "adelay.png",
-			"size": 9588
-		},
-		"linux": {
-			"name": "adelay-linux.zip",
-			"size": 322192
-		},
-		"mac": {
-			"name": "adelay-mac.zip",
-			"size": 322192
-		},
-		"win": {
-			"name": "adelay-win.zip",
-			"size": 322192
-		}
-	},
-	"homepage": "http://www.steinberg.net",
-	"id": "adelay",
-	"name": "ADelayTest Factory",
-	"path": "./test/plugins/studiorack/studiorack-plugin-steinberg/adelay/1.1.0",
-	"release": "v0.0.1",
-	"repo": "studiorack/studiorack-plugin-steinberg",
-	"status": "installed",
-	"tags": ["Fx", "Delay"],
-	"version": "1.1.0"
+  "author": "Oxe Software",
+  "homepage": "https://github.com/oxesoft/oxefmsynth",
+  "name": "Oxe",
+  "description": "8 operator frequency modulation synthesizer.",
+  "tags": [
+    "FM",
+    "Synth",
+    "LFO"
+  ],
+  "version": "1.3.5",
+  "id": "oxe",
+  "date": "2016-04-19T08:00:00.000Z",
+  "files": {
+    "audio": {
+      "name": "oxe.wav",
+      "size": 352844
+    },
+    "image": {
+      "name": "oxe.png",
+      "size": 98712
+    },
+    "linux": {
+      "name": "oxe-linux.zip",
+      "size": 411823
+    },
+    "mac": {
+      "name": "oxe-mac.zip",
+      "size": 188225
+    },
+    "win": {
+      "name": "oxe-win.zip",
+      "size": 232072
+    }
+  },
+  "path": "./test/plugins/studiorack/plugin-oxe/oxe/1.3.5",
+  "release": "v1.3.5",
+  "repo": "studiorack/plugin-oxe",
+  "status": "installed",
 };
 
 beforeAll(() => {

@@ -17,17 +17,17 @@ import {
 // {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
 // 
 // For example:
-// studiorack/studiorack-plugin-steinberg/adelay/1.1.0/adelay.vst3
+// studiorack/plugin-oxe/oxe/1.3.5/oxe.vst3
 
-const PLUGIN_PATH = 'studiorack/studiorack-plugin-steinberg/adelay/1.1.0/adelay.vst3';
-const PLUGIN_PATH_DIR = 'studiorack/studiorack-plugin-steinberg/adelay/1.1.0';
-const PLUGIN_REPO = 'studiorack/studiorack-plugin-steinberg';
-const PLUGIN_REPO_INCORRECT = 'Studiorack/studiorack-plugin-Steinberg/Adelay';
-const PLUGIN_ID = 'adelay';
-const PLUGIN_VERSION = '1.1.0';
-const PLUGIN_FILENAME = 'adelay';
+const PLUGIN_PATH = 'studiorack/plugin-oxe/oxe/1.3.5/oxe.vst3';
+const PLUGIN_PATH_DIR = 'studiorack/plugin-oxe/oxe/1.3.5';
+const PLUGIN_REPO = 'studiorack/plugin-oxe';
+const PLUGIN_REPO_INCORRECT = 'Studiorack/plugin-Oxe/Oxe';
+const PLUGIN_ID = 'oxe';
+const PLUGIN_VERSION = '1.3.5';
+const PLUGIN_FILENAME = 'oxe';
 const PLUGIN_EXT= 'vst3';
-const PLUGIN_SLUG = 'studiorack_studiorack-plugin-steinberg_adelay';
+const PLUGIN_SLUG = 'studiorack_plugin-oxe_oxe';
 
 test('Get platform', () => {
   expect(getPlatform()).toEqual('mac');
