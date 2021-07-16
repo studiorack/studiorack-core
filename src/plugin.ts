@@ -64,6 +64,7 @@ async function pluginGet(id: string, version?: string): Promise<PluginInterface>
   if (!plugin) {
     throw Error(`Plugin version not found ${version}`);
   }
+  plugin.license = pluginPack[id].license;
   plugin.repo = pathGetRepo(id);
   return plugin;
 }

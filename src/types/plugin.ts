@@ -40,6 +40,7 @@ interface PluginInterface {
   id: string;
   name: string;
   files: PluginFiles;
+  license?: string;
   release: string;
   repo: string;
   tags: string[];
