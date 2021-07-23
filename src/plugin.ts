@@ -147,7 +147,7 @@ function pluginInstalled(plugin: PluginInterface): boolean {
     dirExists(pluginDirectory(plugin, 'VST')) ||
     dirExists(pluginDirectory(plugin, 'VST3'))
   ) {
-     return true;
+    return true;
   }
   return false;
 }
@@ -197,7 +197,12 @@ function pluginSource(plugin: PluginInterface): string {
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   if (!pluginInstalled(plugin)) {
-    throw Error(`Plugin not installed ${pluginDirectory(plugin, 'Components')} ${pluginDirectory(plugin, 'LV2')} ${pluginDirectory(plugin, 'VST')} ${pluginDirectory(plugin, 'VST3')}`);
+    throw Error(
+      `Plugin not installed ${pluginDirectory(plugin, 'Components')} ${pluginDirectory(
+        plugin,
+        'LV2'
+      )} ${pluginDirectory(plugin, 'VST')} ${pluginDirectory(plugin, 'VST3')}`
+    );
   } else {
     // Move all plugin formats from folders
     // TODO remove app if it exists

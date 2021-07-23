@@ -13,7 +13,7 @@ const pluginDirectories: PlatformsSupported = {
   aix: '/usr/local/lib',
   android: '/usr/local/lib',
   cygwin: '/usr/local/lib',
-  darwin: '/Library/Audio/Plug-ins',
+  darwin: `${homeDir}/Library/Audio/Plug-ins`,
   freebsd: '/usr/local/lib',
   linux: '/usr/local/lib',
   netbsd: '/usr/local/lib',
