@@ -13,85 +13,83 @@ import {
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
 const PLUGIN_DIR: string = './test/plugins';
-const PLUGIN_ID: string = 'studiorack/plugin-oxe/oxe';
+const PLUGIN_ID: string = 'studiorack/plugin-adlplug/adlplug';
+const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
 const PLUGIN: PluginInterface = {
-  author: 'Oxe Software',
-  homepage: 'https://github.com/oxesoft/oxefmsynth',
-  name: 'Oxe',
-  description: '8 operator frequency modulation synthesizer.',
+  author: 'Jean Pierre Cimalando',
+  homepage: 'https://github.com/jpcima/ADLplug',
+  name: 'ADLplug',
+  description: 'FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.',
   tags: [
-    'FM',
     'Synth',
-    'LFO'
+    'FM'
   ],
-  version: '1.3.5',
-  id: 'oxe',
-  date: '2016-04-19T08:00:00.000Z',
+  version: '1.0.2',
+  id: 'adlplug',
+  date: '2020-08-05T08:00:00.000Z',
   files: {
     audio: {
-      name: 'oxe.wav',
+      name: 'adlplug.wav',
       size: 352844
     },
     image: {
-      name: 'oxe.png',
-      size: 98712
+      name: 'adlplug.png',
+      size: 601168
     },
     linux: {
-      name: 'oxe-linux.zip',
-      size: 411823
+      name: 'adlplug-linux.zip',
+      size: 11068718
     },
     mac: {
-      name: 'oxe-mac.zip',
-      size: 188225
+      name: 'adlplug-mac.zip',
+      size: 33551714
     },
     win: {
-      name: 'oxe-win.zip',
-      size: 232072
+      name: 'adlplug-win.zip',
+      size: 24833093
     }
   },
-  release: 'v1.3.5',
-  repo: 'studiorack/plugin-oxe'
+  release: 'v1.0.2',
+  repo: 'studiorack/plugin-adlplug'
 };
 const PLUGIN_LOCAL: PluginLocal = {
-  "author": "Oxe Software",
-  "homepage": "https://github.com/oxesoft/oxefmsynth",
-  "name": "Oxe",
-  "description": "8 operator frequency modulation synthesizer.",
+  "author": "Jean Pierre Cimalando",
+  "homepage": "https://github.com/jpcima/ADLplug",
+  "name": "ADLplug",
+  "description": "FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.",
   "tags": [
-    "FM",
     "Synth",
-    "LFO"
+    "FM"
   ],
-  "version": "1.3.5",
-  "id": "oxe",
-  "date": "2016-04-19T08:00:00.000Z",
+  "version": "1.0.2",
+  "id": "adlplug",
+  "date": "2020-08-05T08:00:00.000Z",
   "files": {
     "audio": {
-      "name": "oxe.wav",
+      "name": "adlplug.wav",
       "size": 352844
     },
     "image": {
-      "name": "oxe.png",
-      "size": 98712
+      "name": "adlplug.png",
+      "size": 601168
     },
     "linux": {
-      "name": "oxe-linux.zip",
-      "size": 411823
+      "name": "adlplug-linux.zip",
+      "size": 11068718
     },
     "mac": {
-      "name": "oxe-mac.zip",
-      "size": 188225
+      "name": "adlplug-mac.zip",
+      "size": 33551714
     },
     "win": {
-      "name": "oxe-win.zip",
-      "size": 232072
+      "name": "adlplug-win.zip",
+      "size": 24833093
     }
   },
-  "path": "./test/plugins/studiorack/plugin-oxe/oxe/1.3.5",
-  "release": "v1.3.5",
-  "repo": "studiorack/plugin-oxe",
-  "status": "installed",
+  "release": "v1.0.2",
+  "repo": "studiorack/plugin-adlplug",
+  "status": "installed"
 };
 
 beforeAll(() => {
@@ -100,14 +98,14 @@ beforeAll(() => {
 });
 
 test('Create a plugin from a valid template', async () => {
-  expect(await pluginCreate(PLUGIN_DIR, PLUGIN_TEMPLATE)).toEqual(true);
+  expect(await pluginCreate(`${PLUGIN_DIR}/dplug-template`, PLUGIN_TEMPLATE)).toEqual(true);
 });
 
 test('Get plugin directory', () => {
-  expect(pluginDirectory(PLUGIN)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
-  expect(pluginDirectory(PLUGIN, 3)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}/${PLUGIN.id}`);
-  expect(pluginDirectory(PLUGIN, 2)).toEqual(`${PLUGIN_DIR}/${PLUGIN.repo}`);
-  expect(pluginDirectory(PLUGIN, 1)).toEqual(`${PLUGIN_DIR}`);
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}/${PLUGIN.id}`);
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}`);
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}`);
 });
 
 test('Get valid plugin by id', async () => {

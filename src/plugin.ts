@@ -9,6 +9,7 @@ import {
   dirRename,
   fileCreate,
   fileJsonLoad,
+  fileMove,
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
@@ -33,20 +34,24 @@ import {
 } from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
 
-const validPluginExt = ['deb', 'dmg', 'exe', 'zip'];
+const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
 async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
   if (dirExists(path)) {
     throw Error(`Directory already exists: ${path}`);
   }
   const data: Buffer = await getRaw(configGet('pluginTemplate').replace('${template}', template));
-  zipExtract(data, './');
-  dirRename(`studiorack-plugin-${template}-main`, path);
+  const tempDir: string = './temp-create';
+  dirCreate(tempDir);
+  zipExtract(data, tempDir);
+  dirCreate(path);
+  dirRename(`${tempDir}/studiorack-plugin-${template}-main`, path);
+  dirDelete(tempDir);
   return true;
 }
 
-function pluginDirectory(plugin: PluginInterface, depth?: number): string {
-  const pluginPaths: string[] = [configGet('pluginFolder'), plugin.repo, plugin.id, plugin.version];
+function pluginDirectory(plugin: PluginInterface, type = 'VST3', depth?: number): string {
+  const pluginPaths: string[] = [`${configGet('pluginFolder')}/${type}`, plugin.repo, plugin.id, plugin.version];
   if (depth) {
     return pluginPaths.slice(0, depth).join('/');
   }
@@ -114,25 +119,37 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   if (!validPluginExt.includes(pluginExt)) {
     throw Error(`Unsupported file type ${pluginExt}`);
   }
-  const pluginPath: string = pluginDirectory(plugin);
-  if (!dirExists(pluginPath)) {
-    dirCreate(pluginPath);
-  }
   const data: Buffer = await getRaw(pluginUrl);
+  const tempDir: string = `./temp-install`;
+  dirCreate(tempDir);
   if (pluginExt === 'zip') {
-    zipExtract(data, pluginPath);
+    zipExtract(data, tempDir);
+    fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
+    fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
+    fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
+    fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
+    dirDelete(tempDir);
   } else {
+    const pluginPath: string = pluginDirectory(plugin);
     fileCreate(`${pluginPath}/${plugin.files[getPlatform()].name}`, data);
+    dirOpen(pluginPath);
   }
-  // Reveal plugin folder in file browser
-  dirOpen(pluginPath);
-  plugin.path = pluginPath;
+  // TODO find better way to store paths
+  // plugin.path = pluginPath;
   plugin.status = 'installed';
   return plugin;
 }
 
 function pluginInstalled(plugin: PluginInterface): boolean {
-  return dirExists(pluginDirectory(plugin));
+  if (
+    dirExists(pluginDirectory(plugin, 'Components')) ||
+    dirExists(pluginDirectory(plugin, 'LV2')) ||
+    dirExists(pluginDirectory(plugin, 'VST')) ||
+    dirExists(pluginDirectory(plugin, 'VST3'))
+  ) {
+     return true;
+  }
+  return false;
 }
 
 function pluginLatest(pluginEntry: PluginEntry): PluginInterface {
@@ -180,33 +197,44 @@ function pluginSource(plugin: PluginInterface): string {
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   if (!pluginInstalled(plugin)) {
-    throw Error(`Plugin not installed ${pluginDirectory(plugin)}`);
+    throw Error(`Plugin not installed ${pluginDirectory(plugin, 'Components')} ${pluginDirectory(plugin, 'LV2')} ${pluginDirectory(plugin, 'VST')} ${pluginDirectory(plugin, 'VST3')}`);
   } else {
-    // Always delete specific plugin version
-    const versionDir: string = pluginDirectory(plugin);
-    dirDelete(versionDir);
-
-    // If no other plugins versions by same id exist, then remove plugin id
-    const idDir: string = pluginDirectory(plugin, 3);
-    if (dirEmpty(idDir)) {
-      dirDelete(idDir);
-    }
-
-    // If no other plugins by same repo exist, then remove plugin repo
-    const repoDir: string = pluginDirectory(plugin, 2);
-    if (dirEmpty(repoDir)) {
-      dirDelete(repoDir);
-    }
-
-    // If no other plugins by same repo root exist, then remove plugin repo root
-    const repoRootDir: string = pluginDirectory(plugin, 1) + '/' + plugin.repo.split('/')[0];
-    if (dirEmpty(repoRootDir)) {
-      dirDelete(repoRootDir);
-    }
+    // Move all plugin formats from folders
+    // TODO remove app if it exists
+    removeDirectory(plugin, 'Components');
+    removeDirectory(plugin, 'LV2');
+    removeDirectory(plugin, 'VST');
+    removeDirectory(plugin, 'VST3');
   }
   plugin.path = '';
   plugin.status = 'available';
   return plugin;
+}
+
+function removeDirectory(plugin: PluginLocal, type: string) {
+  // Always delete specific plugin version
+  const versionDir: string = pluginDirectory(plugin, type);
+  if (dirExists(versionDir)) {
+    dirDelete(versionDir);
+  }
+
+  // If no other plugins versions by same id exist, then remove plugin id
+  const idDir: string = pluginDirectory(plugin, type, 3);
+  if (dirExists(idDir) && dirEmpty(idDir)) {
+    dirDelete(idDir);
+  }
+
+  // If no other plugins by same repo exist, then remove plugin repo
+  const repoDir: string = pluginDirectory(plugin, type, 2);
+  if (dirExists(repoDir) && dirEmpty(repoDir)) {
+    dirDelete(repoDir);
+  }
+
+  // If no other plugins by same repo root exist, then remove plugin repo root
+  const repoRootDir: string = pluginDirectory(plugin, type, 1) + '/' + plugin.repo.split('/')[0];
+  if (dirExists(repoRootDir) && dirEmpty(repoRootDir)) {
+    dirDelete(repoRootDir);
+  }
 }
 
 export {

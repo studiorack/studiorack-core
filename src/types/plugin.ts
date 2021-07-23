@@ -55,7 +55,7 @@ interface PluginLicense {
 }
 
 interface PluginLocal extends PluginInterface {
-  path: string;
+  path?: string;
   status: string;
 }
 

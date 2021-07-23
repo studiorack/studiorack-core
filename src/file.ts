@@ -10,17 +10,17 @@ const fsUtils: any = require('nodejs-fs-utils');
 const homeDir: string = os.homedir();
 
 const pluginDirectories: PlatformsSupported = {
-  aix: homeDir + '/.vst3',
-  android: homeDir + '/.vst3',
-  cygwin: homeDir + '/.vst3',
-  darwin: '/Library/Audio/Plug-ins/VST3',
-  freebsd: homeDir + '/.vst3',
-  linux: homeDir + '/.vst3',
-  netbsd: homeDir + '/.vst3',
-  openbsd: homeDir + '/.vst3',
-  sunos: homeDir + '/.vst3',
-  win32: '/Program Files/Common Files/VST3',
-  win64: '/Program Files/Common Files/VST3',
+  aix: '/usr/local/lib',
+  android: '/usr/local/lib',
+  cygwin: '/usr/local/lib',
+  darwin: '/Library/Audio/Plug-ins',
+  freebsd: '/usr/local/lib',
+  linux: '/usr/local/lib',
+  netbsd: '/usr/local/lib',
+  openbsd: '/usr/local/lib',
+  sunos: '/usr/local/lib',
+  win32: '/Program Files (x86)/Common Files',
+  win64: '/Program Files/Common Files',
 };
 
 const projectDirectories: PlatformsSupported = {
@@ -161,6 +161,19 @@ function fileLoad(filePath: string): Buffer {
   return fs.readFileSync(filePath);
 }
 
+function fileMove(filePath: string, filePathDest: string): string[] {
+  const filePaths: string[] = dirRead(filePath);
+  if (filePaths.length > 0) {
+    dirCreate(filePathDest);
+    filePaths.forEach((filePathItem: string) => {
+      if (filePathItem.includes('__MACOSX')) return;
+      if (fileExists(`${filePathDest}/${path.basename(filePathItem)}`)) return;
+      fsUtils.moveSync(filePathItem, `${filePathDest}/${path.basename(filePathItem)}`);
+    });
+  }
+  return filePaths;
+}
+
 function fileOpen(filePath: string): Buffer {
   let command: string = '';
   switch (process.platform) {
@@ -230,6 +243,7 @@ export {
   fileJsonCreate,
   fileJsonLoad,
   fileLoad,
+  fileMove,
   fileOpen,
   fileSize,
   zipCreate,
