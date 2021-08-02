@@ -8,7 +8,9 @@ import {
   pluginInstall,
   pluginInstalled,
   pluginSearch,
-  pluginUninstall
+  pluginUninstall,
+  pluginGetLocal,
+  pluginsGet
 } from '../src/plugin';
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
@@ -108,11 +110,11 @@ test('Get plugin directory', () => {
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}`);
 });
 
-test('Get valid plugin by id', async () => {
+test('Get valid plugin by id from registry', async () => {
   expect(await pluginGet(PLUGIN_ID)).toMatchObject(PLUGIN);
 });
 
-test('Get invalid plugin by id', async () => {
+test('Get invalid plugin by id from registry', async () => {
   await expect(pluginGet('example/plugin')).rejects.toThrow('Plugin not found example/plugin');
 });
 
@@ -120,20 +122,28 @@ test('Install plugin by id', async () => {
   expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL);
 });
 
-test('Check if plugin is installed', async () => {
+test('Check if plugin is installed locally', () => {
   expect(pluginInstalled(PLUGIN)).toEqual(true);
 });
 
+// test('Get plugin locally', async () => {
+//   expect(await pluginGetLocal('vst3/studiorack/plugin-adlplug')).toMatchObject(PLUGIN_LOCAL);
+// });
+
+test('List plugins in registry', async () => {
+  expect(await pluginsGet()).toBeDefined();
+});
+
 test('List plugins locally', async () => {
-  expect(pluginsGetLocal()).toBeDefined();
+  expect(await pluginsGetLocal()).toBeDefined();
 });
 
 test('Search plugin registry', async () => {
-  expect(pluginSearch('delay')).toBeDefined();
+  expect(await pluginSearch('delay')).toBeDefined();
 });
 
 test('Search plugin registry', async () => {
-  expect(pluginSearch('delay')).toBeDefined();
+  expect(await pluginSearch('delay')).toBeDefined();
 });
 
 test('Uninstall plugin by id', async () => {
