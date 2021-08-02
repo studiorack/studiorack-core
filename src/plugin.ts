@@ -8,6 +8,7 @@ import {
   dirRead,
   dirRename,
   fileCreate,
+  fileJsonCreate,
   fileJsonLoad,
   fileMove,
   zipExtract,
@@ -124,10 +125,16 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   dirCreate(tempDir);
   if (pluginExt === 'zip') {
     zipExtract(data, tempDir);
-    fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
-    fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
-    fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
-    fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
+    const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
+    const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
+    const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
+    const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
+    const pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
+    // Save json metadata file alongside each plugin file/format
+    console.log(pathsAll);
+    pathsAll.forEach((pathPlugin: string) => {
+      fileJsonCreate(`${pathGetWithoutExt(pathPlugin)}.json`, plugin);
+    });
     dirDelete(tempDir);
   } else {
     const pluginPath: string = pluginDirectory(plugin);

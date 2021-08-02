@@ -119,7 +119,7 @@ function fileAdd(filePath: string, fileName: string, fileType: string, json: any
   return json;
 }
 
-function fileCreate(filePath: string, data: any): void {
+function fileCreate(filePath: string, data: string | Buffer): void {
   console.log('+', filePath);
   return fs.writeFileSync(filePath, data);
 }
@@ -165,11 +165,14 @@ function fileMove(filePath: string, filePathDest: string): string[] {
   const filePaths: string[] = dirRead(filePath);
   if (filePaths.length > 0) {
     dirCreate(filePathDest);
+    const filesMoved: string[] = [];
     filePaths.forEach((filePathItem: string) => {
       if (filePathItem.includes('__MACOSX')) return;
       if (fileExists(`${filePathDest}/${path.basename(filePathItem)}`)) return;
       fsUtils.moveSync(filePathItem, `${filePathDest}/${path.basename(filePathItem)}`);
+      filesMoved.push(`${filePathDest}/${path.basename(filePathItem)}`);
     });
+    return filesMoved;
   }
   return filePaths;
 }

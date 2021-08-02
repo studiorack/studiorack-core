@@ -80,8 +80,8 @@ function pathGetWithoutExt(pathItem: string): string {
   // If string contains a period
   if (extIndex !== -1) {
     const extLength = pathItem.length - extIndex;
-    // If the period + ext is 4-5 characters long
-    if (extLength === 4 || extLength === 5) {
+    // If the period + ext is 4-5 characters long or is .component
+    if (extLength === 4 || extLength === 5 || pathItem.substr(-10) === '.component') {
       return pathItem.substring(0, pathItem.lastIndexOf('.'));
     }
   }
