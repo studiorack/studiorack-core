@@ -96,7 +96,7 @@ function configDefault(): ConfigInterface {
     pluginTypes: {
       audioUnits: {
         name: 'Audio Units',
-        ext: 'au',
+        ext: 'component',
       },
       avidAudioExtension: {
         name: 'Avid Audio Extension',
@@ -105,6 +105,10 @@ function configDefault(): ConfigInterface {
       realtimeAudiosuite: {
         name: 'Real-Time AudioSuite',
         ext: 'rta',
+      },
+      ladspaVersion2: {
+        name: 'LADSPA Version 2',
+        ext: 'lv2',
       },
       timeDivisionMultiplexing: {
         name: 'Time-Division-Multiplexing',

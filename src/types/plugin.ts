@@ -78,6 +78,7 @@ interface PluginType {
 interface PluginTypes {
   audioUnits: PluginType;
   avidAudioExtension: PluginType;
+  ladspaVersion2: PluginType;
   realtimeAudiosuite: PluginType;
   timeDivisionMultiplexing: PluginType;
   virtualStudioTechnology: PluginType;
