@@ -66,8 +66,9 @@ function dirIs(dirPath: string): boolean {
   return fs.statSync(dirPath).isDirectory();
 }
 
-function dirOpen(dirPath: string): Buffer {
+function dirOpen(dirPath: string): Buffer | undefined {
   let command: string = '';
+  if (process.env.CI) return;
   switch (process.platform) {
     case 'darwin':
       command = 'open';
