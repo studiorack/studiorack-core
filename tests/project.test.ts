@@ -142,7 +142,9 @@ test('Uninstall project plugins', async () => {
 });
 
 test('Validate project', () => {
-  expect(projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true })).toEqual(PROJECT_LOCAL);
+  const result = projectValidate(`${PROJECT_DIR}/Banwer Project/Banwer.als`, { json: true, files: true });
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Validate project files', () => {
