@@ -1,0 +1,34 @@
+{
+  "id": "letto",
+  "author": "studiorack-user",
+  "homepage": "https://studiorack.github.io/studiorack-site/",
+  "name": "Letto",
+  "description": "Created using StudioRack",
+  "repo": "letto-project",
+  "tags": [
+    "Ableton"
+  ],
+  "version": "1.0.0",
+  "date": "2021-01-09T19:58:00.996Z",
+  "type": {
+    "name": "Ableton",
+    "ext": "als"
+  },
+  "files": {
+    "audio": {
+      "name": "Letto.wav",
+      "size": 2822444
+    },
+    "image": {
+      "name": "Letto.png",
+      "size": 20913
+    },
+    "project": {
+      "name": "Letto.als",
+      "size": 461822
+    }
+  },
+  "plugins": {},
+  "path": "./test/projects/Letto Project",
+  "status": "installed"
+}

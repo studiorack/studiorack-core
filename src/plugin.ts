@@ -137,7 +137,6 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
     const pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
     // Save json metadata file alongside each plugin file/format
-    console.log(pathsAll);
     pathsAll.forEach((pathPlugin: string) => {
       fileJsonCreate(`${pathGetWithoutExt(pathPlugin)}.json`, plugin);
     });
