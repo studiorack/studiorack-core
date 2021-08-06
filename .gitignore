@@ -4,3 +4,5 @@ coverage
 dist
 node_modules
 config.json
+test/plugins
+test/projects/songs
