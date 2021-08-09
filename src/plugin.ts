@@ -99,10 +99,6 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginsFound: any = {};
   pluginPaths.forEach((pluginPath: string) => {
     const relativePath: string = pluginPath.replace(configGet('pluginFolder') + '/', '');
-    const pluginId: string = pathGetId(relativePath);
-    // Ignore plugins with the same id (plugin can have multiple formats)
-    if (pluginsFound[pluginId]) return;
-    pluginsFound[pluginId] = true;
     let plugin: any = fileJsonLoad(`${pathGetWithoutExt(pluginPath)}.json`);
     if (!plugin) {
       // If there is no metadata json file, attempt to auto create one
@@ -112,6 +108,9 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
       plugin.repo = pathGetRepo(relativePath);
       plugin.version = pathGetVersion(pluginPath);
     }
+    // Ignore plugins with the same repo/id (plugin can have multiple formats)
+    if (pluginsFound[`${plugin.repo}/${plugin.id}`]) return;
+    pluginsFound[`${plugin.repo}/${plugin.id}`] = true;
     plugin.path = pathGetDirectory(pluginPath);
     plugin.status = 'installed';
     plugins.push(plugin);
