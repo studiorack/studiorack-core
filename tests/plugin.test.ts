@@ -126,7 +126,7 @@ test('Get invalid plugin by id from registry', async () => {
 
 test('Install plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  if (process.env.CI === 'linux') {
+  if (process.env.CI) {
     PLUGIN_LOCAL_UPDATED.paths = [
       PLUGIN_LOCAL.paths[1]
     ];
