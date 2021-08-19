@@ -125,7 +125,13 @@ test('Get invalid plugin by id from registry', async () => {
 });
 
 test('Install plugin by id', async () => {
-  expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL);
+  const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
+  if (process.env.CI === 'linux') {
+    PLUGIN_LOCAL_UPDATED.paths = [
+      PLUGIN_LOCAL.paths[1]
+    ];
+  }
+  expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
 
 test('Check if plugin is installed locally', () => {
