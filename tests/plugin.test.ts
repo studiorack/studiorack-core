@@ -89,6 +89,12 @@ const PLUGIN_LOCAL: PluginLocal = {
       "size": 24833093
     }
   },
+  "paths": [
+    "./test/plugins/Components/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.component",
+    "./test/plugins/LV2/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.lv2",
+    "./test/plugins/VST/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.vst",
+    "./test/plugins/VST3/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.vst3",
+  ],
   "release": "v1.0.2",
   "repo": "studiorack/plugin-adlplug",
   "status": "installed"
@@ -148,7 +154,7 @@ test('Search plugin registry', async () => {
 
 test('Uninstall plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  delete PLUGIN_LOCAL_UPDATED.path;
+  delete PLUGIN_LOCAL_UPDATED.paths;
   PLUGIN_LOCAL_UPDATED.status = 'available';
   expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
