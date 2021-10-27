@@ -191,7 +191,7 @@ function validateRun(filePath: string): string {
     console.log('⎋', `${validatorPath} "${filePath}"`);
     const sdout: Buffer = execSync(`${validatorPath} "${filePath}"`);
     return sdout.toString();
-  } catch (error) {
+  } catch (error: any) {
     return error.output ? error.output.toString() : error.toString();
   }
 }
