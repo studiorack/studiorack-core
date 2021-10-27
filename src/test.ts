@@ -1,13 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import {
-  dirExists,
-  dirRead,
-  fileExec,
-  fileJsonCreate,
-  zipExtract,
-} from './file';
+import { dirExists, dirRead, fileExec, fileJsonCreate, zipExtract } from './file';
 import { getPlatform } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
@@ -67,7 +61,7 @@ function testPlugin(pathItem: string, options?: any): object {
   return {
     path: pathItem,
     valid: outputText.includes('ALL TESTS PASSED'),
-    result: outputText
+    result: outputText,
   };
 }
 
@@ -82,9 +76,4 @@ function testRun(filePath: string): string {
   }
 }
 
-export {
-  testFolder,
-  testInstall,
-  testPlugin,
-  testRun
-};
+export { testFolder, testInstall, testPlugin, testRun };
