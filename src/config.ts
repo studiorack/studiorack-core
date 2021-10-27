@@ -152,6 +152,8 @@ function configDefault(): ConfigInterface {
         ext: 'rpp',
       },
     },
+    testerUrl:
+      'https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${platform}.zip',
     validatorUrl:
       'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip',
   };
