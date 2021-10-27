@@ -18,6 +18,7 @@ interface ConfigInterface {
   projectFolder: string;
   projectRegistry: string;
   projectTypes: ProjectTypes;
+  testerUrl: string;
   validatorUrl: string;
 }
 

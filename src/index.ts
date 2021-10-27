@@ -6,5 +6,6 @@ export * from './project';
 export * from './types/config';
 export * from './types/plugin';
 export * from './types/project';
+export * from './tester';
 export * from './utils';
 export * from './validate';

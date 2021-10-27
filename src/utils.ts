@@ -34,7 +34,7 @@ function inputGetParts(input: string): string[] {
 // {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
 //
 // For example:
-// studiorack/plugin-oxe/oxe/1.3.5/oxe.vst3
+// studiorack/oxe/oxe/1.3.5/oxe.vst3
 
 function pathGetDirectory(pathItem: string): string {
   return pathItem.substring(0, pathItem.lastIndexOf('/'));

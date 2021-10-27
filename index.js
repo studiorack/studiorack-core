@@ -8,6 +8,7 @@ const file = require('./dist/file.js');
 const plugin = require('./dist/plugin.js');
 const project = require('./dist/plugin.js');
 const utils = require('./dist/utils.js');
+const test = require('./dist/test.js');
 const validate = require('./dist/validate.js');
 
 async function run() {
@@ -17,23 +18,26 @@ async function run() {
   // const pluginSearch = await plugin.pluginSearch('delay');
   // console.log('pluginSearch', pluginSearch);
 
-  // const pluginGet = await plugin.pluginGet('studiorack/plugin-oxe/oxe');
+  // const pluginGet = await plugin.pluginGet('studiorack/oxe/oxe');
   // console.log('pluginGet', pluginGet);
 
-  const pluginsGetLocal = await plugin.pluginsGetLocal();
-  console.log('pluginsGetLocal', pluginsGetLocal);
+  // const pluginsGetLocal = await plugin.pluginsGetLocal();
+  // console.log('pluginsGetLocal', pluginsGetLocal);
 
-  // const pluginInstall = await plugin.pluginInstall('studiorack/plugin-adlplug/adlplug');
+  // const pluginInstall = await plugin.pluginInstall('studiorack/oxe/oxe');
   // console.log('pluginInstall', pluginInstall);
 
-  // const pluginInstalled = await plugin.pluginInstalled('studiorack/plugin-adlplug/adlplug');
+  // const pluginInstalled = await plugin.pluginInstalled('studiorack/oxe/oxe');
   // console.log('pluginInstalled', pluginInstalled);
 
-  // const pluginUninstall = await plugin.pluginUninstall('studiorack/studiorack-plugin-dplug/witty-audio-clip-it');
+  // const pluginUninstall = await plugin.pluginUninstall('studiorack/oxe/oxe');
   // console.log('pluginUninstall', pluginUninstall);
 
-  // const plugin = await registry.pluginGetLocal('meldaproduction/tools/mutility');
+  // const plugin = await registry.pluginGetLocal('studiorack/oxe/oxe');
   // console.log('plugin', plugin);
+
+  const result = await test.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
+  console.log('result', result);
 }
 
 run();

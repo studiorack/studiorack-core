@@ -17,17 +17,17 @@ import {
 // {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
 // 
 // For example:
-// studiorack/plugin-oxe/oxe/1.3.5/oxe.vst3
+// studiorack/oxe/oxe/1.3.5/oxe.vst3
 
-const PLUGIN_PATH = 'studiorack/plugin-oxe/oxe/1.3.5/oxe.vst3';
-const PLUGIN_PATH_DIR = 'studiorack/plugin-oxe/oxe/1.3.5';
-const PLUGIN_REPO = 'studiorack/plugin-oxe';
-const PLUGIN_REPO_INCORRECT = 'Studiorack/plugin-Oxe/Oxe';
+const PLUGIN_PATH = 'studiorack/oxe/oxe/1.3.5/oxe.vst3';
+const PLUGIN_PATH_DIR = 'studiorack/oxe/oxe/1.3.5';
+const PLUGIN_REPO = 'studiorack/oxe';
+const PLUGIN_REPO_INCORRECT = 'Studiorack/Oxe/Oxe';
 const PLUGIN_ID = 'oxe';
 const PLUGIN_VERSION = '1.3.5';
 const PLUGIN_FILENAME = 'oxe';
 const PLUGIN_EXT= 'vst3';
-const PLUGIN_SLUG = 'studiorack_plugin-oxe_oxe';
+const PLUGIN_SLUG = 'studiorack_oxe_oxe';
 
 test('Get platform', () => {
   expect(getPlatform()).toEqual(process.env.CI ? 'linux' : 'mac');
