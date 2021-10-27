@@ -15,7 +15,7 @@ import {
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
 const PLUGIN_DIR: string = './test/plugins';
-const PLUGIN_ID: string = 'studiorack/plugin-adlplug/adlplug';
+const PLUGIN_ID: string = 'studiorack/adlplug/adlplug';
 const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
 const PLUGIN: PluginInterface = {
@@ -53,7 +53,7 @@ const PLUGIN: PluginInterface = {
     }
   },
   release: 'v1.0.2',
-  repo: 'studiorack/plugin-adlplug'
+  repo: 'studiorack/adlplug'
 };
 const PLUGIN_LOCAL: PluginLocal = {
   "author": "Jean Pierre Cimalando",
@@ -90,13 +90,13 @@ const PLUGIN_LOCAL: PluginLocal = {
     }
   },
   "paths": [
-    "./test/plugins/Components/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.component",
-    "./test/plugins/LV2/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.lv2",
-    "./test/plugins/VST/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.vst",
-    "./test/plugins/VST3/studiorack/plugin-adlplug/adlplug/1.0.2/ADLplug.vst3",
+    "./test/plugins/Components/studiorack/adlplug/adlplug/1.0.2/ADLplug.component",
+    "./test/plugins/LV2/studiorack/adlplug/adlplug/1.0.2/ADLplug.lv2",
+    "./test/plugins/VST/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst",
+    "./test/plugins/VST3/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst3",
   ],
   "release": "v1.0.2",
-  "repo": "studiorack/plugin-adlplug",
+  "repo": "studiorack/adlplug",
   "status": "installed"
 };
 
@@ -139,7 +139,7 @@ test('Check if plugin is installed locally', () => {
 });
 
 // test('Get plugin locally', async () => {
-//   expect(await pluginGetLocal('vst3/studiorack/plugin-adlplug')).toMatchObject(PLUGIN_LOCAL);
+//   expect(await pluginGetLocal('vst3/studiorack/adlplug')).toMatchObject(PLUGIN_LOCAL);
 // });
 
 test('List plugins in registry', async () => {
