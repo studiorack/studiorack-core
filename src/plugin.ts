@@ -14,14 +14,7 @@ import {
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
-import {
-  getPlatform,
-  pathGetExt,
-  pathGetId,
-  pathGetRepo,
-  pathGetVersion,
-  pathGetWithoutExt,
-} from './utils';
+import { getPlatform, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -230,8 +223,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     throw Error(`Plugin not found locally ${id}, ${version}`);
   }
   if (!plugin.repo) {
-    throw Error(
-      `Plugin is missing repo metadata ${id}, ${version}`);
+    throw Error(`Plugin is missing repo metadata ${id}, ${version}`);
   }
   if (!pluginInstalled(plugin)) {
     throw Error(
