@@ -27,11 +27,11 @@ async function run() {
   // const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
   // console.log('pluginInstall', pluginInstall);
 
-  // const pluginInstalled = await plugin.pluginInstalled('studiorack/oxe/oxe');
+  // const pluginInstalled = await plugin.pluginInstalled('studiorack/adlplug/adlplug');
   // console.log('pluginInstalled', pluginInstalled);
 
-  const pluginUninstall = await plugin.pluginUninstall('studiorack/adlplug/adlplug');
-  console.log('pluginUninstall', pluginUninstall);
+  // const pluginUninstall = await plugin.pluginUninstall('studiorack/adlplug/adlplug');
+  // console.log('pluginUninstall', pluginUninstall);
 
   // const plugin = await registry.pluginGetLocal('studiorack/oxe/oxe');
   // console.log('plugin', plugin);
@@ -39,11 +39,12 @@ async function run() {
   // const result = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
   // console.log('result', result);
 
-  // const result = await plugin.pluginUninstallAll();
-  // console.log('result', result);
+  const result = await plugin.pluginInstallAll();
+  console.log('pluginInstallAll', result);
 
-  // const result = await plugin.pluginInstallAll();
-  // console.log('result', result);
+  // const result = await plugin.pluginUninstallAll();
+  // console.log('pluginUninstallAll', result);
+
 }
 
 run();

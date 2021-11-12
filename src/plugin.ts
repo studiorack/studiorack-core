@@ -130,11 +130,11 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   if (!validPluginExt.includes(pluginExt)) {
     throw Error(`Unsupported file type ${pluginExt}`);
   }
-  const data: Buffer = await getRaw(pluginUrl);
-  const tempDir: string = `./temp-install`;
-  dirCreate(tempDir);
+  const pluginData: Buffer = await getRaw(pluginUrl);
   if (pluginExt === 'zip') {
-    zipExtract(data, tempDir);
+    const tempDir: string = `./temp/${plugin.repo}/${plugin.id}`;
+    dirCreate(tempDir);
+    zipExtract(pluginData, tempDir);
     const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
     const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
     const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
@@ -148,8 +148,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     dirDelete(tempDir);
   } else {
     const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
-    fileCreate(pluginPath, data);
-    dirOpen(pluginDirectory(plugin));
+    fileCreate(pluginPath, pluginData);
     plugin.paths.push(pluginPath);
   }
   plugin.status = 'installed';
@@ -157,15 +156,15 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
 }
 
 async function pluginInstallAll(): Promise<PluginLocal[]> {
-  return await pluginsGet().then((pluginPack: PluginPack) => {
+  return await pluginsGet().then(async (pluginPack: PluginPack) => {
     const plugins: PluginLocal[] = [];
-    Object.keys(pluginPack).forEach(async (id: string) => {
-      const pluginItem: PluginInterface = pluginLatest(pluginPack[id]);
+    for (const pluginId in pluginPack) {
+      const pluginItem: PluginInterface = pluginLatest(pluginPack[pluginId]);
       if (!pluginInstalled(pluginItem)) {
-        const pluginLocal: PluginLocal = await pluginInstall(pluginPack[id].id, pluginPack[id].version);
+        const pluginLocal: PluginLocal = await pluginInstall(pluginPack[pluginId].id, pluginPack[pluginId].version);
         plugins.push(pluginLocal);
       }
-    });
+    }
     return plugins;
   });
 }
@@ -256,16 +255,14 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
 }
 
 async function pluginUninstallAll(): Promise<PluginLocal[]> {
-  return await pluginsGetLocal().then((pluginsLocal: PluginLocal[]) => {
+  return await pluginsGetLocal().then(async (pluginsLocal: PluginLocal[]) => {
     const plugins: PluginLocal[] = [];
-    pluginsLocal.forEach(async (pluginLocal: PluginLocal) => {
-      console.log(pluginLocal.id);
+    for (const pluginLocal of pluginsLocal) {
       if (pluginInstalled(pluginLocal)) {
-        console.log(pluginLocal.id, 'installed');
-        const plugin: PluginLocal = await pluginUninstall(pluginLocal.id, pluginLocal.version);
+        const plugin: PluginLocal = await pluginUninstall(`${pluginLocal.repo}/${pluginLocal.id}`, pluginLocal.version);
         plugins.push(plugin);
       }
-    });
+    }
     return plugins;
   });
 }
