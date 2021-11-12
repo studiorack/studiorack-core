@@ -16,7 +16,6 @@ import {
 import { getJSON, getRaw } from './api';
 import {
   getPlatform,
-  pathGetDirectory,
   pathGetExt,
   pathGetId,
   pathGetRepo,
@@ -157,6 +156,20 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   return plugin;
 }
 
+async function pluginInstallAll(): Promise<PluginLocal[]> {
+  return await pluginsGet().then((pluginPack: PluginPack) => {
+    const plugins: PluginLocal[] = [];
+    Object.keys(pluginPack).forEach(async (id: string) => {
+      const pluginItem: PluginInterface = pluginLatest(pluginPack[id]);
+      if (!pluginInstalled(pluginItem)) {
+        const pluginLocal: PluginLocal = await pluginInstall(pluginPack[id].id, pluginPack[id].version);
+        plugins.push(pluginLocal);
+      }
+    });
+    return plugins;
+  });
+}
+
 function pluginInstalled(plugin: PluginInterface): boolean {
   if (
     dirExists(pluginDirectory(plugin, 'Components')) ||
@@ -212,14 +225,22 @@ function pluginSource(plugin: PluginInterface): string {
 }
 
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
-  const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
-  plugin.paths = [];
+  const plugin: PluginLocal = (await pluginGetLocal(id, version)) as PluginLocal;
+  console.log(plugin);
+  if (!plugin) {
+    throw Error(`Plugin not found locally ${id}, ${version}`);
+  }
+  if (!plugin.repo) {
+    throw Error(
+      `Plugin is missing repo metadata ${id}, ${version}`);
+  }
   if (!pluginInstalled(plugin)) {
     throw Error(
-      `Plugin not installed ${pluginDirectory(plugin, 'Components')} ${pluginDirectory(
-        plugin,
-        'LV2'
-      )} ${pluginDirectory(plugin, 'VST')} ${pluginDirectory(plugin, 'VST3')}`
+      `Plugin not installed locally 
+      ${pluginDirectory(plugin, 'Components')} 
+      ${pluginDirectory(plugin, 'LV2')} 
+      ${pluginDirectory(plugin, 'VST')} 
+      ${pluginDirectory(plugin, 'VST3')}`
     );
   } else {
     // Move all plugin formats from folders
@@ -229,8 +250,24 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     removeDirectory(plugin, 'VST');
     removeDirectory(plugin, 'VST3');
   }
+  plugin.paths = [];
   plugin.status = 'available';
   return plugin;
+}
+
+async function pluginUninstallAll(): Promise<PluginLocal[]> {
+  return await pluginsGetLocal().then((pluginsLocal: PluginLocal[]) => {
+    const plugins: PluginLocal[] = [];
+    pluginsLocal.forEach(async (pluginLocal: PluginLocal) => {
+      console.log(pluginLocal.id);
+      if (pluginInstalled(pluginLocal)) {
+        console.log(pluginLocal.id, 'installed');
+        const plugin: PluginLocal = await pluginUninstall(pluginLocal.id, pluginLocal.version);
+        plugins.push(plugin);
+      }
+    });
+    return plugins;
+  });
 }
 
 function removeDirectory(plugin: PluginLocal, type: string) {
@@ -267,9 +304,11 @@ export {
   pluginsGet,
   pluginsGetLocal,
   pluginInstall,
+  pluginInstallAll,
   pluginInstalled,
   pluginLatest,
   pluginSearch,
   pluginSource,
   pluginUninstall,
+  pluginUninstallAll,
 };

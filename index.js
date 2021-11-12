@@ -8,7 +8,7 @@ const file = require('./dist/file.js');
 const plugin = require('./dist/plugin.js');
 const project = require('./dist/plugin.js');
 const utils = require('./dist/utils.js');
-const test = require('./dist/test.js');
+const tester = require('./dist/tester.js');
 const validate = require('./dist/validate.js');
 
 async function run() {
@@ -24,20 +24,26 @@ async function run() {
   // const pluginsGetLocal = await plugin.pluginsGetLocal();
   // console.log('pluginsGetLocal', pluginsGetLocal);
 
-  // const pluginInstall = await plugin.pluginInstall('studiorack/oxe/oxe');
+  // const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
   // console.log('pluginInstall', pluginInstall);
 
   // const pluginInstalled = await plugin.pluginInstalled('studiorack/oxe/oxe');
   // console.log('pluginInstalled', pluginInstalled);
 
-  // const pluginUninstall = await plugin.pluginUninstall('studiorack/oxe/oxe');
-  // console.log('pluginUninstall', pluginUninstall);
+  const pluginUninstall = await plugin.pluginUninstall('studiorack/adlplug/adlplug');
+  console.log('pluginUninstall', pluginUninstall);
 
   // const plugin = await registry.pluginGetLocal('studiorack/oxe/oxe');
   // console.log('plugin', plugin);
 
-  const result = await test.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
-  console.log('result', result);
+  // const result = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
+  // console.log('result', result);
+
+  // const result = await plugin.pluginUninstallAll();
+  // console.log('result', result);
+
+  // const result = await plugin.pluginInstallAll();
+  // console.log('result', result);
 }
 
 run();
