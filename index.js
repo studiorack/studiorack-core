@@ -39,11 +39,20 @@ async function run() {
   // const result = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
   // console.log('result', result);
 
-  const result = await plugin.pluginInstallAll();
-  console.log('pluginInstallAll', result);
+  // const result = await plugin.pluginInstallAll();
+  // console.log('pluginInstallAll', result);
 
   // const result = await plugin.pluginUninstallAll();
   // console.log('pluginUninstallAll', result);
+
+  const result = await validate.validateFolder('./test/plugins/**/*.{dll,lv2,vst,vst3}', {
+    files: true,
+    json: true,
+    txt: true,
+    zip: true,
+    summary: true
+  });
+  console.log('validatePlugin', result);
 
 }
 

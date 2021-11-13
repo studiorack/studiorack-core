@@ -30,7 +30,7 @@ async function testFolder(pluginPath: string, options: any): Promise<object[]> {
     testResults.push(testResult);
   }
   if (options && options.summary) {
-    let rootPath = pluginPath.replace('**/*.{vst,vst3}', '').substring(0, pluginPath.lastIndexOf('/'));
+    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf('/')).replace('**', '');
     rootPath += rootPath.endsWith('/') ? '' : '/';
     fileJsonCreate(`${rootPath}testResults.json`, { testResults });
   }

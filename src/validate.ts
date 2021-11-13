@@ -66,7 +66,7 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
     }
   }
   if (options.summary) {
-    let rootPath = pluginPath.replace('**/*.{vst,vst3}', '').substring(0, pluginPath.lastIndexOf('/'));
+    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf('/')).replace('**', '');
     rootPath += rootPath.endsWith('/') ? '' : '/';
     fileJsonCreate(`${rootPath}plugins.json`, { plugins });
   }
