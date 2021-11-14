@@ -92,7 +92,7 @@ function configDefault(): ConfigInterface {
     pluginFolder: dirPlugins(),
     pluginRegistry: 'https://studiorack.github.io/studiorack-registry/',
     pluginRelease: 'https://github.com/${repo}/releases/download',
-    pluginTemplate: 'https://github.com/studiorack/studiorack-plugin-${template}/archive/main.zip',
+    pluginTemplate: 'https://github.com/studiorack/studiorack-template-${template}/archive/main.zip',
     pluginTypes: {
       audioUnits: {
         name: 'Audio Units',
@@ -154,7 +154,7 @@ function configDefault(): ConfigInterface {
     },
     testerUrl: 'https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${platform}.zip',
     validatorUrl:
-      'https://github.com/studiorack/studiorack-plugin-steinberg/releases/latest/download/validator-${platform}.zip',
+      'https://github.com/studiorack/studiorack-template-steinberg/releases/latest/download/validator-${platform}.zip',
   };
 }
 

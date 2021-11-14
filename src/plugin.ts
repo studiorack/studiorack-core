@@ -38,7 +38,7 @@ async function pluginCreate(path: string, template: keyof PluginTemplate = 'stei
   dirCreate(tempDir);
   zipExtract(data, tempDir);
   dirCreate(path);
-  dirRename(`${tempDir}/studiorack-plugin-${template}-main`, path);
+  dirRename(`${tempDir}/studiorack-template-${template}-main`, path);
   dirDelete(tempDir);
   return true;
 }
