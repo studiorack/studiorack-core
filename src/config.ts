@@ -110,6 +110,10 @@ function configDefault(): ConfigInterface {
         name: 'LADSPA Version 2',
         ext: 'lv2',
       },
+      sfz: {
+        name: 'SFZ',
+        ext: 'sfz',
+      },
       timeDivisionMultiplexing: {
         name: 'Time-Division-Multiplexing',
         ext: 'tdm',

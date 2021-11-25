@@ -128,22 +128,23 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     const tempDir: string = `./temp/${plugin.repo}/${plugin.id}`;
     dirCreate(tempDir);
     zipExtract(pluginData, tempDir);
-    // If an sfz sample pack, copy the entire contents to the SFZ folder
+    const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
+    const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
+    const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
+    const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
+    let pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
+    // If an sfz sample pack, move the entire contents to the SFZ folder
     if (plugin.tags.includes('sfz')) {
       dirCreate(pluginDirectory(plugin, 'SFZ'));
       dirMove(tempDir, pluginDirectory(plugin, 'SFZ'));
-    } else {
-      const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
-      const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
-      const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
-      const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
-      const pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
-      // Save json metadata file alongside each plugin file/format
-      pathsAll.forEach((pluginPath: string) => {
-        fileJsonCreate(`${pathGetWithoutExt(pluginPath)}.json`, plugin);
-        plugin.paths.push(pluginPath);
-      });
+      const pathsSfz: string[] = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
+      pathsAll = pathsAll.concat(pathsSfz);
     }
+    // Save json metadata file alongside each plugin file/format
+    pathsAll.forEach((pluginPath: string) => {
+      fileJsonCreate(`${pathGetWithoutExt(pluginPath)}.json`, plugin);
+      plugin.paths.push(pluginPath);
+    });
     dirDelete(tempDir);
   } else {
     const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
@@ -172,6 +173,7 @@ function pluginInstalled(plugin: PluginInterface): boolean {
   if (
     dirExists(pluginDirectory(plugin, 'Components')) ||
     dirExists(pluginDirectory(plugin, 'LV2')) ||
+    dirExists(pluginDirectory(plugin, 'SFZ')) ||
     dirExists(pluginDirectory(plugin, 'VST')) ||
     dirExists(pluginDirectory(plugin, 'VST3'))
   ) {
@@ -236,6 +238,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       `Plugin not installed locally 
       ${pluginDirectory(plugin, 'Components')} 
       ${pluginDirectory(plugin, 'LV2')} 
+      ${pluginDirectory(plugin, 'SFZ')} 
       ${pluginDirectory(plugin, 'VST')} 
       ${pluginDirectory(plugin, 'VST3')}`
     );
@@ -244,6 +247,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     // TODO remove app if it exists
     removeDirectory(plugin, 'Components');
     removeDirectory(plugin, 'LV2');
+    removeDirectory(plugin, 'SFZ');
     removeDirectory(plugin, 'VST');
     removeDirectory(plugin, 'VST3');
   }

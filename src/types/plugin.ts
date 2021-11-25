@@ -80,6 +80,7 @@ interface PluginTypes {
   avidAudioExtension: PluginType;
   ladspaVersion2: PluginType;
   realtimeAudiosuite: PluginType;
+  sfz: PluginType;
   timeDivisionMultiplexing: PluginType;
   virtualStudioTechnology: PluginType;
   virtualStudioTechnology3: PluginType;

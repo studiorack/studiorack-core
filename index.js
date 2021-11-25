@@ -24,35 +24,35 @@ async function run() {
   // const pluginsGetLocal = await plugin.pluginsGetLocal();
   // console.log('pluginsGetLocal', pluginsGetLocal);
 
-  // const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
+  // const pluginInstall = await plugin.pluginInstall('studiorack/salamander-grand-piano/salamander-grand-piano');
   // console.log('pluginInstall', pluginInstall);
 
-  // const pluginInstalled = await plugin.pluginInstalled('studiorack/adlplug/adlplug');
+  // const pluginInstalled = await plugin.pluginInstalled('studiorack/salamander-grand-piano/salamander-grand-piano');
   // console.log('pluginInstalled', pluginInstalled);
 
-  // const pluginUninstall = await plugin.pluginUninstall('studiorack/adlplug/adlplug');
+  // const pluginUninstall = await plugin.pluginUninstall('studiorack/salamander-grand-piano/salamander-grand-piano');
   // console.log('pluginUninstall', pluginUninstall);
 
-  // const plugin = await registry.pluginGetLocal('studiorack/oxe/oxe');
-  // console.log('plugin', plugin);
+  // const pluginGetLocal = await plugin.pluginGetLocal('studiorack/salamander-grand-piano/salamander-grand-piano');
+  // console.log('pluginGetLocal', pluginGetLocal);
 
-  // const result = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
-  // console.log('result', result);
+  // const testFolder = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
+  // console.log('testFolder', testFolder);
 
-  // const result = await plugin.pluginInstallAll();
-  // console.log('pluginInstallAll', result);
+  // const pluginInstallAll = await plugin.pluginInstallAll();
+  // console.log('pluginInstallAll', pluginInstallAll);
 
-  // const result = await plugin.pluginUninstallAll();
-  // console.log('pluginUninstallAll', result);
+  // const pluginUninstallAll = await plugin.pluginUninstallAll();
+  // console.log('pluginUninstallAll', pluginUninstallAll);
 
-  const result = await validate.validateFolder('./test/plugins/**/*.{dll,lv2,vst,vst3}', {
-    files: true,
-    json: true,
-    txt: true,
-    zip: true,
-    summary: true
-  });
-  console.log('validatePlugin', result);
+  // const result = await validate.validateFolder('./test/plugins/**/*.{dll,lv2,vst,vst3}', {
+  //   files: true,
+  //   json: true,
+  //   txt: true,
+  //   zip: true,
+  //   summary: true
+  // });
+  // console.log('validatePlugin', result);
 
 }
 
