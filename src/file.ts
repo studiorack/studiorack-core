@@ -66,6 +66,15 @@ function dirIs(dirPath: string): boolean {
   return fs.statSync(dirPath).isDirectory();
 }
 
+function dirMove(dirPath: string, newPath: string): void | boolean {
+  if (fs.existsSync(dirPath)) {
+    console.log('-', dirPath);
+    console.log('+', newPath);
+    return fs.renameSync(dirPath, newPath);
+  }
+  return false;
+}
+
 function dirOpen(dirPath: string): Buffer {
   let command: string = '';
   if (process.env.CI) return new Buffer('');
@@ -233,6 +242,7 @@ export {
   dirEmpty,
   dirExists,
   dirIs,
+  dirMove,
   dirOpen,
   dirPlugins,
   dirProjects,

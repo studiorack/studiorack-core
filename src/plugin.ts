@@ -4,7 +4,7 @@ import {
   dirDelete,
   dirEmpty,
   dirExists,
-  dirOpen,
+  dirMove,
   dirRead,
   dirRename,
   fileCreate,
@@ -128,16 +128,22 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     const tempDir: string = `./temp/${plugin.repo}/${plugin.id}`;
     dirCreate(tempDir);
     zipExtract(pluginData, tempDir);
-    const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
-    const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
-    const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
-    const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
-    const pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
-    // Save json metadata file alongside each plugin file/format
-    pathsAll.forEach((pluginPath: string) => {
-      fileJsonCreate(`${pathGetWithoutExt(pluginPath)}.json`, plugin);
-      plugin.paths.push(pluginPath);
-    });
+    // If an sfz sample pack, copy the entire contents to the SFZ folder
+    if (plugin.tags.includes('sfz')) {
+      dirCreate(pluginDirectory(plugin, 'SFZ'));
+      dirMove(tempDir, pluginDirectory(plugin, 'SFZ'));
+    } else {
+      const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
+      const pathsLv2: string[] = fileMove(`${tempDir}/**/*.lv2`, pluginDirectory(plugin, 'LV2'));
+      const pathsVst: string[] = fileMove(`${tempDir}/**/*.vst`, pluginDirectory(plugin, 'VST'));
+      const pathsVst3: string[] = fileMove(`${tempDir}/**/*.vst3`, pluginDirectory(plugin, 'VST3'));
+      const pathsAll: string[] = pathsComponent.concat(pathsLv2, pathsVst, pathsVst3);
+      // Save json metadata file alongside each plugin file/format
+      pathsAll.forEach((pluginPath: string) => {
+        fileJsonCreate(`${pathGetWithoutExt(pluginPath)}.json`, plugin);
+        plugin.paths.push(pluginPath);
+      });
+    }
     dirDelete(tempDir);
   } else {
     const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
