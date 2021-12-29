@@ -13,7 +13,7 @@ import {
   zipCreate,
   zipExtract,
 } from './file';
-import { getPlatform, pathGetDirectory, pathGetFilename, pathGetId, pathGetWithoutExt, safeSlug } from './utils';
+import { getPlatform, pathGetDirectory, pathGetFilename, pathGetWithoutExt, safeSlug } from './utils';
 import { getRaw } from './api';
 import { PluginLocal } from './types/plugin';
 import { configGet } from './config';
@@ -169,7 +169,7 @@ function validateProcess(pathItem: string, log: string): any {
     }
   }
   // Generate the id from the filename
-  const id: string = pathGetId(pathItem);
+  const id: string = safeSlug(pathGetFilename(pathItem));
   if (id) {
     json.id = id;
   }
