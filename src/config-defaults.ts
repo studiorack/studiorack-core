@@ -108,7 +108,7 @@ function configDefaults(): ConfigInterface {
       reverb: {
         name: 'Reverb/Delay',
         slug: 'reverb-delay',
-      }
+      },
     },
     pluginInstrumentCategories: {
       all: {
@@ -142,11 +142,11 @@ function configDefaults(): ConfigInterface {
       vocals: {
         name: 'Vocals',
         slug: 'vocals',
-      }
+      },
     },
     pluginFile: 'plugin.json',
     pluginFolder: '',
-    pluginRegistry: 'https://studiorack.github.io/studiorack-registry/',
+    pluginRegistry: 'https://studiorack.github.io/studiorack-registry/${type}.json',
     pluginRelease: 'https://github.com/${repo}/releases/download',
     pluginTemplate: 'https://github.com/studiorack/studiorack-template-${template}/archive/main.zip',
     pluginTypes: {

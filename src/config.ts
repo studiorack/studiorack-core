@@ -4,7 +4,7 @@ import { configDefaults } from './config-defaults';
 
 const CONFIG_FILE_PATH = __dirname + '/config.json';
 const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults();
-config.pluginFolder = dirPlugins()
+config.pluginFolder = dirPlugins();
 config.projectFolder = dirProjects();
 
 function configDelete(): boolean | void {
