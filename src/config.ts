@@ -1,6 +1,6 @@
 import { ConfigInterface } from './types/config';
 import { dirPlugins, dirProjects, fileDelete, fileJsonCreate, fileJsonLoad } from './file';
-import { configDefaults } from '.';
+import { configDefaults } from './config-defaults';
 
 const CONFIG_FILE_PATH = __dirname + '/config.json';
 const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults();
