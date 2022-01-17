@@ -1,5 +1,6 @@
 export * from './api';
 export * from './config';
+export * from './config-defaults';
 export * from './file';
 export * from './plugin';
 export * from './project';
