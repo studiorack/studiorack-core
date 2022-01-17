@@ -87,61 +87,61 @@ function configDefaults(): ConfigInterface {
     pluginEffectCategories: {
       all: {
         name: 'All',
-        slug: 'all',
+        tags: ['All'],
       },
       chorus: {
         name: 'Chorus/Phaser',
-        slug: 'chorus-phaser',
+        tags: ['Chorus', 'Phaser'],
       },
       compression: {
         name: 'Compression/Distortion',
-        slug: 'compression-distortion',
+        tags: ['Compression', 'Distortion'],
       },
       eq: {
         name: 'EQ/Pan',
-        slug: 'eq-pan',
+        tags: ['EQ', 'Pan'],
       },
       filter: {
         name: 'Filter',
-        slug: 'filter',
+        tags: ['Filter'],
       },
       reverb: {
         name: 'Reverb/Delay',
-        slug: 'reverb-delay',
+        tags: ['Reverb', 'Delay'],
       },
     },
     pluginInstrumentCategories: {
       all: {
         name: 'All',
-        slug: 'all',
+        tags: ['All'],
       },
       drums: {
         name: 'Drums',
-        slug: 'drums',
+        tags: ['Drums'],
       },
       guitar: {
         name: 'Guitar',
-        slug: 'guitar',
+        tags: ['Guitar'],
       },
       keys: {
         name: 'Keys',
-        slug: 'keys',
+        tags: ['Keys'],
       },
       orchestral: {
         name: 'Orchestral',
-        slug: 'orchestral',
+        tags: ['Orchestral'],
       },
       samplers: {
         name: 'Samplers',
-        slug: 'samplers',
+        tags: ['Sampler'],
       },
       synths: {
         name: 'Synths',
-        slug: 'synths',
+        tags: ['Synth'],
       },
       vocals: {
         name: 'Vocals',
-        slug: 'vocals',
+        tags: ['Vocals'],
       },
     },
     pluginFile: 'plugin.json',

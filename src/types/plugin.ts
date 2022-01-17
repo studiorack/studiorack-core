@@ -14,7 +14,7 @@ interface PlatformTypes {
 
 interface PluginCategory {
   name: string;
-  slug: string;
+  tags: string[];
 }
 
 interface PluginEntry {
