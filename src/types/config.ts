@@ -1,4 +1,4 @@
-import { PluginLicense, PluginTypes } from './plugin';
+import { PluginCategory, PluginLicense, PluginTypes } from './plugin';
 import { ProjectTypes } from './project';
 
 interface ConfigInterface {
@@ -8,6 +8,8 @@ interface ConfigInterface {
   extZip: string;
   ignoredFolders: string[];
   licenses: PluginLicense[];
+  pluginEffectCategories: { [property: string]: PluginCategory };
+  pluginInstrumentCategories: { [property: string]: PluginCategory };
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;

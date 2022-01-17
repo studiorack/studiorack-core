@@ -12,6 +12,11 @@ interface PlatformTypes {
   win64: keyof PluginFiles;
 }
 
+interface PluginCategory {
+  name: string;
+  slug: string;
+}
+
 interface PluginEntry {
   id: string;
   license: string;
@@ -88,6 +93,7 @@ interface PluginTypes {
 
 export {
   PlatformTypes,
+  PluginCategory,
   PluginEntry,
   PluginFile,
   PluginFiles,

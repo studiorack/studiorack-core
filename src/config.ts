@@ -88,6 +88,66 @@ function configDefault(): ConfigInterface {
         url: 'https://choosealicense.com',
       },
     ],
+    pluginEffectCategories: {
+      all: {
+        name: 'All',
+        slug: 'all',
+      },
+      chorus: {
+        name: 'Chorus/Phaser',
+        slug: 'chorus-phaser',
+      },
+      compression: {
+        name: 'Compression/Distortion',
+        slug: 'compression-distortion',
+      },
+      eq: {
+        name: 'EQ/Pan',
+        slug: 'eq-pan',
+      },
+      filter: {
+        name: 'Filter',
+        slug: 'filter',
+      },
+      reverb: {
+        name: 'Reverb/Delay',
+        slug: 'reverb-delay',
+      }
+    },
+    pluginInstrumentCategories: {
+      all: {
+        name: 'All',
+        slug: 'all',
+      },
+      drums: {
+        name: 'Drums',
+        slug: 'drums',
+      },
+      guitar: {
+        name: 'Guitar',
+        slug: 'guitar',
+      },
+      keys: {
+        name: 'Keys',
+        slug: 'keys',
+      },
+      orchestral: {
+        name: 'Orchestral',
+        slug: 'orchestral',
+      },
+      samplers: {
+        name: 'Samplers',
+        slug: 'samplers',
+      },
+      synths: {
+        name: 'Synths',
+        slug: 'synths',
+      },
+      vocals: {
+        name: 'Vocals',
+        slug: 'vocals',
+      }
+    },
     pluginFile: 'plugin.json',
     pluginFolder: dirPlugins(),
     pluginRegistry: 'https://studiorack.github.io/studiorack-registry/',
