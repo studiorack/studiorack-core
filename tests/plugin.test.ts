@@ -146,6 +146,14 @@ test('List plugins in registry', async () => {
   expect(await pluginsGet()).toBeDefined();
 });
 
+test('List plugins of type effects in registry', async () => {
+  expect(await pluginsGet('effects')).toBeDefined();
+});
+
+test('List plugins of type instruments in registry', async () => {
+  expect(await pluginsGet('instruments')).toBeDefined();
+});
+
 test('List plugins locally', async () => {
   expect(await pluginsGetLocal()).toBeDefined();
 });

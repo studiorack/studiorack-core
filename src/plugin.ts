@@ -73,8 +73,9 @@ async function pluginGetLocal(id: string, version?: string): Promise<PluginLocal
   })[0];
 }
 
-async function pluginsGet(): Promise<PluginPack> {
-  return await getJSON(configGet('pluginRegistry')).then((data) => {
+async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
+  const url: string = `${configGet('pluginRegistry')}/${type}.json`;
+  return await getJSON(url).then((data) => {
     return data.objects;
   });
 }
