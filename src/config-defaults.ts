@@ -95,11 +95,11 @@ function configDefaults(): ConfigInterface {
       },
       compression: {
         name: 'Compression/Distortion',
-        tags: ['Compression', 'Distortion'],
+        tags: ['Compression', 'Distortion', 'Amplifier', 'Amp'],
       },
       eq: {
         name: 'EQ/Pan',
-        tags: ['EQ', 'Pan'],
+        tags: ['EQ', 'Equalizer', 'Pan'],
       },
       filter: {
         name: 'Filter',
@@ -117,27 +117,27 @@ function configDefaults(): ConfigInterface {
       },
       drums: {
         name: 'Drums',
-        tags: ['Drums'],
+        tags: ['Drums', 'Percussion'],
       },
       guitar: {
         name: 'Guitar',
-        tags: ['Guitar'],
+        tags: ['Guitar', 'String'],
       },
       keys: {
         name: 'Keys',
-        tags: ['Keys'],
+        tags: ['Keys', 'Piano'],
       },
       orchestral: {
         name: 'Orchestral',
-        tags: ['Orchestral'],
+        tags: ['Orchestral', 'Orchestra', 'Strings', 'Woodwind', 'Brass'],
       },
       samplers: {
         name: 'Samplers',
-        tags: ['Sampler'],
+        tags: ['Samplers', 'Sampler', 'Sample'],
       },
       synths: {
         name: 'Synths',
-        tags: ['Synth'],
+        tags: ['Synths', 'Synth'],
       },
       vocals: {
         name: 'Vocals',
