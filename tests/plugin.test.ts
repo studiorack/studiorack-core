@@ -24,6 +24,7 @@ const PLUGIN: PluginInterface = {
   name: 'ADLplug',
   description: 'FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.',
   tags: [
+    'Instrument',
     'Synth',
     'FM'
   ],
@@ -61,6 +62,7 @@ const PLUGIN_LOCAL: PluginLocal = {
   "name": "ADLplug",
   "description": "FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.",
   "tags": [
+    "Instrument",
     "Synth",
     "FM"
   ],
@@ -120,7 +122,7 @@ test('Get valid plugin by id from registry', async () => {
   expect(await pluginGet(PLUGIN_ID)).toMatchObject(PLUGIN);
 });
 
-test('Get invalid plugin by id from registry', async () => {
+test('Get invalid PLUGIN by id from registry', async () => {
   await expect(pluginGet('example/plugin')).rejects.toThrow('Plugin not found example/plugin');
 });
 
