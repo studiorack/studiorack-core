@@ -23,20 +23,6 @@ const pluginDirectories: PlatformsSupported = {
   win64: '/Program Files/Common Files',
 };
 
-const projectDirectories: PlatformsSupported = {
-  aix: homeDir,
-  android: homeDir,
-  cygwin: homeDir,
-  darwin: homeDir,
-  freebsd: homeDir,
-  linux: homeDir,
-  netbsd: homeDir,
-  openbsd: homeDir,
-  sunos: homeDir,
-  win32: homeDir,
-  win64: homeDir,
-};
-
 function dirCreate(dirPath: string): string | boolean {
   if (!fs.existsSync(dirPath)) {
     console.log('+', dirPath);
@@ -93,12 +79,21 @@ function dirOpen(dirPath: string): Buffer {
   return execSync(`${command} "${dirPath}"`);
 }
 
+function dirAppData(): string {
+  if (process.env.APPDATA) {
+    return process.env.APPDATA;
+  } else if (process.platform === 'darwin') {
+    return process.env.HOME + '/Library/Preferences';
+  }
+  return process.env.HOME + '/.local/share';
+}
+
 function dirPlugins(): string {
   return pluginDirectories[process.platform];
 }
 
 function dirProjects(): string {
-  return projectDirectories[process.platform];
+  return homeDir;
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
@@ -244,6 +239,7 @@ export {
   dirIs,
   dirMove,
   dirOpen,
+  dirAppData,
   dirPlugins,
   dirProjects,
   dirRead,

@@ -1,4 +1,3 @@
-
 interface ProjectCategory {
   name: string;
   tags: string[];

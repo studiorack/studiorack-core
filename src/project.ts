@@ -1,3 +1,4 @@
+import path from 'path';
 import { configGet } from './config';
 import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileOpen } from './file';
 import {
@@ -75,9 +76,9 @@ function projectDefault(): ProjectInterface {
 function projectDirectory(project: ProjectInterface, depth?: number): string {
   const projectPaths: string[] = [configGet('projectFolder'), project.id, project.version];
   if (depth) {
-    return projectPaths.slice(0, depth).join('/');
+    return projectPaths.slice(0, depth).join(path.sep);
   }
-  return projectPaths.join('/');
+  return projectPaths.join(path.sep);
 }
 
 async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
@@ -97,7 +98,7 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   const projects: ProjectLocal[] = [];
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('/Backup/')) return;
-    const relativePath: string = projectPath.replace(configGet('projectFolder') + '/', '');
+    const relativePath: string = projectPath.replace(configGet('projectFolder') + path.sep, '');
     let project: any = fileJsonLoad(`${pathGetWithoutExt(projectPath)}.json`);
     if (!project) {
       project = projectValidate(projectPath, { files: true, json: true });
@@ -113,8 +114,8 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   return projects;
 }
 
-async function projectInstall(path: string, id?: string, version?: string): Promise<ProjectLocal> {
-  const project: ProjectLocal = projectLoad(path);
+async function projectInstall(dir: string, id?: string, version?: string): Promise<ProjectLocal> {
+  const project: ProjectLocal = projectLoad(dir);
   if (id) {
     const pluginLocal: PluginLocal = await pluginInstall(id, version);
     if (pluginLocal) {
@@ -125,25 +126,25 @@ async function projectInstall(path: string, id?: string, version?: string): Prom
       await pluginInstall(pluginId, project.plugins[pluginId]);
     }
   }
-  return projectSave(path, project);
+  return projectSave(dir, project);
 }
 
-function projectLoad(path: string): ProjectLocal {
-  const projectJson: ProjectLocal = fileJsonLoad(path);
+function projectLoad(dir: string): ProjectLocal {
+  const projectJson: ProjectLocal = fileJsonLoad(dir);
   if (projectJson && !projectJson.plugins) {
     projectJson.plugins = {};
   }
   return projectJson;
 }
 
-function projectSave(path: string, config: ProjectLocal): ProjectLocal {
-  fileJsonCreate(path, config);
+function projectSave(dir: string, config: ProjectLocal): ProjectLocal {
+  fileJsonCreate(dir, config);
   return config;
 }
 
-async function projectStart(path: string): Promise<Buffer> {
-  const project: ProjectLocal = projectLoad(path);
-  return fileOpen(`${pathGetDirectory(path)}/${project.files.project?.name}`);
+async function projectStart(dir: string): Promise<Buffer> {
+  const project: ProjectLocal = projectLoad(dir);
+  return fileOpen(`${pathGetDirectory(dir)}/${project.files.project?.name}`);
 }
 
 function projectType(ext: string): ProjectType {
@@ -161,8 +162,8 @@ function projectType(ext: string): ProjectType {
   return type;
 }
 
-async function projectUninstall(path: string, id?: string, version?: string): Promise<ProjectLocal> {
-  const project = projectLoad(path);
+async function projectUninstall(dir: string, id?: string, version?: string): Promise<ProjectLocal> {
+  const project = projectLoad(dir);
   if (id) {
     let result = version;
     if (!version) {
@@ -177,26 +178,26 @@ async function projectUninstall(path: string, id?: string, version?: string): Pr
       await pluginUninstall(pluginId, project.plugins[pluginId]);
     }
   }
-  return projectSave(path, project);
+  return projectSave(dir, project);
 }
 
-function projectValidate(path: string, options?: any): ProjectInterface {
-  const relativePath: string = path.replace(configGet('projectFolder') + '/', '');
-  const type: ProjectType = projectType(pathGetExt(path));
+function projectValidate(dir: string, options?: any): ProjectInterface {
+  const relativePath: string = dir.replace(configGet('projectFolder') + path.sep, '');
+  const type: ProjectType = projectType(pathGetExt(dir));
   let project: ProjectLocal = projectDefault() as ProjectLocal;
-  project.date = fileDate(path).toISOString();
+  project.date = fileDate(dir).toISOString();
   project.id = safeSlug(pathGetFilename(relativePath));
   project.name = pathGetFilename(relativePath);
-  project.path = pathGetDirectory(path);
+  project.path = pathGetDirectory(dir);
   project.repo = pathGetRepo(relativePath);
   project.status = 'installed';
   project.tags = [type.name];
   project.type = type;
   if (options && options.files) {
-    project = projectValidateFiles(path, project);
+    project = projectValidateFiles(dir, project);
   }
   if (options && options.json) {
-    fileJsonCreate(`${pathGetDirectory(path)}/${pathGetFilename(path)}.json`, project);
+    fileJsonCreate(`${pathGetDirectory(dir)}/${pathGetFilename(dir)}.json`, project);
   }
   return project;
 }

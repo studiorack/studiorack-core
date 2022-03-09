@@ -1,5 +1,7 @@
+import path from 'path';
 import { configGet } from './config';
 import {
+  dirAppData,
   dirCreate,
   dirDelete,
   dirEmpty,
@@ -29,16 +31,16 @@ import { validateInstall, validatePlugin } from './validate';
 
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
-async function pluginCreate(path: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
-  if (dirExists(path)) {
-    throw Error(`Directory already exists: ${path}`);
+async function pluginCreate(dir: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
+  if (dirExists(dir)) {
+    throw Error(`Directory already exists: ${dir}`);
   }
   const data: Buffer = await getRaw(configGet('pluginTemplate').replace('${template}', template));
-  const tempDir: string = './temp-create';
+  const tempDir: string = path.join(dirAppData(), 'studiorack', 'temp', template);
   dirCreate(tempDir);
   zipExtract(data, tempDir);
-  dirCreate(path);
-  dirRename(`${tempDir}/studiorack-template-${template}-main`, path);
+  dirCreate(dir);
+  dirRename(`${tempDir}/studiorack-template-${template}-main`, dir);
   dirDelete(tempDir);
   return true;
 }
@@ -46,9 +48,9 @@ async function pluginCreate(path: string, template: keyof PluginTemplate = 'stei
 function pluginDirectory(plugin: PluginInterface, type = 'VST3', depth?: number): string {
   const pluginPaths: string[] = [`${configGet('pluginFolder')}/${type}`, plugin.repo, plugin.id, plugin.version];
   if (depth) {
-    return pluginPaths.slice(0, depth).join('/');
+    return pluginPaths.slice(0, depth).join(path.sep);
   }
-  return pluginPaths.join('/');
+  return pluginPaths.join(path.sep);
 }
 
 async function pluginGet(id: string, version?: string): Promise<PluginInterface> {
@@ -90,7 +92,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginPaths: string[] = dirRead(`${configGet('pluginFolder')}${pluginFolderExts}`);
   const pluginsFound: { [property: string]: PluginLocal } = {};
   pluginPaths.forEach((pluginPath: string) => {
-    const relativePath: string = pluginPath.replace(configGet('pluginFolder') + '/', '');
+    const relativePath: string = pluginPath.replace(configGet('pluginFolder') + path.sep, '');
     let plugin: PluginLocal = fileJsonLoad(`${pathGetWithoutExt(pluginPath)}.json`);
     if (!plugin) {
       // If there is no metadata json file, attempt to auto create one
@@ -126,7 +128,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   }
   const pluginData: Buffer = await getRaw(pluginUrl);
   if (pluginExt === 'zip') {
-    const tempDir: string = `./temp/${plugin.repo}/${plugin.id}`;
+    const tempDir: string = path.join(dirAppData(), 'studiorack', 'temp', plugin.repo, plugin.id);
     dirCreate(tempDir);
     zipExtract(pluginData, tempDir);
     const pathsComponent: string[] = fileMove(`${tempDir}/**/*.component`, pluginDirectory(plugin, 'Components'));
@@ -290,7 +292,7 @@ function removeDirectory(plugin: PluginLocal, type: string) {
   }
 
   // If no other plugins by same repo root exist, then remove plugin repo root
-  const repoRootDir: string = pluginDirectory(plugin, type, 1) + '/' + plugin.repo.split('/')[0];
+  const repoRootDir: string = pluginDirectory(plugin, type, 1) + path.sep + plugin.repo.split(path.sep)[0];
   if (dirExists(repoRootDir) && dirEmpty(repoRootDir)) {
     dirDelete(repoRootDir);
   }

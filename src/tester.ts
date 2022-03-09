@@ -1,12 +1,12 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirExists, dirRead, fileExec, fileJsonCreate, zipExtract } from './file';
+import { dirAppData, dirExists, dirRead, fileExec, fileJsonCreate, zipExtract } from './file';
 import { getPlatform } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
 
-const testerFolder: string = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
+const testerFolder: string = path.join(dirAppData(), 'studiorack', 'bin');
 let testerExt: string = '';
 if (getPlatform() === 'linux') testerExt = '';
 else if (getPlatform() === 'mac') testerExt = '.app/Contents/MacOS/pluginval';
@@ -30,8 +30,8 @@ async function testFolder(pluginPath: string, options: any): Promise<object[]> {
     testResults.push(testResult);
   }
   if (options && options.summary) {
-    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf('/')).replace('**', '');
-    rootPath += rootPath.endsWith('/') ? '' : '/';
+    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf(path.sep)).replace('**', '');
+    rootPath += rootPath.endsWith(path.sep) ? '' : path.sep;
     fileJsonCreate(`${rootPath}testResults.json`, { testResults });
   }
   return testResults;

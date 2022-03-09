@@ -1,3 +1,4 @@
+import path from 'path';
 import slugify from 'slugify';
 
 import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
@@ -37,7 +38,7 @@ function inputGetParts(input: string): string[] {
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
 function pathGetDirectory(pathItem: string): string {
-  return pathItem.substring(0, pathItem.lastIndexOf('/'));
+  return pathItem.substring(0, pathItem.lastIndexOf(path.sep));
 }
 
 function pathGetExt(pathItem: string): string {
@@ -45,7 +46,7 @@ function pathGetExt(pathItem: string): string {
 }
 
 function pathGetFilename(str: string): string {
-  let base: string = str.substring(str.lastIndexOf('/') + 1);
+  let base: string = str.substring(str.lastIndexOf(path.sep) + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
@@ -53,7 +54,7 @@ function pathGetFilename(str: string): string {
 }
 
 function pathGetId(pathItem: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split('/');
+  const pathParts: string[] = pathGetDirectory(pathItem).split(path.sep);
   if (pathParts.length > 2) {
     return safeSlug(pathParts[2]);
   }
@@ -62,7 +63,7 @@ function pathGetId(pathItem: string): string {
 }
 
 function pathGetRepo(pathItem: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split('/');
+  const pathParts: string[] = pathGetDirectory(pathItem).split(path.sep);
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }

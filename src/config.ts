@@ -1,9 +1,13 @@
+import path from 'path';
 import { ConfigInterface } from './types/config';
-import { dirPlugins, dirProjects, fileDelete, fileJsonCreate, fileJsonLoad } from './file';
+import { dirAppData, dirCreate, dirPlugins, dirProjects, fileDelete, fileJsonCreate, fileJsonLoad } from './file';
 import { configDefaults } from './config-defaults';
 
-const CONFIG_FILE_PATH = __dirname + '/config.json';
+const appDir: string = path.join(dirAppData(), 'studiorack');
+const CONFIG_FILE_PATH = path.join(appDir, 'config.json');
+dirCreate(appDir);
 const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults();
+config.appFolder = appDir;
 config.pluginFolder = dirPlugins();
 config.projectFolder = dirProjects();
 

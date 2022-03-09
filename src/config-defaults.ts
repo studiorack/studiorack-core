@@ -2,6 +2,7 @@ import { ConfigInterface } from './types/config';
 
 function configDefaults(): ConfigInterface {
   return {
+    appFolder: '',
     extAudio: '.wav',
     extFile: '.json',
     extImage: '.png',

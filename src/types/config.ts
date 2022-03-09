@@ -2,6 +2,7 @@ import { PluginCategory, PluginLicense, PluginTypes } from './plugin';
 import { ProjectTypes } from './project';
 
 interface ConfigInterface {
+  appFolder: string;
   extAudio: string;
   extFile: string;
   extImage: string;

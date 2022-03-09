@@ -3,6 +3,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 
 import {
+  dirAppData,
   dirExists,
   dirRead,
   fileAdd,
@@ -26,7 +27,7 @@ const map: { [property: string]: string } = {
   vendor: 'author',
   version: 'version',
 };
-const validatorFolder: string = path.join(__dirname.substring(0, __dirname.lastIndexOf('dist')), 'bin');
+const validatorFolder: string = path.join(dirAppData(), 'studiorack', 'bin');
 const validatorPath: string = path.join(validatorFolder, 'validator' + (getPlatform() === 'win' ? '.exe' : ''));
 
 function validateFiles(pathItem: string, json: any): any {
@@ -66,8 +67,8 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
     }
   }
   if (options.summary) {
-    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf('/')).replace('**', '');
-    rootPath += rootPath.endsWith('/') ? '' : '/';
+    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf(path.sep)).replace('**', '');
+    rootPath += rootPath.endsWith(path.sep) ? '' : path.sep;
     fileJsonCreate(`${rootPath}plugins.json`, { plugins });
   }
   return plugins;
