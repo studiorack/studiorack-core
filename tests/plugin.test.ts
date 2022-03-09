@@ -33,12 +33,12 @@ const PLUGIN: PluginInterface = {
   date: '2020-08-05T08:00:00.000Z',
   files: {
     audio: {
-      name: 'adlplug.wav',
-      size: 352844
+      name: 'adlplug.flac',
+      size: 60649
     },
     image: {
-      name: 'adlplug.png',
-      size: 601168
+      name: 'adlplug.jpg',
+      size: 140267
     },
     linux: {
       name: 'adlplug-linux.zip',
@@ -71,12 +71,12 @@ const PLUGIN_LOCAL: PluginLocal = {
   "date": "2020-08-05T08:00:00.000Z",
   "files": {
     "audio": {
-      "name": "adlplug.wav",
-      "size": 352844
+      "name": "adlplug.flac",
+      "size": 60649
     },
     "image": {
-      "name": "adlplug.png",
-      "size": 601168
+      "name": "adlplug.jpg",
+      "size": 140267
     },
     "linux": {
       "name": "adlplug-linux.zip",
