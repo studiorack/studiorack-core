@@ -9,8 +9,9 @@ const CONFIG_KEY: keyof ConfigInterface = 'pluginFile';
 const CONFIG_DEFAULT_VALUE: string = 'plugin.json';
 const CONFIG_NEW_VALUE: string = 'metadata.json';
 
-beforeAll(() => {
+beforeAll(async () => {
   configDelete();
+  await new Promise((r) => setTimeout(r, 1000));
 });
 
 test('Get default value', () => {
