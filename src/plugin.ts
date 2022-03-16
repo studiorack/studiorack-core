@@ -229,7 +229,6 @@ function pluginSource(plugin: PluginInterface): string {
 
 async function pluginUninstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGetLocal(id, version)) as PluginLocal;
-  console.log(plugin);
   if (!plugin) {
     throw Error(`Plugin not found locally ${id}, ${version}`);
   }

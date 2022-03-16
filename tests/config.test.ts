@@ -25,3 +25,7 @@ test('Set new value', () => {
 test('Get new value', () => {
   expect(configGet(CONFIG_KEY)).toEqual(CONFIG_NEW_VALUE);
 });
+
+afterAll(async () => {
+  configSet(CONFIG_KEY, CONFIG_DEFAULT_VALUE);
+});

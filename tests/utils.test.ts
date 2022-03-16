@@ -2,6 +2,8 @@ import {
   getPlatform,
   idToSlug,
   inputGetParts,
+  isAdmin,
+  moveAsAdmin,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,
@@ -40,6 +42,15 @@ test('Id to slug', () => {
 test('Input get parts', () => {
   expect(inputGetParts(`${PLUGIN_REPO}/${PLUGIN_ID}@${PLUGIN_VERSION}`)).toEqual([`${PLUGIN_REPO}/${PLUGIN_ID}`, PLUGIN_VERSION]);
 });
+
+test('Is Admin', () => {
+  expect(isAdmin()).toEqual(false);
+});
+
+// test('Move process', async () => {
+//   expect(await moveAsAdmin('test/plugins/Components', 'test/plugins/Components2')).toEqual('');
+//   expect(await moveAsAdmin('test/plugins/Components2', 'test/plugins/Components')).toEqual('');
+// });
 
 test('Path get directory', () => {
   expect(pathGetDirectory(PLUGIN_PATH)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}`);
