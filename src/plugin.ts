@@ -2,6 +2,7 @@ import path from 'path';
 import { configGet } from './config';
 import {
   dirAppData,
+  dirContains,
   dirCreate,
   dirDelete,
   dirEmpty,
@@ -140,12 +141,11 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     // If an sfz sample pack, move the entire contents to the SFZ folder
     if (plugin.tags.includes('sfz')) {
       dirCreate(pluginDirectory(plugin, 'SFZ'));
-      // If installation path is outside AppData, then require admin permissions
-      const relative = path.relative(dirAppData(), pluginDirectory(plugin, 'SFZ'));
-      if (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) {
-        dirMoveAsAdmin(tempDir, pluginDirectory(plugin, 'SFZ'));
-      } else {
+      // If installation path is inside AppData, then move normally, otherwise prompt for admin permissions
+      if (dirContains(dirAppData(), pluginDirectory(plugin, 'SFZ'))) {
         dirMove(tempDir, pluginDirectory(plugin, 'SFZ'));
+      } else {
+        dirMoveAsAdmin(tempDir, pluginDirectory(plugin, 'SFZ'));
       }
       const pathsSfz: string[] = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
       pathsAll = pathsAll.concat(pathsSfz);

@@ -1,4 +1,6 @@
 import {
+  dirAppData,
+  dirContains,
   dirCreate,
   dirDelete,
   dirEmpty,
@@ -20,11 +22,18 @@ import {
   zipCreate,
   zipExtract,
 } from '../src/file';
+import path from 'path';
 
 const DIR_PATH: string = './tests/new-directory';
 const DIR_RENAME: string = './tests/new-directory-renamed';
+const DIR_APP_DATA: string = path.join(dirAppData(), 'studiorack');
 
 const FILE_PATH: string = './tests/new-directory/file.txt';
+
+test('Directory contains', () => {
+  expect(dirContains(dirAppData(), DIR_APP_DATA)).toEqual(true);
+  expect(dirContains(dirAppData(), DIR_PATH)).toEqual(false);
+});
 
 test('Create new directory', () => {
   expect(dirCreate(DIR_PATH)).toEqual(DIR_PATH);

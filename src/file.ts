@@ -24,6 +24,20 @@ const pluginDirectories: PlatformsSupported = {
   win64: '/Program Files/Common Files',
 };
 
+function dirAppData(): string {
+  if (process.env.APPDATA) {
+    return process.env.APPDATA;
+  } else if (process.platform === 'darwin') {
+    return process.env.HOME + '/Library/Preferences';
+  }
+  return process.env.HOME + '/.local/share';
+}
+
+function dirContains(dirParent: string, dirChild: string): boolean {
+  const relative = path.relative(dirParent, dirChild);
+  return (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) ? true : false;
+}
+
 function dirCreate(dirPath: string): string | boolean {
   if (!fs.existsSync(dirPath)) {
     console.log('+', dirPath);
@@ -101,15 +115,6 @@ function dirOpen(dirPath: string): Buffer {
   }
   console.log('⎋', `${command} "${dirPath}"`);
   return execSync(`${command} "${dirPath}"`);
-}
-
-function dirAppData(): string {
-  if (process.env.APPDATA) {
-    return process.env.APPDATA;
-  } else if (process.platform === 'darwin') {
-    return process.env.HOME + '/Library/Preferences';
-  }
-  return process.env.HOME + '/.local/share';
 }
 
 function dirPlugins(): string {
@@ -256,6 +261,8 @@ function zipExtract(content: any, dirPath: string): void {
 }
 
 export {
+  dirAppData,
+  dirContains,
   dirCreate,
   dirDelete,
   dirEmpty,
@@ -264,7 +271,6 @@ export {
   dirMove,
   dirMoveAsAdmin,
   dirOpen,
-  dirAppData,
   dirPlugins,
   dirProjects,
   dirRead,
