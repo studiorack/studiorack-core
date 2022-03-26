@@ -2,7 +2,6 @@ import path from 'path';
 import slugify from 'slugify';
 
 import isElevated from 'native-is-elevated';
-import sudoPrompt from '@vscode/sudo-prompt';
 
 import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
 
@@ -40,29 +39,6 @@ function isAdmin(): boolean {
   } else {
     return process.getuid() === 0;
   }
-}
-
-// This is a prototype
-function moveAsAdmin(pathIn: string, pathOut: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    console.log('-', pathIn);
-    console.log('+', pathOut);
-    const program: string = process.platform === 'win32' ? 'move' : 'mv';
-    console.log(`moveAsAdmin: ${program} ${pathIn} ${pathOut}`);
-    sudoPrompt.exec(`${program} ${pathIn} ${pathOut}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
-      if (stdout) {
-        console.log('moveAsAdmin', stdout);
-      }
-      if (stderr) {
-        console.log('moveAsAdmin', stderr);
-      }
-      if (error) {
-        reject(error);
-      } else {
-        resolve(stdout?.toString() || '');
-      }
-    });
-  });
 }
 
 // Plugin paths are assumed to follow the following format:
@@ -144,7 +120,6 @@ export {
   idToSlug,
   inputGetParts,
   isAdmin,
-  moveAsAdmin,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,

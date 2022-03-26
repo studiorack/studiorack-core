@@ -5,6 +5,7 @@ import glob from 'glob';
 import os from 'os';
 import path from 'path';
 import { PlatformsSupported } from './types/config';
+import sudoPrompt from '@vscode/sudo-prompt';
 
 const fsUtils: any = require('nodejs-fs-utils');
 const homeDir: string = os.homedir();
@@ -59,6 +60,29 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
     return fs.renameSync(dirPath, newPath);
   }
   return false;
+}
+
+// This is a prototype
+function dirMoveAsAdmin(pathIn: string, pathOut: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    console.log('-', pathIn);
+    console.log('+', pathOut);
+    const program: string = process.platform === 'win32' ? 'move' : 'mv';
+    console.log(`moveAsAdmin: ${program} ${pathIn} ${pathOut}`);
+    sudoPrompt.exec(`${program} ${pathIn} ${pathOut}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+      if (stdout) {
+        console.log('moveAsAdmin', stdout);
+      }
+      if (stderr) {
+        console.log('moveAsAdmin', stderr);
+      }
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout?.toString() || '');
+      }
+    });
+  });
 }
 
 function dirOpen(dirPath: string): Buffer {
@@ -238,6 +262,7 @@ export {
   dirExists,
   dirIs,
   dirMove,
+  dirMoveAsAdmin,
   dirOpen,
   dirAppData,
   dirPlugins,
