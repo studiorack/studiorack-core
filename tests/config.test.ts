@@ -11,7 +11,7 @@ const CONFIG_NEW_VALUE: string = 'metadata.json';
 
 beforeAll(async () => {
   configDelete();
-  await new Promise((r) => setTimeout(r, 1000));
+  // await new Promise((r) => setTimeout(r, 1000));
 });
 
 test('Get default value', () => {

@@ -45,6 +45,8 @@ function isAdmin(): boolean {
 // This is a prototype
 function moveAsAdmin(pathIn: string, pathOut: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
+    console.log('-', pathIn);
+    console.log('+', pathOut);
     const program: string = process.platform === 'win32' ? 'move' : 'mv';
     console.log(`moveAsAdmin: ${program} ${pathIn} ${pathOut}`);
     sudoPrompt.exec(`${program} ${pathIn} ${pathOut}`, { name: 'StudioRack' }, (error, stdout, stderr) => {

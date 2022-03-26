@@ -16,7 +16,7 @@ import {
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
+import { getPlatform, moveAsAdmin, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -139,7 +139,13 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     // If an sfz sample pack, move the entire contents to the SFZ folder
     if (plugin.tags.includes('sfz')) {
       dirCreate(pluginDirectory(plugin, 'SFZ'));
-      dirMove(tempDir, pluginDirectory(plugin, 'SFZ'));
+      // If installation path is outside AppData, then require admin permissions
+      const relative = path.relative(dirAppData(), pluginDirectory(plugin, 'SFZ'));
+      if (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) {
+        moveAsAdmin(tempDir, pluginDirectory(plugin, 'SFZ'));
+      } else {
+        dirMove(tempDir, pluginDirectory(plugin, 'SFZ'));
+      }
       const pathsSfz: string[] = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
       pathsAll = pathsAll.concat(pathsSfz);
     }
