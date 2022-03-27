@@ -8,13 +8,12 @@ import { PlatformsSupported } from './types/config';
 import sudoPrompt from '@vscode/sudo-prompt';
 
 const fsUtils: any = require('nodejs-fs-utils');
-const homeDir: string = os.homedir();
 
 const pluginDirectories: PlatformsSupported = {
   aix: '/usr/local/lib',
   android: '/usr/local/lib',
   cygwin: '/usr/local/lib',
-  darwin: `${homeDir}/Library/Audio/Plug-ins`,
+  darwin: `${os.homedir()}/Library/Audio/Plug-ins`,
   freebsd: '/usr/local/lib',
   linux: '/usr/local/lib',
   netbsd: '/usr/local/lib',
@@ -28,18 +27,18 @@ function dirAppData(): string {
   if (process.env.APPDATA) {
     return process.env.APPDATA;
   } else if (process.platform === 'darwin') {
-    return process.env.HOME + '/Library/Preferences';
+    return `${os.homedir()}/Library/Preferences`;
   }
-  return process.env.HOME + '/.local/share';
+  return `${os.homedir()}/.local/share`;
 }
 
 function dirContains(dirParent: string, dirChild: string): boolean {
   const relative = path.relative(dirParent, dirChild);
-  return (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) ? true : false;
+  return relative && !relative.startsWith('..') && !path.isAbsolute(relative) ? true : false;
 }
 
 function dirCreate(dirPath: string): string | boolean {
-  if (!fs.existsSync(dirPath)) {
+  if (!dirExists(dirPath)) {
     console.log('+', dirPath);
     return fs.mkdirSync(dirPath, { recursive: true });
   }
@@ -47,7 +46,7 @@ function dirCreate(dirPath: string): string | boolean {
 }
 
 function dirDelete(dirPath: string): void | boolean {
-  if (fs.existsSync(dirPath)) {
+  if (dirExists(dirPath)) {
     console.log('-', dirPath);
     return fs.rmdirSync(dirPath, { recursive: true });
   }
@@ -68,7 +67,7 @@ function dirIs(dirPath: string): boolean {
 }
 
 function dirMove(dirPath: string, newPath: string): void | boolean {
-  if (fs.existsSync(dirPath)) {
+  if (dirExists(dirPath)) {
     console.log('-', dirPath);
     console.log('+', newPath);
     return fs.renameSync(dirPath, newPath);
@@ -100,8 +99,8 @@ function dirMoveAsAdmin(pathIn: string, pathOut: string): Promise<string> {
 }
 
 function dirOpen(dirPath: string): Buffer {
-  let command: string = '';
   if (process.env.CI) return new Buffer('');
+  let command: string = '';
   switch (process.platform) {
     case 'darwin':
       command = 'open';
@@ -122,7 +121,7 @@ function dirPlugins(): string {
 }
 
 function dirProjects(): string {
-  return homeDir;
+  return os.homedir();
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
@@ -130,8 +129,11 @@ function dirRead(dirPath: string, options?: any): string[] {
   return glob.sync(dirPath, options);
 }
 
-function dirRename(oldPath: string, newPath: string): void {
-  return fs.renameSync(oldPath, newPath);
+function dirRename(oldPath: string, newPath: string): void | boolean {
+  if (dirExists(oldPath)) {
+    return fs.renameSync(oldPath, newPath);
+  }
+  return false;
 }
 
 function fileAdd(filePath: string, fileName: string, fileType: string, json: any): any {
@@ -183,7 +185,7 @@ function fileJsonCreate(filePath: string, data: object): void {
 }
 
 function fileJsonLoad(filePath: string): any {
-  if (fs.existsSync(filePath)) {
+  if (fileExists(filePath)) {
     console.log('⎋', filePath);
     return JSON.parse(fs.readFileSync(filePath).toString());
   }

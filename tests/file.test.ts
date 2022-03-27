@@ -5,23 +5,30 @@ import {
   dirDelete,
   dirEmpty,
   dirExists,
+  dirIs,
+  dirMove,
+  dirMoveAsAdmin,
   dirOpen,
   dirPlugins,
   dirProjects,
   dirRead,
   dirRename,
+  fileAdd,
   fileCreate,
   fileDate,
+  fileDelete,
   fileExec,
   fileExists,
   fileJsonCreate,
   fileJsonLoad,
   fileLoad,
+  fileMove,
   fileOpen,
   fileSize,
   zipCreate,
   zipExtract,
 } from '../src/file';
+import os from 'os';
 import path from 'path';
 
 const DIR_PATH: string = './tests/new-directory';
@@ -29,6 +36,16 @@ const DIR_RENAME: string = './tests/new-directory-renamed';
 const DIR_APP_DATA: string = path.join(dirAppData(), 'studiorack');
 
 const FILE_PATH: string = './tests/new-directory/file.txt';
+
+test('Directory app data', () => {
+  if (process.platform === 'win32') {
+    expect(dirAppData()).toEqual(process.env.APPDATA);
+  } else if (process.platform === 'darwin') {
+    expect(dirAppData()).toEqual(`${os.homedir()}/Library/Preferences`);
+  } else {
+    expect(dirAppData()).toEqual(`${os.homedir()}/.local/share`);
+  }
+});
 
 test('Directory contains', () => {
   expect(dirContains(dirAppData(), DIR_APP_DATA)).toEqual(true);
@@ -49,6 +66,17 @@ test('Directory is empty', () => {
 
 test('Directory exists', () => {
   expect(dirExists(DIR_PATH)).toEqual(true);
+});
+
+test('Directory is', () => {
+  fileCreate(FILE_PATH, 'file contents');
+  expect(dirIs(DIR_PATH)).toEqual(true);
+  expect(dirIs(FILE_PATH)).toEqual(false);
+});
+
+test('Directory move', () => {
+  expect(dirMove(DIR_PATH, DIR_RENAME)).toBeUndefined();
+  expect(dirMove(DIR_RENAME, DIR_PATH)).toBeUndefined();
 });
 
 test('Directory open', () => {
