@@ -53,6 +53,28 @@ function dirDelete(dirPath: string): void | boolean {
   return false;
 }
 
+// This is a prototype
+function dirDeleteAsAdmin(pathDir: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    console.log('-', pathDir);
+    const program: string = process.platform === 'win32' ? 'rmdir /s' : 'rm -r';
+    console.log(`dirDeleteAsAdmin: ${program} ${pathDir}`);
+    sudoPrompt.exec(`${program} ${pathDir}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+      if (stdout) {
+        console.log('dirDeleteAsAdmin', stdout);
+      }
+      if (stderr) {
+        console.log('dirDeleteAsAdmin', stderr);
+      }
+      if (error) {
+        reject(error);
+      } else {
+        resolve(stdout?.toString() || '');
+      }
+    });
+  });
+}
+
 function dirEmpty(dirPath: string): boolean {
   const files: string[] = fs.readdirSync(dirPath);
   return files.length === 0 || (files.length === 1 && files[0] === '.DS_Store');
@@ -76,18 +98,19 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
 }
 
 // This is a prototype
-function dirMoveAsAdmin(pathIn: string, pathOut: string): Promise<string> {
+function dirCopyAsAdmin(pathIn: string, pathOut: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     console.log('-', pathIn);
     console.log('+', pathOut);
-    const program: string = process.platform === 'win32' ? 'move' : 'mv';
-    console.log(`moveAsAdmin: ${program} ${pathIn} ${pathOut}`);
+    const program: string = process.platform === 'win32' ? 'robocopy /s' : 'cp -R';
+    pathIn = pathIn.endsWith('/') ? pathIn : pathIn + '/';
+    console.log(`dirCopyAsAdmin: ${program} ${pathIn} ${pathOut}`);
     sudoPrompt.exec(`${program} ${pathIn} ${pathOut}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
-        console.log('moveAsAdmin', stdout);
+        console.log('dirCopyAsAdmin', stdout);
       }
       if (stderr) {
-        console.log('moveAsAdmin', stderr);
+        console.log('dirCopyAsAdmin', stderr);
       }
       if (error) {
         reject(error);
@@ -197,20 +220,13 @@ function fileLoad(filePath: string): Buffer {
   return fs.readFileSync(filePath);
 }
 
-function fileMove(filePath: string, filePathDest: string): string[] {
-  const filePaths: string[] = dirRead(filePath);
-  if (filePaths.length > 0) {
-    dirCreate(filePathDest);
-    const filesMoved: string[] = [];
-    filePaths.forEach((filePathItem: string) => {
-      if (filePathItem.includes('__MACOSX')) return;
-      if (fileExists(`${filePathDest}/${path.basename(filePathItem)}`)) return;
-      fsUtils.moveSync(filePathItem, `${filePathDest}/${path.basename(filePathItem)}`);
-      filesMoved.push(`${filePathDest}/${path.basename(filePathItem)}`);
-    });
-    return filesMoved;
+function fileMove(dirPath: string, newPath: string): void | boolean {
+  if (fileExists(dirPath)) {
+    console.log('-', dirPath);
+    console.log('+', newPath);
+    return fs.renameSync(dirPath, newPath);
   }
-  return filePaths;
+  return false;
 }
 
 function fileOpen(filePath: string): Buffer {
@@ -267,11 +283,12 @@ export {
   dirContains,
   dirCreate,
   dirDelete,
+  dirDeleteAsAdmin,
   dirEmpty,
   dirExists,
   dirIs,
   dirMove,
-  dirMoveAsAdmin,
+  dirCopyAsAdmin,
   dirOpen,
   dirPlugins,
   dirProjects,
