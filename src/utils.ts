@@ -1,3 +1,4 @@
+import { execFileSync } from 'child_process';
 import path from 'path';
 import slugify from 'slugify';
 
@@ -31,9 +32,14 @@ function inputGetParts(input: string): string[] {
   return input.split('@');
 }
 
-async function isAdmin(): Promise<boolean> {
+function isAdmin(): boolean {
   if (process.platform === 'win32') {
-    return (await import('native-is-elevated')).default();
+    try {
+      execFileSync('net', ['session'], { stdio: 'ignore' });
+      return true;
+    } catch (error) {
+      return false;
+    }
   } else {
     return process.getuid() === 0;
   }
