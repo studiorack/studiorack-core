@@ -47,7 +47,7 @@ function dirCreate(dirPath: string): string | boolean {
 function dirDelete(dirPath: string): void | boolean {
   if (dirExists(dirPath)) {
     console.log('-', dirPath);
-    return fs.rmdirSync(dirPath, { recursive: true });
+    return fs.rmSync(dirPath, { recursive: true });
   }
   return false;
 }
