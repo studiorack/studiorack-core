@@ -1,8 +1,6 @@
 import path from 'path';
 import slugify from 'slugify';
 
-import isElevated from 'native-is-elevated';
-
 import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
 
 const platformTypes: PlatformTypes = {
@@ -33,9 +31,9 @@ function inputGetParts(input: string): string[] {
   return input.split('@');
 }
 
-function isAdmin(): boolean {
+async function isAdmin(): Promise<boolean> {
   if (process.platform === 'win32') {
-    return isElevated();
+    return (await import('native-is-elevated')).default();
   } else {
     return process.getuid() === 0;
   }
