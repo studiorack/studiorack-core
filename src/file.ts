@@ -1,5 +1,5 @@
 import AdmZip from 'adm-zip';
-import { execSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
 import os from 'os';
@@ -203,6 +203,19 @@ function fileSize(filePath: string): number {
   return fsUtils.fsizeSync(filePath);
 }
 
+function isAdmin(): boolean {
+  if (process.platform === 'win32') {
+    try {
+      execFileSync('net', ['session'], { stdio: 'ignore' });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  } else {
+    return process.getuid() === 0;
+  }
+}
+
 function zipCreate(filesPath: string, zipPath: string): void {
   if (fileExists(zipPath)) {
     fs.unlinkSync(zipPath);
@@ -257,6 +270,7 @@ export {
   fileMove,
   fileOpen,
   fileSize,
+  isAdmin,
   zipCreate,
   zipExtract,
 };

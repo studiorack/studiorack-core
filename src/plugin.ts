@@ -15,19 +15,11 @@ import {
   fileJsonCreate,
   fileJsonLoad,
   fileMove,
+  isAdmin,
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
-import {
-  getPlatform,
-  isAdmin,
-  isTests,
-  pathGetExt,
-  pathGetId,
-  pathGetRepo,
-  pathGetVersion,
-  pathGetWithoutExt,
-} from './utils';
+import { getPlatform, isTests, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -149,7 +141,7 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
 // This is a prototype
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
-  if (!(await isAdmin()) && !isTests()) {
+  if (!isAdmin() && !isTests()) {
     await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`, true);
   } else {
     plugin.paths = [];
@@ -276,7 +268,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
   if (!plugin.repo) {
     throw Error(`Plugin is missing repo metadata ${id}, ${version}`);
   }
-  if (!(await isAdmin()) && !isTests()) {
+  if (!isAdmin() && !isTests()) {
     await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`, true);
   } else {
     if (!pluginInstalled(plugin)) {

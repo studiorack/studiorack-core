@@ -1,4 +1,3 @@
-import { execFileSync } from 'child_process';
 import path from 'path';
 import slugify from 'slugify';
 
@@ -30,19 +29,6 @@ function idToSlug(id: string): string {
 
 function inputGetParts(input: string): string[] {
   return input.split('@');
-}
-
-function isAdmin(): boolean {
-  if (process.platform === 'win32') {
-    try {
-      execFileSync('net', ['session'], { stdio: 'ignore' });
-      return true;
-    } catch (error) {
-      return false;
-    }
-  } else {
-    return process.getuid() === 0;
-  }
 }
 
 function isTests() {
@@ -127,7 +113,6 @@ export {
   getPlatform,
   idToSlug,
   inputGetParts,
-  isAdmin,
   isTests,
   pathGetDirectory,
   pathGetExt,

@@ -24,6 +24,7 @@ import {
   fileMove,
   fileOpen,
   fileSize,
+  isAdmin,
   zipCreate,
   zipExtract,
 } from '../src/file';
@@ -108,4 +109,8 @@ test('Delete existing directory', () => {
 
 test('Delete missing directory', () => {
   expect(dirDelete(DIR_RENAME)).toEqual(false);
+});
+
+test('Is Admin', () => {
+  expect(isAdmin()).toEqual(false);
 });
