@@ -3,7 +3,6 @@ import {
   idToSlug,
   inputGetParts,
   isAdmin,
-  moveAsAdmin,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,

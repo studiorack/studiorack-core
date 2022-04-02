@@ -41,6 +41,10 @@ function isAdmin(): boolean {
   }
 }
 
+function isTests() {
+  return process.env.JEST_WORKER_ID !== undefined;
+}
+
 // Plugin paths are assumed to follow the following format:
 // {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
 //
@@ -120,6 +124,7 @@ export {
   idToSlug,
   inputGetParts,
   isAdmin,
+  isTests,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,

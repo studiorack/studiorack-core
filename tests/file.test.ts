@@ -7,7 +7,6 @@ import {
   dirExists,
   dirIs,
   dirMove,
-  dirCopyAsAdmin,
   dirOpen,
   dirPlugins,
   dirProjects,

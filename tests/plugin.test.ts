@@ -92,10 +92,10 @@ const PLUGIN_LOCAL: PluginLocal = {
     }
   },
   "paths": [
-    "./test/plugins/Components/studiorack/adlplug/adlplug/1.0.2/ADLplug.component",
-    "./test/plugins/LV2/studiorack/adlplug/adlplug/1.0.2/ADLplug.lv2",
-    "./test/plugins/VST/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst",
-    "./test/plugins/VST3/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst3",
+    "test/plugins/Components/studiorack/adlplug/adlplug/1.0.2/ADLplug.component",
+    "test/plugins/LV2/studiorack/adlplug/adlplug/1.0.2/ADLplug.lv2",
+    "test/plugins/VST/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst",
+    "test/plugins/VST3/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst3",
   ],
   "release": "v1.0.2",
   "repo": "studiorack/adlplug",

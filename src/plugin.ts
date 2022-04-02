@@ -8,7 +8,6 @@ import {
   dirEmpty,
   dirExists,
   dirMove,
-  dirCopyAsAdmin,
   dirRead,
   dirRename,
   fileCreate,
@@ -19,7 +18,16 @@ import {
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
+import {
+  getPlatform,
+  isAdmin,
+  isTests,
+  pathGetExt,
+  pathGetId,
+  pathGetRepo,
+  pathGetVersion,
+  pathGetWithoutExt,
+} from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -31,6 +39,7 @@ import {
   PluginTypes,
 } from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
+import { runCliAsAdmin } from './admin';
 
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
@@ -121,7 +130,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   return Object.keys(pluginsFound).map((pluginKey: string) => pluginsFound[pluginKey]);
 }
 
-function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string, dirFinal: string, plugin: PluginLocal): string[] {
+function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string, plugin: PluginLocal): string[] {
   const paths: string[] = [];
   const files: string[] = dirRead(`${dirSource}/**/*.${ext}`);
   // Create a sub directory folder for files of that type
@@ -132,7 +141,7 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
     if (fileExists(fileSourceExt)) return;
     fileMove(file, fileSourceExt);
     fileJsonCreate(`${pathGetWithoutExt(fileSourceExt)}.json`, plugin);
-    paths.push(path.join(dirFinal, path.basename(file)));
+    paths.push(fileSourceExt);
   });
   return paths;
 }
@@ -140,54 +149,51 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
 // This is a prototype
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
-  plugin.paths = [];
-  const pluginUrl: string = pluginSource(plugin);
-  const pluginExt = pathGetExt(pluginUrl);
-  if (!validPluginExt.includes(pluginExt)) {
-    throw Error(`Unsupported file type ${pluginExt}`);
-  }
-  // Download the plugin data
-  const pluginData: Buffer = await getRaw(pluginUrl);
-  // If the file is compressed
-  if (pluginExt === 'zip') {
-    let pathsAll: string[] = [];
-    const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', plugin.repo, plugin.id);
-    dirCreate(dirDownloads);
-    zipExtract(pluginData, dirDownloads);
-    if (plugin.tags.includes('sfz')) {
-      // Plugin is a sample pack
-      dirCreate(pluginDirectory(plugin, 'SFZ'));
-      // If installation path is inside AppData, then move normally, otherwise prompt for admin permissions
-      if (dirContains(dirAppData(), pluginDirectory(plugin, 'SFZ'))) {
-        dirMove(dirDownloads, pluginDirectory(plugin, 'SFZ'));
-      } else {
-        dirCopyAsAdmin(dirDownloads, pluginDirectory(plugin, 'SFZ'));
-      }
-      pathsAll = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
-    } else {
-      // Plugin is an instrument/effect
-      // Create a staging directory
-      const dirStaging: string = path.join(dirAppData(), 'studiorack', 'staging');
-      dirCreate(dirStaging);
-      // Reorganize files to allow a single copy command
-      const pathsCom: string[] = pluginOrganizeByType(dirDownloads, 'component', path.join(dirStaging, 'Components', plugin.repo, plugin.id, plugin.version), pluginDirectory(plugin, 'Components'), plugin);
-      const pathsLv2: string[] = pluginOrganizeByType(dirDownloads, 'lv2', path.join(dirStaging, 'LV2', plugin.repo, plugin.id, plugin.version), pluginDirectory(plugin, 'LV2'), plugin);
-      const pathsVst: string[] = pluginOrganizeByType(dirDownloads, 'vst', path.join(dirStaging, 'VST', plugin.repo, plugin.id, plugin.version), pluginDirectory(plugin, 'VST'), plugin);
-      const pathsVst3: string[] = pluginOrganizeByType(dirDownloads, 'vst3', path.join(dirStaging, 'VST3', plugin.repo, plugin.id, plugin.version), pluginDirectory(plugin, 'VST3'), plugin);
-      pathsAll = pathsCom.concat(pathsLv2, pathsVst, pathsVst3);
-      // Copy files from staging directory to plugin folder
-      await dirCopyAsAdmin(dirStaging, configGet('pluginFolder'));
-      dirDelete(dirStaging);
-    }
-    // Save json metadata file alongside each plugin file/format
-    pathsAll.forEach((pluginPath: string) => {
-      plugin.paths.push(pluginPath);
-    });
-    dirDelete(dirDownloads);
+  if (!isAdmin() && !isTests()) {
+    await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`);
   } else {
-    const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
-    fileCreate(pluginPath, pluginData);
-    plugin.paths.push(pluginPath);
+    plugin.paths = [];
+    const pluginUrl: string = pluginSource(plugin);
+    const pluginExt = pathGetExt(pluginUrl);
+    if (!validPluginExt.includes(pluginExt)) {
+      throw Error(`Unsupported file type ${pluginExt}`);
+    }
+    // Download the plugin data
+    const pluginData: Buffer = await getRaw(pluginUrl);
+    // If the file is compressed
+    if (pluginExt === 'zip') {
+      let pathsAll: string[] = [];
+      const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', plugin.repo, plugin.id);
+      dirCreate(dirDownloads);
+      zipExtract(pluginData, dirDownloads);
+      if (plugin.tags.includes('sfz')) {
+        // Plugin is a sample pack
+        dirCreate(pluginDirectory(plugin, 'SFZ'));
+        dirMove(dirDownloads, pluginDirectory(plugin, 'SFZ'));
+        pathsAll = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
+      } else {
+        // Plugin is an instrument/effect
+        const pathsCom: string[] = pluginOrganizeByType(
+          dirDownloads,
+          'component',
+          pluginDirectory(plugin, 'Components'),
+          plugin
+        );
+        const pathsLv2: string[] = pluginOrganizeByType(dirDownloads, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
+        const pathsVst: string[] = pluginOrganizeByType(dirDownloads, 'vst', pluginDirectory(plugin, 'VST'), plugin);
+        const pathsVst3: string[] = pluginOrganizeByType(dirDownloads, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
+        pathsAll = pathsCom.concat(pathsLv2, pathsVst, pathsVst3);
+      }
+      // Save json metadata file alongside each plugin file/format
+      pathsAll.forEach((pluginPath: string) => {
+        plugin.paths.push(pluginPath);
+      });
+      dirDelete(dirDownloads);
+    } else {
+      const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
+      fileCreate(pluginPath, pluginData);
+      plugin.paths.push(pluginPath);
+    }
   }
   plugin.status = 'installed';
   return plugin;
@@ -270,23 +276,27 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
   if (!plugin.repo) {
     throw Error(`Plugin is missing repo metadata ${id}, ${version}`);
   }
-  if (!pluginInstalled(plugin)) {
-    throw Error(
-      `Plugin not installed locally 
-      ${pluginDirectory(plugin, 'Components')} 
-      ${pluginDirectory(plugin, 'LV2')} 
-      ${pluginDirectory(plugin, 'SFZ')} 
-      ${pluginDirectory(plugin, 'VST')} 
-      ${pluginDirectory(plugin, 'VST3')}`
-    );
+  if (!isAdmin() && !isTests()) {
+    await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`);
   } else {
-    // Move all plugin formats from folders
-    // TODO remove app if it exists
-    removeDirectory(plugin, 'Components');
-    removeDirectory(plugin, 'LV2');
-    removeDirectory(plugin, 'SFZ');
-    removeDirectory(plugin, 'VST');
-    removeDirectory(plugin, 'VST3');
+    if (!pluginInstalled(plugin)) {
+      throw Error(
+        `Plugin not installed locally 
+        ${pluginDirectory(plugin, 'Components')} 
+        ${pluginDirectory(plugin, 'LV2')} 
+        ${pluginDirectory(plugin, 'SFZ')} 
+        ${pluginDirectory(plugin, 'VST')} 
+        ${pluginDirectory(plugin, 'VST3')}`
+      );
+    } else {
+      // Move all plugin formats from folders
+      // TODO remove app if it exists
+      removeDirectory(plugin, 'Components');
+      removeDirectory(plugin, 'LV2');
+      removeDirectory(plugin, 'SFZ');
+      removeDirectory(plugin, 'VST');
+      removeDirectory(plugin, 'VST3');
+    }
   }
   plugin.paths = [];
   plugin.status = 'available';
