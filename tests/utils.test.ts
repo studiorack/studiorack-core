@@ -42,8 +42,8 @@ test('Input get parts', () => {
   expect(inputGetParts(`${PLUGIN_REPO}/${PLUGIN_ID}@${PLUGIN_VERSION}`)).toEqual([`${PLUGIN_REPO}/${PLUGIN_ID}`, PLUGIN_VERSION]);
 });
 
-test('Is Admin', () => {
-  expect(isAdmin()).toEqual(false);
+test('Is Admin', async () => {
+  expect(await isAdmin()).toEqual(false);
 });
 
 // test('Move process', async () => {
