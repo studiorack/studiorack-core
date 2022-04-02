@@ -150,7 +150,7 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
   if (!isAdmin() && !isTests()) {
-    await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`);
+    await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`, true);
   } else {
     plugin.paths = [];
     const pluginUrl: string = pluginSource(plugin);
@@ -277,7 +277,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     throw Error(`Plugin is missing repo metadata ${id}, ${version}`);
   }
   if (!isAdmin() && !isTests()) {
-    await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`);
+    await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`, true);
   } else {
     if (!pluginInstalled(plugin)) {
       throw Error(

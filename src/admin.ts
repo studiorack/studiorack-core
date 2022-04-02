@@ -28,10 +28,11 @@ async function init() {
   }
 }
 
-function runCliAsAdmin(args: string): Promise<string> {
+function runCliAsAdmin(args: string, isDependency?: boolean): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    console.log(`node ./dist/admin.js ${args}`);
-    sudoPrompt.exec(`node ./dist/admin.js ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+    const basePath: string = isDependency ? './node_modules/@studiorack/core' : '.';
+    console.log(`node ${basePath}/dist/admin.js ${args}`);
+    sudoPrompt.exec(`node ${basePath}/dist/admin.js ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
         console.log('runCliAsAdmin', stdout);
       }
