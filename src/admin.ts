@@ -32,9 +32,10 @@ async function init() {
 
 function runCliAsAdmin(args: string, isDependency?: boolean): Promise<string> {
   return new Promise<string>((resolve, reject) => {
+    const dirPath: string = __dirname.includes('.asar') ? __dirname.replace('.asar', '.asar.unpacked') : __dirname;
     const fullPath: string = isDependency
-      ? path.join(dirAppData(), 'node_modules', '@studiorack', 'core', 'dist', 'admin.js')
-      : path.join(dirAppData(), 'dist', 'admin.js');
+      ? path.join('node_modules', '@studiorack', 'core', 'dist', 'admin.js')
+      : path.join(dirPath, 'admin.js');
     console.log(`node ${fullPath} ${args}`);
     sudoPrompt.exec(`node ${fullPath} ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
