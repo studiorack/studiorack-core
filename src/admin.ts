@@ -3,6 +3,8 @@
 // npm run build && node ./dist/admin.js --operation uninstall --id studiorack/adlplug/adlplug
 
 import sudoPrompt from '@vscode/sudo-prompt';
+import path from 'path';
+import { dirAppData } from './file';
 import { pluginInstall, pluginUninstall } from './plugin';
 
 interface Arguments {
@@ -30,9 +32,11 @@ async function init() {
 
 function runCliAsAdmin(args: string, isDependency?: boolean): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    const basePath: string = isDependency ? './node_modules/@studiorack/core' : '.';
-    console.log(`node ${basePath}/dist/admin.js ${args}`);
-    sudoPrompt.exec(`node ${basePath}/dist/admin.js ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+    const fullPath: string = isDependency
+      ? path.join(dirAppData(), 'node_modules', '@studiorack', 'core', 'dist', 'admin.js')
+      : path.join(dirAppData(), 'dist', 'admin.js');
+    console.log(`node ${fullPath} ${args}`);
+    sudoPrompt.exec(`node ${fullPath} ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
         console.log('runCliAsAdmin', stdout);
       }
