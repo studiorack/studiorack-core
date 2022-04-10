@@ -30,7 +30,10 @@ const PLUGIN_EXT= 'vst3';
 const PLUGIN_SLUG = 'studiorack_oxe_oxe';
 
 test('Get platform', () => {
-  expect(getPlatform()).toEqual(process.env.CI ? 'linux' : 'mac');
+  let currentPlatform: string = 'linux';
+  if (process.platform === 'darwin') { currentPlatform = 'mac' }
+  else if (process.platform === 'win32') { currentPlatform = 'win' }
+  expect(getPlatform()).toEqual(currentPlatform);
 });
 
 test('Id to slug', () => {
