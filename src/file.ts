@@ -97,6 +97,11 @@ function dirPlugins(): string {
 }
 
 function dirProjects(): string {
+  // Windows throws permissions errors if you scan hidden folders
+  // Therefore setting Windows to a more specific path
+  if (process.platform === 'win32') {
+    return path.join(os.homedir(), 'Documents', 'Audio');
+  }
   return path.join(os.homedir(), 'Documents');
 }
 
