@@ -97,7 +97,7 @@ function dirPlugins(): string {
 }
 
 function dirProjects(): string {
-  return os.homedir();
+  return path.join(os.homedir(), 'Documents');
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
