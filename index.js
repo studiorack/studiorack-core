@@ -6,7 +6,7 @@ const api = require('./dist/api.js');
 const config = require('./dist/config.js');
 const file = require('./dist/file.js');
 const plugin = require('./dist/plugin.js');
-const project = require('./dist/plugin.js');
+const project = require('./dist/project.js');
 const utils = require('./dist/utils.js');
 const tester = require('./dist/tester.js');
 const validate = require('./dist/validate.js');
@@ -45,7 +45,7 @@ async function run() {
   // const pluginUninstallAll = await plugin.pluginUninstallAll();
   // console.log('pluginUninstallAll', pluginUninstallAll);
 
-  // const result = await validate.validateFolder('./test/plugins/**/*.{dll,lv2,vst,vst3}', {
+  // const result = await validate.validateFolder('test/plugins/**/*.{dll,lv2,vst,vst3}', {
   //   files: true,
   //   json: true,
   //   txt: true,

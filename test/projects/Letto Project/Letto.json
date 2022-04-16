@@ -29,6 +29,6 @@
     }
   },
   "plugins": {},
-  "path": "./test/projects/Letto Project",
+  "path": "test/projects/Letto Project",
   "status": "installed"
 }

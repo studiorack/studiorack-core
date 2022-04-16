@@ -16,7 +16,7 @@ import {
 } from '../src/project';
 import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
-const PROJECT_DIR: string = './test/projects';
+const PROJECT_DIR: string = 'test/projects';
 const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = 'Banwer Project/Banwer.json';
 const PROJECT_DEFAULT: ProjectInterface = {
@@ -63,7 +63,7 @@ const PROJECT_LOCAL: ProjectLocal = {
     "name": "Ableton"
   },
   "repo": "banwer-project",
-  "path": "./test/projects/Banwer Project",
+  "path": "test/projects/Banwer Project",
   "status": "installed",
   "files": {
     "audio": {

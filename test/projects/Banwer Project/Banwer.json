@@ -29,6 +29,6 @@
     }
   },
   "plugins": {},
-  "path": "./test/projects/Banwer Project",
+  "path": "test/projects/Banwer Project",
   "status": "installed"
 }

@@ -44,13 +44,13 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
   dirCreate(tempDir);
   zipExtract(data, tempDir);
   dirCreate(dir);
-  dirRename(`${tempDir}/studiorack-template-${template}-main`, dir);
+  dirRename(path.join(tempDir, `studiorack-template-${template}-main`), dir);
   dirDelete(tempDir);
   return true;
 }
 
 function pluginDirectory(plugin: PluginInterface, type = 'VST3', depth?: number): string {
-  const pluginPaths: string[] = [`${configGet('pluginFolder')}/${type}`, plugin.repo, plugin.id, plugin.version];
+  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), plugin.repo, plugin.id, plugin.version];
   if (depth) {
     return pluginPaths.slice(0, depth).join(path.sep);
   }
@@ -92,8 +92,8 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginExts: string[] = Object.keys(pluginTypes).map((pluginTypeKey: string) => {
     return pluginTypes[pluginTypeKey as keyof PluginTypes].ext;
   });
-  const pluginFolderExts: string = `/**/*.{${pluginExts.join(',')}}`;
-  const pluginPaths: string[] = dirRead(`${configGet('pluginFolder')}${pluginFolderExts}`);
+  const pluginSearchPath: string = path.join(configGet('pluginFolder'), '**', `*.{${pluginExts.join(',')}`);
+  const pluginPaths: string[] = dirRead(pluginSearchPath);
   const pluginsFound: { [property: string]: PluginLocal } = {};
   pluginPaths.forEach((pluginPath: string) => {
     const relativePath: string = pluginPath.replace(configGet('pluginFolder') + path.sep, '');
@@ -255,7 +255,7 @@ function pluginSource(plugin: PluginInterface): string {
   const pluginFile: PluginFile = plugin.files[getPlatform()];
   const pluginRoot: string = configGet('pluginRelease').replace('${repo}', plugin.repo);
   if (pluginFile) {
-    return `${pluginRoot}/${plugin.release}/${plugin.files[getPlatform()].name}`;
+    return path.join(pluginRoot, plugin.release, plugin.files[getPlatform()].name);
   } else {
     throw Error(`Plugin not available for your system ${plugin.id}`);
   }

@@ -26,9 +26,9 @@ function dirAppData(): string {
   if (process.env.APPDATA) {
     return process.env.APPDATA;
   } else if (process.platform === 'darwin') {
-    return `${os.homedir()}/Library/Preferences`;
+    return path.join(os.homedir(), 'Library', 'Preferences');
   }
-  return `${os.homedir()}/.local/share`;
+  return path.join(os.homedir(), '.local', 'share');
 }
 
 function dirContains(dirParent: string, dirChild: string): boolean {

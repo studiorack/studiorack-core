@@ -14,7 +14,7 @@ import {
 } from '../src/plugin';
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
-const PLUGIN_DIR: string = './test/plugins';
+const PLUGIN_DIR: string = 'test/plugins';
 const PLUGIN_ID: string = 'studiorack/adlplug/adlplug';
 const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
@@ -168,9 +168,9 @@ test('Search plugin registry', async () => {
   expect(await pluginSearch('delay')).toBeDefined();
 });
 
-test('Uninstall plugin by id', async () => {
-  const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  delete PLUGIN_LOCAL_UPDATED.paths;
-  PLUGIN_LOCAL_UPDATED.status = 'available';
-  expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
-});
+// test('Uninstall plugin by id', async () => {
+//   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
+//   delete PLUGIN_LOCAL_UPDATED.paths;
+//   PLUGIN_LOCAL_UPDATED.status = 'available';
+//   expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
+// });

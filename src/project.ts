@@ -36,8 +36,9 @@ function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   project.path = pathGetDirectory(id);
   project.repo = pathGetRepo(id);
   project.status = 'installed';
-  dirCreate(pathGetDirectory(`${configGet('projectFolder')}/${id}.json`));
-  return projectSave(`${configGet('projectFolder')}/${id}.json`, project);
+  const projectJsonPath: string = path.join(configGet('projectFolder'), `${id}.json`);
+  dirCreate(pathGetDirectory(projectJsonPath));
+  return projectSave(projectJsonPath, project);
 }
 
 function projectDefault(): ProjectInterface {
@@ -93,8 +94,8 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   const projectExts: string[] = Object.keys(projectTypes).map((projectTypeKey: string) => {
     return projectTypes[projectTypeKey as keyof ProjectTypes].ext;
   });
-  const projectFolderExts: string = `/**/*.{${projectExts.join(',')}}`;
-  const projectPaths: string[] = dirRead(`${configGet('projectFolder')}${projectFolderExts}`);
+  const projectSearchPath: string = path.join(configGet('projectFolder'), '**', `*.{${projectExts.join(',')}}`);
+  const projectPaths: string[] = dirRead( projectSearchPath);
   const projects: ProjectLocal[] = [];
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('/Backup/')) return;
@@ -144,7 +145,8 @@ function projectSave(dir: string, config: ProjectLocal): ProjectLocal {
 
 async function projectStart(dir: string): Promise<Buffer> {
   const project: ProjectLocal = projectLoad(dir);
-  return fileOpen(`${pathGetDirectory(dir)}/${project.files.project?.name}`);
+  const projectFilePath: string = path.join(pathGetDirectory(dir), project.files.project?.name);
+  return fileOpen(projectFilePath);
 }
 
 function projectType(ext: string): ProjectType {
@@ -197,7 +199,8 @@ function projectValidate(dir: string, options?: any): ProjectInterface {
     project = projectValidateFiles(dir, project);
   }
   if (options && options.json) {
-    fileJsonCreate(`${pathGetDirectory(dir)}/${pathGetFilename(dir)}.json`, project);
+    const projectJsonPath: string = path.join(pathGetDirectory(dir), `${pathGetFilename(dir)}.json`);
+    fileJsonCreate(projectJsonPath, project);
   }
   return project;
 }
