@@ -51,7 +51,7 @@ test('Input get parts', () => {
 // });
 
 test('Path get directory', () => {
-  expect(pathGetDirectory(PLUGIN_PATH)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}`);
+  expect(pathGetDirectory(PLUGIN_PATH)).toEqual(path.join(PLUGIN_REPO, PLUGIN_ID, PLUGIN_VERSION));
 });
 
 test('Path get extension', () => {
@@ -75,8 +75,8 @@ test('Path get version', () => {
 });
 
 test('Path without ext', () => {
-  expect(pathGetWithoutExt(PLUGIN_PATH)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}/${PLUGIN_FILENAME}`);
-  expect(pathGetWithoutExt(PLUGIN_PATH_DIR)).toEqual(`${PLUGIN_REPO}/${PLUGIN_ID}/${PLUGIN_VERSION}`);
+  expect(pathGetWithoutExt(PLUGIN_PATH)).toEqual(path.join(PLUGIN_REPO, PLUGIN_ID, PLUGIN_VERSION, PLUGIN_FILENAME));
+  expect(pathGetWithoutExt(PLUGIN_PATH_DIR)).toEqual(path.join(PLUGIN_REPO, PLUGIN_ID, PLUGIN_VERSION));
 });
 
 test('Slug safe', () => {

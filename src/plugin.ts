@@ -183,7 +183,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       });
       dirDelete(dirDownloads);
     } else {
-      const pluginPath: string = `${pluginDirectory(plugin)}/${plugin.files[getPlatform()].name}`;
+      const pluginPath: string = path.join(pluginDirectory(plugin), plugin.files[getPlatform()].name);
       fileCreate(pluginPath, pluginData);
       plugin.paths.push(pluginPath);
     }

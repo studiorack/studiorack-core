@@ -38,11 +38,11 @@ function validateFiles(pathItem: string, json: any): any {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = fileAdd(`${directory}/${slug}.wav`, `${slug}.wav`, 'audio', json);
-  json = fileAdd(`${directory}/${slug}.png`, `${slug}.png`, 'image', json);
-  json = fileAdd(`${directory}/${slug}-linux.zip`, `${slug}-linux.zip`, 'linux', json);
-  json = fileAdd(`${directory}/${slug}-mac.zip`, `${slug}-mac.zip`, 'mac', json);
-  json = fileAdd(`${directory}/${slug}-win.zip`, `${slug}-win.zip`, 'win', json);
+  json = fileAdd(path.join(directory, `${slug}.wav`), `${slug}.wav`, 'audio', json);
+  json = fileAdd(path.join(directory, `${slug}.png`), `${slug}.png`, 'image', json);
+  json = fileAdd(path.join(directory, `${slug}-linux.zip`), `${slug}-linux.zip`, 'linux', json);
+  json = fileAdd(path.join(directory, `${slug}-mac.zip`), `${slug}-mac.zip`, 'mac', json);
+  json = fileAdd(path.join(directory, `${slug}-win.zip`), `${slug}-win.zip`, 'win', json);
   return json;
 }
 

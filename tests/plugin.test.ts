@@ -113,10 +113,10 @@ test('Create a plugin from a valid template', async () => {
 });
 
 test('Get plugin directory', () => {
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}/${PLUGIN.id}/${PLUGIN.version}`);
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}/${PLUGIN.id}`);
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}/${PLUGIN.repo}`);
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(`${PLUGIN_DIR}/${PLUGIN_TYPE}`);
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo, PLUGIN.id, PLUGIN.version));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo, PLUGIN.id));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE));
 });
 
 test('Get valid plugin by id from registry', async () => {

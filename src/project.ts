@@ -214,9 +214,9 @@ function projectValidateFiles(pathItem: string, json: any): any {
     json.files = {};
   }
   // Add audio, image and zip files
-  json = fileAdd(`${directory}/${filename}.wav`, `${filename}.wav`, 'audio', json);
-  json = fileAdd(`${directory}/${filename}.png`, `${filename}.png`, 'image', json);
-  json = fileAdd(`${directory}/${filename}.${ext}`, `${filename}.${ext}`, 'project', json);
+  json = fileAdd(path.join(directory, `${filename}.wav`), `${filename}.wav`, 'audio', json);
+  json = fileAdd(path.join(directory, `${filename}.png`), `${filename}.png`, 'image', json);
+  json = fileAdd(path.join(directory, `${filename}.${ext}`), `${filename}.${ext}`, 'project', json);
   return json;
 }
 

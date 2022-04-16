@@ -104,7 +104,7 @@ test('Create project default', () => {
 });
 
 test('Get project directory', () => {
-  expect(projectDirectory(PROJECT_LOCAL)).toEqual(`${PROJECT_DIR}/banwer/1.0.0`);
+  expect(projectDirectory(PROJECT_LOCAL)).toEqual(path.join(PROJECT_DIR, 'banwer', '1.0.0'));
 });
 
 test('Get project', async () => {
@@ -116,19 +116,19 @@ test('Get projects', () => {
 });
 
 test('Install project plugins', async () => {
-  expect(await projectInstall(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
+  expect(await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
 });
 
 test('Load project json', () => {
-  expect(projectLoad(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
+  expect(projectLoad(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
 });
 
 test('Save project json', () => {
-  expect(projectSave(`${PROJECT_DIR}/${PROJECT_FILE}`, PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
+  expect(projectSave(path.join(PROJECT_DIR, PROJECT_FILE), PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
 });
 
 // test('Start project', async () => {
-//   expect(await projectStart(`${PROJECT_DIR}/${PROJECT_FILE}`)).toBeDefined();
+//   expect(await projectStart(path.join(PROJECT_DIR, PROJECT_FILE))).toBeDefined();
 // });
 
 test('Get project type', () => {
@@ -139,7 +139,7 @@ test('Get project type', () => {
 });
 
 test('Uninstall project plugins', async () => {
-  expect(await projectUninstall(`${PROJECT_DIR}/${PROJECT_FILE}`)).toEqual(PROJECT_LOCAL);
+  expect(await projectUninstall(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
 });
 
 test('Validate project', () => {
