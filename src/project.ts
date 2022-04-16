@@ -23,7 +23,7 @@ function askQuestion(label: string, input: any, fallback: string) {
 
 function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   const project: ProjectLocal = projectDefault() as ProjectLocal;
-  const projectId = pathGetFilename(id);
+  const projectId = pathGetFilename(id, '/');
   if (prompt) {
     project.name = askQuestion('Name', project.name, projectId);
     project.version = askQuestion('Version', project.version, '1.0.0');
@@ -32,9 +32,9 @@ function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
     project.files.image.name = askQuestion('Image', project.files.image.name, `${projectId}.png`);
     project.files.project.name = askQuestion('Main', project.files.project.name, `${projectId}.als`);
   }
-  project.id = safeSlug(pathGetFilename(id));
-  project.path = pathGetDirectory(id);
-  project.repo = pathGetRepo(id);
+  project.id = safeSlug(pathGetFilename(id, '/'));
+  project.path = pathGetDirectory(id, '/');
+  project.repo = pathGetRepo(id, '/');
   project.status = 'installed';
   const projectJsonPath: string = path.join(configGet('projectFolder'), `${id}.json`);
   dirCreate(pathGetDirectory(projectJsonPath));

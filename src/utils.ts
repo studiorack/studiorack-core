@@ -41,24 +41,24 @@ function isTests() {
 // For example:
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
-function pathGetDirectory(pathItem: string): string {
-  return pathItem.substring(0, pathItem.lastIndexOf(path.sep));
+function pathGetDirectory(pathItem: string, separator?: string): string {
+  return pathItem.substring(0, pathItem.lastIndexOf(separator || path.sep));
 }
 
-function pathGetExt(pathItem: string): string {
+function pathGetExt(pathItem: string, separator?: string): string {
   return pathItem.substring(pathItem.lastIndexOf('.') + 1);
 }
 
-function pathGetFilename(str: string): string {
-  let base: string = str.substring(str.lastIndexOf(path.sep) + 1);
+function pathGetFilename(str: string, separator?: string): string {
+  let base: string = str.substring(str.lastIndexOf(separator || path.sep) + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
   return base;
 }
 
-function pathGetId(pathItem: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split(path.sep);
+function pathGetId(pathItem: string, separator?: string): string {
+  const pathParts: string[] = pathGetDirectory(pathItem).split(separator || path.sep);
   if (pathParts.length > 2) {
     return safeSlug(pathParts[2]);
   }
@@ -66,8 +66,8 @@ function pathGetId(pathItem: string): string {
   return safeSlug(pathGetDirectory(pathItem));
 }
 
-function pathGetRepo(pathItem: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split(path.sep);
+function pathGetRepo(pathItem: string, separator?: string): string {
+  const pathParts: string[] = pathGetDirectory(pathItem).split(separator || path.sep);
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }

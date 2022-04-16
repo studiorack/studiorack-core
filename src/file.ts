@@ -39,7 +39,8 @@ function dirContains(dirParent: string, dirChild: string): boolean {
 function dirCreate(dirPath: string): string | boolean {
   if (!dirExists(dirPath)) {
     console.log('+', dirPath);
-    return fs.mkdirSync(dirPath, { recursive: true });
+    fs.mkdirSync(dirPath, { recursive: true });
+    return dirPath;
   }
   return false;
 }
@@ -82,7 +83,7 @@ function dirOpen(dirPath: string): Buffer {
       command = 'open';
       break;
     case 'win32':
-      command = 'explore';
+      command = 'start';
       break;
     default:
       command = 'xdg-open';
@@ -107,6 +108,14 @@ function dirProjects(): string {
 
 function dirRead(dirPath: string, options?: any): string[] {
   console.log('⌕', dirPath);
+  // Glob returns relative paths with forward slashes on Windows
+  // Convert every path to a Windows compatible path
+  // https://github.com/isaacs/node-glob/issues/419
+  if (process.platform === 'win32') {
+    return glob.sync(dirPath, options).map((subDirPath: string) => {
+      return subDirPath.split('/').join(path.sep);
+    });
+  }
   return glob.sync(dirPath, options);
 }
 

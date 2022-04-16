@@ -231,7 +231,7 @@ function pluginLatest(pluginEntry: PluginEntry): PluginInterface {
       return;
     }
   });
-  plugin.repo = pathGetRepo(pluginEntry.id);
+  plugin.repo = pathGetRepo(pluginEntry.id, '/');
   return plugin;
 }
 
