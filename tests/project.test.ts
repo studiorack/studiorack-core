@@ -1,3 +1,4 @@
+import path from 'path';
 import { configSet } from '../src/config';
 import {
   projectCreate,
@@ -16,9 +17,9 @@ import {
 } from '../src/project';
 import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
-const PROJECT_DIR: string = 'test/projects';
+const PROJECT_DIR: string = path.join('test', 'projects');
 const PROJECT_ID: string = 'banwer-project/banwer';
-const PROJECT_FILE: string = 'Banwer Project/Banwer.json';
+const PROJECT_FILE: string = path.join('Banwer Project', 'Banwer.json');
 const PROJECT_DEFAULT: ProjectInterface = {
   "author": "studiorack-user",
   "homepage": "https://studiorack.github.io/studiorack-site/",

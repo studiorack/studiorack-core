@@ -1,3 +1,4 @@
+import path from 'path';
 import {
   getPlatform,
   idToSlug,
@@ -19,8 +20,8 @@ import {
 // For example:
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
-const PLUGIN_PATH = 'studiorack/oxe/oxe/1.3.5/oxe.vst3';
-const PLUGIN_PATH_DIR = 'studiorack/oxe/oxe/1.3.5';
+const PLUGIN_PATH = path.join('studiorack', 'oxe', 'oxe', '1.3.5', 'oxe.vst3');
+const PLUGIN_PATH_DIR = path.join('studiorack', 'oxe', 'oxe', '1.3.5');
 const PLUGIN_REPO = 'studiorack/oxe';
 const PLUGIN_REPO_INCORRECT = 'Studiorack/Oxe/Oxe';
 const PLUGIN_ID = 'oxe';

@@ -1,3 +1,4 @@
+import path from 'path';
 import { configSet } from '../src/config';
 import { dirDelete } from '../src/file';
 import {
@@ -14,7 +15,7 @@ import {
 } from '../src/plugin';
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
-const PLUGIN_DIR: string = 'test/plugins';
+const PLUGIN_DIR: string = path.join('test', 'plugins');
 const PLUGIN_ID: string = 'studiorack/adlplug/adlplug';
 const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
@@ -128,11 +129,11 @@ test('Get invalid PLUGIN by id from registry', async () => {
 
 test('Install plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  if (process.env.CI) {
-    PLUGIN_LOCAL_UPDATED.paths = [
-      PLUGIN_LOCAL.paths[1]
-    ];
-  }
+  // if (process.env.CI) {
+  //   PLUGIN_LOCAL_UPDATED.paths = [
+  //     PLUGIN_LOCAL.paths[1]
+  //   ];
+  // }
   expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
 
