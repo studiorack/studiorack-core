@@ -129,11 +129,11 @@ test('Get invalid PLUGIN by id from registry', async () => {
 
 test('Install plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  // if (process.env.CI) {
-  //   PLUGIN_LOCAL_UPDATED.paths = [
-  //     PLUGIN_LOCAL.paths[1]
-  //   ];
-  // }
+  if (process.env.CI) {
+    PLUGIN_LOCAL_UPDATED.paths = [
+      PLUGIN_LOCAL.paths[1]
+    ];
+  }
   expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
 
