@@ -50,7 +50,8 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
 }
 
 function pluginDirectory(plugin: PluginInterface, type = 'VST3', depth?: number): string {
-  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), plugin.repo, plugin.id, plugin.version];
+  const [pluginOwner, pluginRepo] = plugin.repo.split('/');
+  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), path.join(pluginOwner, pluginRepo), plugin.id, plugin.version];
   if (depth) {
     return pluginPaths.slice(0, depth).join(path.sep);
   }
@@ -156,14 +157,16 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     // If the file is compressed
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
-      const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', plugin.repo, plugin.id);
+      const [pluginOwner, pluginRepo] = plugin.repo.split('/');
+      const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
       dirCreate(dirDownloads);
       zipExtract(pluginData, dirDownloads);
       if (plugin.tags.includes('sfz')) {
         // Plugin is a sample pack
         dirCreate(pluginDirectory(plugin, 'SFZ'));
         dirMove(dirDownloads, pluginDirectory(plugin, 'SFZ'));
-        pathsAll = dirRead(`${pluginDirectory(plugin, 'SFZ')}/**/*.sfz`);
+        const pluginSFZPath: string = path.join(pluginDirectory(plugin, 'SFZ'), '**', '*.sfz');
+        pathsAll = dirRead(pluginSFZPath);
       } else {
         // Plugin is an instrument/effect
         const pathsCom: string[] = pluginOrganizeByType(
@@ -330,7 +333,8 @@ function removeDirectory(plugin: PluginLocal, type: string) {
   }
 
   // If no other plugins by same repo root exist, then remove plugin repo root
-  const repoRootDir: string = pluginDirectory(plugin, type, 1) + path.sep + plugin.repo.split(path.sep)[0];
+  const [pluginOwner] = plugin.repo.split('/');
+  const repoRootDir: string = path.join(pluginDirectory(plugin, type, 1), pluginOwner);
   if (dirExists(repoRootDir) && dirEmpty(repoRootDir)) {
     dirDelete(repoRootDir);
   }

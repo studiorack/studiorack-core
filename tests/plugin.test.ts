@@ -109,13 +109,14 @@ beforeAll(() => {
 });
 
 test('Create a plugin from a valid template', async () => {
-  expect(await pluginCreate(`${PLUGIN_DIR}/dplug-template`, PLUGIN_TEMPLATE)).toEqual(true);
+  expect(await pluginCreate(path.join(PLUGIN_DIR, 'dplug-template'), PLUGIN_TEMPLATE)).toEqual(true);
 });
 
 test('Get plugin directory', () => {
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo, PLUGIN.id, PLUGIN.version));
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo, PLUGIN.id));
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.repo));
+  const [pluginOwner, pluginRepo] = PLUGIN.repo.split('/');
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id, PLUGIN.version));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo));
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE));
 });
 
