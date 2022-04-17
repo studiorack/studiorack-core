@@ -1,6 +1,6 @@
 {
   "name": "@studiorack/core",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "Core library containing shared functionality",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
