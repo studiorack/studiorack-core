@@ -67,7 +67,7 @@ function pathGetId(pathItem: string, separator?: string): string {
 }
 
 function pathGetRepo(pathItem: string, separator?: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split(separator || path.sep);
+  const pathParts: string[] = pathGetDirectory(pathItem, separator || path.sep).split(separator || path.sep);
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
