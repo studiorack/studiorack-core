@@ -98,7 +98,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginExts: string[] = Object.keys(pluginTypes).map((pluginTypeKey: string) => {
     return pluginTypes[pluginTypeKey as keyof PluginTypes].ext;
   });
-  const pluginSearchPath: string = path.join(configGet('pluginFolder'), '**', `*.{${pluginExts.join(',')}`);
+  const pluginSearchPath: string = path.join(configGet('pluginFolder'), '**', `*.{${pluginExts.join(',')}}`);
   const pluginPaths: string[] = dirRead(pluginSearchPath);
   const pluginsFound: { [property: string]: PluginLocal } = {};
   pluginPaths.forEach((pluginPath: string) => {
