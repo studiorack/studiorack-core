@@ -51,7 +51,12 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
 
 function pluginDirectory(plugin: PluginInterface, type = 'VST3', depth?: number): string {
   const [pluginOwner, pluginRepo] = plugin.repo.split('/');
-  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), path.join(pluginOwner, pluginRepo), plugin.id, plugin.version];
+  const pluginPaths: string[] = [
+    path.join(configGet('pluginFolder'), type),
+    path.join(pluginOwner, pluginRepo),
+    plugin.id,
+    plugin.version,
+  ];
   if (depth) {
     return pluginPaths.slice(0, depth).join(path.sep);
   }
@@ -158,7 +163,14 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
       const [pluginOwner, pluginRepo] = plugin.repo.split('/');
-      const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
+      const dirDownloads: string = path.join(
+        dirAppData(),
+        'studiorack',
+        'downloads',
+        pluginOwner,
+        pluginRepo,
+        plugin.id
+      );
       dirCreate(dirDownloads);
       zipExtract(pluginData, dirDownloads);
       if (plugin.tags.includes('sfz')) {

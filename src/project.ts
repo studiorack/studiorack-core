@@ -95,7 +95,7 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
     return projectTypes[projectTypeKey as keyof ProjectTypes].ext;
   });
   const projectSearchPath: string = path.join(configGet('projectFolder'), '**', `*.{${projectExts.join(',')}}`);
-  const projectPaths: string[] = dirRead( projectSearchPath);
+  const projectPaths: string[] = dirRead(projectSearchPath);
   const projects: ProjectLocal[] = [];
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('/Backup/')) return;
