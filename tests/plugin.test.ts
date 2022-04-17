@@ -130,7 +130,13 @@ test('Get invalid PLUGIN by id from registry', async () => {
 
 test('Install plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  if (process.platform !== 'darwin' && process.platform !== 'win32') {
+  if (process.platform === 'win32') {
+    PLUGIN_LOCAL_UPDATED.paths = [
+      PLUGIN_LOCAL.paths[0],
+      PLUGIN_LOCAL.paths[2],
+      PLUGIN_LOCAL.paths[3]
+    ];
+  } else if (process.platform !== 'darwin') {
     PLUGIN_LOCAL_UPDATED.paths = [
       PLUGIN_LOCAL.paths[1]
     ];

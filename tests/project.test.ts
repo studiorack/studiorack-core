@@ -64,7 +64,7 @@ const PROJECT_LOCAL: ProjectLocal = {
     "name": "Ableton"
   },
   "repo": "banwer-project",
-  "path": "test/projects/Banwer Project",
+  "path": path.join('test', 'projects', 'Banwer Project'),
   "status": "installed",
   "files": {
     "audio": {
@@ -89,8 +89,7 @@ beforeAll(() => {
 
 test('Create project locally', () => {
   const result = projectCreate('songs/april/example', false);
-  result.date = new Date().toISOString();
-  PROJECT_DEFAULT.date = new Date().toISOString();
+  result.date = PROJECT_DEFAULT.date;
   expect(result).toMatchObject(PROJECT_DEFAULT);
 });
 
@@ -98,8 +97,7 @@ test('Create project default', () => {
   const result = projectDefault();
   result.id = 'example';
   result.repo = 'songs/april';
-  result.date = new Date().toISOString();
-  PROJECT_DEFAULT.date = new Date().toISOString();
+  result.date = PROJECT_DEFAULT.date;
   expect(result).toMatchObject(PROJECT_DEFAULT);
 });
 
@@ -108,7 +106,9 @@ test('Get project directory', () => {
 });
 
 test('Get project', async () => {
-  expect(await projectGetLocal(PROJECT_ID)).toEqual(PROJECT_LOCAL);
+  const result = await projectGetLocal(PROJECT_ID);
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Get projects', () => {
@@ -116,15 +116,21 @@ test('Get projects', () => {
 });
 
 test('Install project plugins', async () => {
-  expect(await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
+  const result = await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE));
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Load project json', () => {
-  expect(projectLoad(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
+  const result = projectLoad(path.join(PROJECT_DIR, PROJECT_FILE));
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Save project json', () => {
-  expect(projectSave(path.join(PROJECT_DIR, PROJECT_FILE), PROJECT_LOCAL)).toEqual(PROJECT_LOCAL);
+  const result = projectSave(path.join(PROJECT_DIR, PROJECT_FILE), PROJECT_LOCAL);
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 // test('Start project', async () => {
@@ -139,7 +145,9 @@ test('Get project type', () => {
 });
 
 test('Uninstall project plugins', async () => {
-  expect(await projectUninstall(path.join(PROJECT_DIR, PROJECT_FILE))).toEqual(PROJECT_LOCAL);
+  const result = await projectUninstall(path.join(PROJECT_DIR, PROJECT_FILE));
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Validate project', () => {
