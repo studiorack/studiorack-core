@@ -8,7 +8,7 @@ function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     console.log(`studiorack ${args}`);
     sudoPrompt.exec(
-      `npm install @studiorack/cli -g; studiorack ${args}`,
+      `npm install @studiorack/cli -g && studiorack ${args}`,
       { name: 'StudioRack' },
       (error, stdout, stderr) => {
         if (stdout) {

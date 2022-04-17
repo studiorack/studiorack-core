@@ -118,6 +118,9 @@ test('Get projects', () => {
 test('Install project plugins', async () => {
   const result = await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE));
   result.date = PROJECT_LOCAL.date;
+  if (process.platform === 'win32') {
+    result.path = result.path.split('/').join('\\');
+  }
   expect(result).toEqual(PROJECT_LOCAL);
 });
 

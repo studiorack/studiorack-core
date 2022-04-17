@@ -130,18 +130,15 @@ test('Get invalid PLUGIN by id from registry', async () => {
 
 test('Install plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  if (process.platform === 'win32') {
-    PLUGIN_LOCAL_UPDATED.paths = [
-      PLUGIN_LOCAL.paths[0],
-      PLUGIN_LOCAL.paths[2],
-      PLUGIN_LOCAL.paths[3]
-    ];
-  } else if (process.platform !== 'darwin') {
+  if (process.platform !== 'win32' && process.platform !== 'darwin') {
     PLUGIN_LOCAL_UPDATED.paths = [
       PLUGIN_LOCAL.paths[1]
     ];
   }
-  expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
+  const pluginInstalled = await pluginInstall(PLUGIN_ID);
+  console.log('pluginInstalled', pluginInstalled.paths);
+  console.log('PLUGIN_LOCAL_UPDATED', PLUGIN_LOCAL_UPDATED.paths);
+  expect(pluginInstalled).toMatchObject(PLUGIN_LOCAL_UPDATED);
 });
 
 test('Check if plugin is installed locally', () => {

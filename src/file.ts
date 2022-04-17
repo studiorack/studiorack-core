@@ -83,7 +83,7 @@ function dirOpen(dirPath: string): Buffer {
       command = 'open';
       break;
     case 'win32':
-      command = 'start';
+      command = 'start ""';
       break;
     default:
       command = 'xdg-open';
