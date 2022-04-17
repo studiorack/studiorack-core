@@ -121,14 +121,14 @@ test('Install project plugins', async () => {
   expect(result).toEqual(PROJECT_LOCAL);
 });
 
-test('Load project json', () => {
-  const result = projectLoad(path.join(PROJECT_DIR, PROJECT_FILE));
+test('Save project json', () => {
+  const result = projectSave(path.join(PROJECT_DIR, PROJECT_FILE), PROJECT_LOCAL);
   result.date = PROJECT_LOCAL.date;
   expect(result).toEqual(PROJECT_LOCAL);
 });
 
-test('Save project json', () => {
-  const result = projectSave(path.join(PROJECT_DIR, PROJECT_FILE), PROJECT_LOCAL);
+test('Load project json', () => {
+  const result = projectLoad(path.join(PROJECT_DIR, PROJECT_FILE));
   result.date = PROJECT_LOCAL.date;
   expect(result).toEqual(PROJECT_LOCAL);
 });
