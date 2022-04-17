@@ -31,11 +31,11 @@ import {
 import os from 'os';
 import path from 'path';
 
-const DIR_PATH: string = path.join('tests', 'new-directory');
-const DIR_RENAME: string = path.join('tests', 'new-directory-renamed');
+const DIR_PATH: string = path.join('test', 'new-directory');
+const DIR_RENAME: string = path.join('test', 'new-directory-renamed');
 const DIR_APP_DATA: string = path.join(dirAppData(), 'studiorack');
 
-const FILE_PATH: string = path.join('tests', 'new-directory', 'file.txt');
+const FILE_PATH: string = path.join('test', 'new-directory', 'file.txt');
 
 test('Directory app data', () => {
   if (process.platform === 'win32') {
