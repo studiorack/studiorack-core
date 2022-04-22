@@ -147,7 +147,9 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
 // This is a prototype
 async function pluginInstall(id: string, version?: string): Promise<PluginLocal> {
   const plugin: PluginLocal = (await pluginGet(id, version)) as PluginLocal;
-  if (!isAdmin() && !isTests()) {
+  // If plugin installation path is outside dirAppData(), and program is not running as Admin,
+  // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
+  if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
     const pluginId: string = version ? `${id}@${version}` : id;
     await runCliAsAdmin(`plugin install ${pluginId}`);
   } else {
@@ -284,7 +286,9 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
   if (!plugin.repo) {
     throw Error(`Plugin is missing repo metadata ${id}, ${version}`);
   }
-  if (!isAdmin() && !isTests()) {
+  // If plugin installation path is outside dirAppData(), and program is not running as Admin,
+  // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
+  if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
     const pluginId: string = version ? `${id}@${version}` : id;
     await runCliAsAdmin(`plugin uninstall ${pluginId}`);
   } else {
