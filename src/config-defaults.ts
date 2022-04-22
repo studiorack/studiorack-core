@@ -1,8 +1,8 @@
 import { ConfigInterface } from './types/config';
 
-function configDefaults(): ConfigInterface {
+function configDefaults(appFolder: string, pluginFolder: string, projectFolder: string): ConfigInterface {
   return {
-    appFolder: '',
+    appFolder,
     extAudio: '.wav',
     extFile: '.json',
     extImage: '.png',
@@ -146,7 +146,7 @@ function configDefaults(): ConfigInterface {
       },
     },
     pluginFile: 'plugin.json',
-    pluginFolder: '',
+    pluginFolder,
     pluginRegistry: 'https://studiorack.github.io/studiorack-registry/${type}.json',
     pluginRelease: 'https://github.com/${repo}/releases/download',
     pluginTemplate: 'https://github.com/studiorack/studiorack-template-${template}/archive/main.zip',
@@ -185,7 +185,7 @@ function configDefaults(): ConfigInterface {
       },
     },
     projectFile: 'project.json',
-    projectFolder: '',
+    projectFolder,
     projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
     projectTypes: {
       ableton: {
