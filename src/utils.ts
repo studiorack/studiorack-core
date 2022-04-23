@@ -1,4 +1,3 @@
-import path from 'path';
 import slugify from 'slugify';
 
 import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
@@ -41,38 +40,38 @@ function isTests() {
 // For example:
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
-function pathGetDirectory(pathItem: string, separator?: string): string {
-  return pathItem.substring(0, pathItem.lastIndexOf(separator || path.sep));
+function pathGetDirectory(pathItem: string, separator: string = '/'): string {
+  return pathItem.substring(0, pathItem.lastIndexOf(separator));
 }
 
-function pathGetExt(pathItem: string, separator?: string): string {
+function pathGetExt(pathItem: string): string {
   return pathItem.substring(pathItem.lastIndexOf('.') + 1);
 }
 
-function pathGetFilename(str: string, separator?: string): string {
-  let base: string = str.substring(str.lastIndexOf(separator || path.sep) + 1);
+function pathGetFilename(str: string, separator: string = '/'): string {
+  let base: string = str.substring(str.lastIndexOf(separator) + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
   }
   return base;
 }
 
-function pathGetId(pathItem: string, separator?: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem).split(separator || path.sep);
+function pathGetId(pathItem: string, separator: string = '/'): string {
+  const pathParts: string[] = pathGetDirectory(pathItem, separator).split(separator);
   if (pathParts.length > 2) {
     return safeSlug(pathParts[2]);
   }
   // Otherwise return full path
-  return safeSlug(pathGetDirectory(pathItem));
+  return safeSlug(pathGetDirectory(pathItem, separator));
 }
 
-function pathGetRepo(pathItem: string, separator?: string): string {
-  const pathParts: string[] = pathGetDirectory(pathItem, separator || path.sep).split(separator || path.sep);
+function pathGetRepo(pathItem: string, separator: string = '/'): string {
+  const pathParts: string[] = pathGetDirectory(pathItem, separator).split(separator);
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
   }
   // Otherwise return full path
-  return safeSlug(pathGetDirectory(pathItem));
+  return safeSlug(pathGetDirectory(pathItem, separator));
 }
 
 function pathGetVersion(pathItem: string): string {

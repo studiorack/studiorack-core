@@ -6,7 +6,7 @@ import { configDefaults } from './config-defaults';
 const appDir: string = path.join(dirAppData(), 'studiorack');
 const CONFIG_FILE_PATH = path.join(appDir, 'config.json');
 dirCreate(appDir);
-const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults(appDir, dirPlugins(),  dirProjects());
+const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults(appDir, dirPlugins(), dirProjects());
 
 function configDelete(): boolean | void {
   return fileDelete(CONFIG_FILE_PATH);

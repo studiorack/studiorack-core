@@ -51,7 +51,7 @@ test('Input get parts', () => {
 // });
 
 test('Path get directory', () => {
-  expect(pathGetDirectory(PLUGIN_PATH)).toEqual(path.join(PLUGIN_REPO, PLUGIN_ID, PLUGIN_VERSION));
+  expect(pathGetDirectory(PLUGIN_PATH, path.sep)).toEqual(path.join(PLUGIN_REPO, PLUGIN_ID, PLUGIN_VERSION));
 });
 
 test('Path get extension', () => {
@@ -59,11 +59,11 @@ test('Path get extension', () => {
 });
 
 test('Path get filename', () => {
-  expect(pathGetFilename(PLUGIN_PATH)).toEqual(PLUGIN_FILENAME);
+  expect(pathGetFilename(PLUGIN_PATH, path.sep)).toEqual(PLUGIN_FILENAME);
 });
 
 test('Path get id', () => {
-  expect(pathGetId(PLUGIN_PATH)).toEqual(PLUGIN_ID);
+  expect(pathGetId(PLUGIN_PATH, path.sep)).toEqual(PLUGIN_ID);
 });
 
 test('Path get repo', () => {

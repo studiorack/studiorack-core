@@ -31,8 +31,8 @@ const validatorFolder: string = path.join(dirAppData(), 'studiorack', 'bin');
 const validatorPath: string = path.join(validatorFolder, 'validator' + (getPlatform() === 'win' ? '.exe' : ''));
 
 function validateFiles(pathItem: string, json: any): any {
-  const directory: string = pathGetDirectory(pathItem);
-  const slug: string = safeSlug(pathGetFilename(pathItem));
+  const directory: string = pathGetDirectory(pathItem, path.sep);
+  const slug: string = safeSlug(pathGetFilename(pathItem, path.sep));
   // Ensure files object exists
   if (!json.files) {
     json.files = {};
@@ -170,7 +170,7 @@ function validateProcess(pathItem: string, log: string): any {
     }
   }
   // Generate the id from the filename
-  const id: string = safeSlug(pathGetFilename(pathItem));
+  const id: string = safeSlug(pathGetFilename(pathItem, path.sep));
   if (id) {
     json.id = id;
   }
