@@ -94,6 +94,7 @@ const PLUGIN_LOCAL: PluginLocal = {
   },
   "paths": [
     path.join("test", "plugins", "Components", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.component"),
+    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.dll"),
     path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
     path.join("test", "plugins", "VST", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst"),
     path.join("test", "plugins", "VST3", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst3"),

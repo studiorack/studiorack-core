@@ -159,6 +159,10 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
         name: 'Avid Audio Extension',
         ext: 'aax',
       },
+      dynamicLinkLibrary: {
+        name: 'Dynamic Link Library',
+        ext: 'dll',
+      },
       realtimeAudiosuite: {
         name: 'Real-Time AudioSuite',
         ext: 'rta',

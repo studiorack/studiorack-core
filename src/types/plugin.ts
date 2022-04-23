@@ -83,6 +83,7 @@ interface PluginType {
 interface PluginTypes {
   audioUnits: PluginType;
   avidAudioExtension: PluginType;
+  dynamicLinkLibrary: PluginType;
   ladspaVersion2: PluginType;
   realtimeAudiosuite: PluginType;
   sfz: PluginType;

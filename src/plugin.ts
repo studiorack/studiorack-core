@@ -189,10 +189,11 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
           pluginDirectory(plugin, 'Components'),
           plugin
         );
+        const pathsDll: string[] = pluginOrganizeByType(dirDownloads, 'dll', pluginDirectory(plugin, 'DLL'), plugin);
         const pathsLv2: string[] = pluginOrganizeByType(dirDownloads, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
         const pathsVst: string[] = pluginOrganizeByType(dirDownloads, 'vst', pluginDirectory(plugin, 'VST'), plugin);
         const pathsVst3: string[] = pluginOrganizeByType(dirDownloads, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
-        pathsAll = pathsCom.concat(pathsLv2, pathsVst, pathsVst3);
+        pathsAll = pathsCom.concat(pathsDll, pathsLv2, pathsVst, pathsVst3);
       }
       // Save json metadata file alongside each plugin file/format
       pathsAll.forEach((pluginPath: string) => {
@@ -296,6 +297,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       throw Error(
         `Plugin not installed locally 
         ${pluginDirectory(plugin, 'Components')} 
+        ${pluginDirectory(plugin, 'DLL')} 
         ${pluginDirectory(plugin, 'LV2')} 
         ${pluginDirectory(plugin, 'SFZ')} 
         ${pluginDirectory(plugin, 'VST')} 
@@ -305,6 +307,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       // Move all plugin formats from folders
       // TODO remove app if it exists
       removeDirectory(plugin, 'Components');
+      removeDirectory(plugin, 'DLL');
       removeDirectory(plugin, 'LV2');
       removeDirectory(plugin, 'SFZ');
       removeDirectory(plugin, 'VST');
