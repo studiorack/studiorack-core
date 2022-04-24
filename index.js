@@ -2,6 +2,7 @@
 // Use the `npm run dev` command to build and run the file
 // Debug particular methods quickly without having to run all tests `npm test`
 
+const admin = require('./dist/admin.js');
 const api = require('./dist/api.js');
 const config = require('./dist/config.js');
 const file = require('./dist/file.js');
@@ -24,16 +25,18 @@ async function run() {
   // const pluginsGetLocal = await plugin.pluginsGetLocal();
   // console.log('pluginsGetLocal', pluginsGetLocal);
 
-  // const pluginInstall = await plugin.pluginInstall('studiorack/salamander-grand-piano/salamander-grand-piano');
-  // console.log('pluginInstall', pluginInstall);
+  // console.log('isCliInstalled', admin.isCliInstalled());
 
-  // const pluginInstalled = await plugin.pluginInstalled('studiorack/salamander-grand-piano/salamander-grand-piano');
+  const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
+  console.log('pluginInstall', pluginInstall);
+
+  // const pluginInstalled = await plugin.pluginInstalled('studiorack/adlplug/adlplug');
   // console.log('pluginInstalled', pluginInstalled);
 
-  // const pluginUninstall = await plugin.pluginUninstall('studiorack/salamander-grand-piano/salamander-grand-piano');
+  // const pluginUninstall = await plugin.pluginUninstall('studiorack/adlplug/adlplug');
   // console.log('pluginUninstall', pluginUninstall);
 
-  // const pluginGetLocal = await plugin.pluginGetLocal('studiorack/salamander-grand-piano/salamander-grand-piano');
+  // const pluginGetLocal = await plugin.pluginGetLocal('studiorack/adlplug/adlplug');
   // console.log('pluginGetLocal', pluginGetLocal);
 
   // const testFolder = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');

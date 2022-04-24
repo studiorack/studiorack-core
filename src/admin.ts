@@ -2,24 +2,30 @@
 // studiorack plugin install studiorack/adlplug/adlplug
 // studiorack plugin uninstall studiorack/adlplug/adlplug
 
+import { execSync } from 'child_process';
 import sudoPrompt from '@vscode/sudo-prompt';
 
-function runCliAsAdmin(args: string): Promise<string> {
+function isCliInstalled() {
+  try {
+    execSync(`studiorack --version`);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+function installCli(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    console.log(`studiorack ${args}`);
+    console.log(`npm install @studiorack/cli -g`);
     sudoPrompt.exec(
-      `npm install @studiorack/cli -g && studiorack ${args}`,
+      `npm install @studiorack/cli -g`,
       { name: 'StudioRack' },
       (error, stdout, stderr) => {
-        if (stdout) {
-          console.log('runCliAsAdmin', stdout);
-        }
-        if (stderr) {
-          console.log('runCliAsAdmin', stderr);
-        }
-        if (error) {
+        if (error || stderr) {
+          console.log('installCli.error', error, stderr);
           reject(error);
         } else {
+          console.log('installCli.success', stdout);
           resolve(stdout?.toString() || '');
         }
       }
@@ -27,4 +33,23 @@ function runCliAsAdmin(args: string): Promise<string> {
   });
 }
 
-export { runCliAsAdmin };
+function runCliAsAdmin(args: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    console.log(`studiorack ${args}`);
+    sudoPrompt.exec(
+      `studiorack ${args}`,
+      { name: 'StudioRack' },
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          console.log('runCliAsAdmin.error', error, stderr);
+          reject(error);
+        } else {
+          console.log('runCliAsAdmin.success', stdout);
+          resolve(stdout?.toString() || '');
+        }
+      }
+    );
+  });
+}
+
+export { installCli, isCliInstalled, runCliAsAdmin };
