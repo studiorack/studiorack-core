@@ -135,6 +135,13 @@ test('Install plugin by id', async () => {
     PLUGIN_LOCAL_UPDATED.paths = [
       PLUGIN_LOCAL.paths[1]
     ];
+  } else {
+    PLUGIN_LOCAL_UPDATED.paths = [
+      PLUGIN_LOCAL.paths[0],
+      PLUGIN_LOCAL.paths[2],
+      PLUGIN_LOCAL.paths[3],
+      PLUGIN_LOCAL.paths[4]
+    ];
   }
   const pluginInstalled = await pluginInstall(PLUGIN_ID);
   console.log('pluginInstalled', pluginInstalled.paths);
