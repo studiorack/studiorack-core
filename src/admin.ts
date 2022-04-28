@@ -4,6 +4,7 @@
 
 import { execSync } from 'child_process';
 import sudoPrompt from '@vscode/sudo-prompt';
+import path from 'path';
 
 function isCliInstalled() {
   try {
@@ -21,7 +22,7 @@ function installCli(): Promise<string> {
       `npm install @studiorack/cli -g`,
       {
         name: 'StudioRack',
-        icns: './dist/images/icon.icns',
+        icns: path.join(__dirname, 'images/icon.icns'),
       },
       (error, stdout, stderr) => {
         if (error || stderr) {
@@ -43,7 +44,7 @@ function runCliAsAdmin(args: string): Promise<string> {
       `studiorack ${args}`,
       {
         name: 'StudioRack',
-        icns: './dist/images/icon.icns',
+        icns: path.join(__dirname, 'images/icon.icns'),
       },
       (error, stdout, stderr) => {
         if (error || stderr) {
