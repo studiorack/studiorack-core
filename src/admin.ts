@@ -21,7 +21,7 @@ function installCli(): Promise<string> {
       `npm install @studiorack/cli -g`,
       {
         name: 'StudioRack',
-        icns: './src/images/icon.icns',
+        icns: './dist/images/icon.icns',
       },
       (error, stdout, stderr) => {
         if (error || stderr) {
@@ -43,7 +43,7 @@ function runCliAsAdmin(args: string): Promise<string> {
       `studiorack ${args}`,
       {
         name: 'StudioRack',
-        icns: './src/images/icon.icns',
+        icns: './dist/images/icon.icns',
       },
       (error, stdout, stderr) => {
         if (error || stderr) {
