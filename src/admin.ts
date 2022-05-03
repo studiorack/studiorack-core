@@ -2,13 +2,13 @@
 // studiorack plugin install studiorack/adlplug/adlplug
 // studiorack plugin uninstall studiorack/adlplug/adlplug
 
-import { spawnSync } from 'child_process';
+import { execSync } from 'child_process';
 import sudoPrompt from '@vscode/sudo-prompt';
 import path from 'path';
 
 function isCliInstalled() {
   try {
-    spawnSync(`studiorack --version`, { encoding: 'utf-8'});
+    execSync(`studiorack --version`);
     return true;
   } catch (e) {
     return false;
