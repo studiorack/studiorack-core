@@ -175,10 +175,10 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     const pluginData: Buffer = await getRaw(pluginUrl);
     const [pluginOwner, pluginRepo] = plugin.repo.split('/');
     const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
+    dirCreate(dirDownloads);
     // If the file is compressed
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
-      dirCreate(dirDownloads);
       zipExtract(pluginData, dirDownloads);
       if (plugin.tags.includes('sfz')) {
         // Plugin is a sample pack
@@ -204,13 +204,13 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       pathsAll.forEach((pluginPath: string) => {
         plugin.paths.push(pluginPath);
       });
-      dirDelete(dirDownloads);
     } else {
       // Plugin is an installer
       const pluginPath: string = path.join(dirDownloads, plugin.files[getPlatform()].name);
       fileCreate(pluginPath, pluginData);
       plugin.paths.push(pluginPath);
     }
+    dirDelete(dirDownloads);
   }
   plugin.status = 'installed';
   return plugin;
