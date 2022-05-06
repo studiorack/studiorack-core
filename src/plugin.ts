@@ -19,7 +19,16 @@ import {
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
-import { getPlatform, isTests, pathGetExt, pathGetId, pathGetRepo, pathGetVersion, pathGetWithoutExt } from './utils';
+import {
+  getPlatform,
+  isTests,
+  pathGetExt,
+  pathGetFilename,
+  pathGetId,
+  pathGetRepo,
+  pathGetVersion,
+  pathGetWithoutExt,
+} from './utils';
 import {
   PluginEntry,
   PluginFile,
@@ -164,18 +173,11 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     }
     // Download the plugin data
     const pluginData: Buffer = await getRaw(pluginUrl);
+    const [pluginOwner, pluginRepo] = plugin.repo.split('/');
+    const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
     // If the file is compressed
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
-      const [pluginOwner, pluginRepo] = plugin.repo.split('/');
-      const dirDownloads: string = path.join(
-        dirAppData(),
-        'studiorack',
-        'downloads',
-        pluginOwner,
-        pluginRepo,
-        plugin.id
-      );
       dirCreate(dirDownloads);
       zipExtract(pluginData, dirDownloads);
       if (plugin.tags.includes('sfz')) {
@@ -204,7 +206,8 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       });
       dirDelete(dirDownloads);
     } else {
-      const pluginPath: string = path.join(pluginDirectory(plugin), plugin.files[getPlatform()].name);
+      // Plugin is an installer
+      const pluginPath: string = path.join(dirDownloads, plugin.files[getPlatform()].name);
       fileCreate(pluginPath, pluginData);
       plugin.paths.push(pluginPath);
     }
