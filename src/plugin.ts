@@ -204,13 +204,13 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       pathsAll.forEach((pluginPath: string) => {
         plugin.paths.push(pluginPath);
       });
+      dirDelete(dirDownloads);
     } else {
       // Plugin is an installer
       const pluginPath: string = path.join(dirDownloads, plugin.files[getPlatform()].name);
       fileCreate(pluginPath, pluginData);
       plugin.paths.push(pluginPath);
     }
-    dirDelete(dirDownloads);
   }
   plugin.status = 'installed';
   return plugin;
