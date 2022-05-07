@@ -2,34 +2,67 @@
 // studiorack plugin install studiorack/adlplug/adlplug
 // studiorack plugin uninstall studiorack/adlplug/adlplug
 
-import { execSync } from 'child_process';
+import { exec } from 'child_process';
 import sudoPrompt from '@vscode/sudo-prompt';
 import path from 'path';
 
-function isCliInstalled() {
+const PACKAGE_NAME: string = '@studiorack/cli';
+
+// workaround to prevent npm outdated exiting the process.
+// https://github.com/npm/rfcs/issues/473
+function execAsync(command: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout: string, stderr: string) => {
+      if (stderr !== '') {
+        reject(stderr);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+}
+
+function installCli(): Promise<string> {
+  return openPrompt(`npm install ${PACKAGE_NAME} -g --json`);
+}
+
+async function isCliInstalled(): Promise<boolean> {
   try {
-    execSync(`studiorack --version`);
-    return true;
+    const output: string = await execAsync(`npm list ${PACKAGE_NAME} -g --json`);
+    console.log('isCliInstalled.success', output);
+    const outputJson: any = JSON.parse(output);
+    return outputJson && outputJson.dependencies[PACKAGE_NAME] ? true : false;
   } catch (e) {
     return false;
   }
 }
 
-function installCli(): Promise<string> {
+async function isCliOutdated(): Promise<boolean> {
+  try {
+    const output: string = await execAsync(`npm outdated ${PACKAGE_NAME} -g --json`);
+    console.log('isCliOutdated.success', output);
+    const outputJson: any = JSON.parse(output);
+    return outputJson && outputJson[PACKAGE_NAME] ? true : false;
+  } catch (e) {
+    return false;
+  }
+}
+
+function openPrompt(cmd: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    console.log(`npm install @studiorack/cli -g`);
+    console.log('openPrompt', cmd);
     sudoPrompt.exec(
-      `npm install @studiorack/cli -g`,
+      cmd,
       {
         name: 'StudioRack',
         icns: path.join(__dirname, 'images/icon.icns'),
       },
       (error, stdout, stderr) => {
         if (error || stderr) {
-          console.log('installCli.error', error, stderr);
+          console.log('openPrompt.error', error, stderr);
           reject(error);
         } else {
-          console.log('installCli.success', stdout);
+          console.log('openPrompt.success', stdout);
           resolve(stdout?.toString() || '');
         }
       }
@@ -38,25 +71,11 @@ function installCli(): Promise<string> {
 }
 
 function runCliAsAdmin(args: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    console.log(`studiorack ${args}`);
-    sudoPrompt.exec(
-      `studiorack ${args}`,
-      {
-        name: 'StudioRack',
-        icns: path.join(__dirname, 'images/icon.icns'),
-      },
-      (error, stdout, stderr) => {
-        if (error || stderr) {
-          console.log('runCliAsAdmin.error', error, stderr);
-          reject(error);
-        } else {
-          console.log('runCliAsAdmin.success', stdout);
-          resolve(stdout?.toString() || '');
-        }
-      }
-    );
-  });
+  return openPrompt(`studiorack ${args}`);
 }
 
-export { installCli, isCliInstalled, runCliAsAdmin };
+function updateCli(): Promise<string> {
+  return openPrompt(`npm update ${PACKAGE_NAME} -g --json`);
+}
+
+export { execAsync, installCli, isCliInstalled, isCliOutdated, runCliAsAdmin, updateCli };
