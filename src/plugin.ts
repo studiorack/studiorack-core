@@ -40,7 +40,7 @@ import {
   PluginTypes,
 } from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
-import { installCli, isCliInstalled, isCliOutdated, runCliAsAdmin, updateCli } from './admin';
+import { runCliAsAdmin } from './admin';
 
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
@@ -159,15 +159,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
   if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
-    if (await isCliInstalled()) {
-      if (await isCliOutdated()) {
-        await updateCli();
-      }
-    } else {
-      await installCli();
-    }
-    const pluginId: string = version ? `${id}@${version}` : id;
-    await runCliAsAdmin(`plugin install ${pluginId}`);
+    await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`);
   } else {
     plugin.paths = [];
     const pluginUrl: string = pluginSource(plugin);
@@ -300,15 +292,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
   if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
-    if (await isCliInstalled()) {
-      if (await isCliOutdated()) {
-        await updateCli();
-      }
-    } else {
-      await installCli();
-    }
-    const pluginId: string = version ? `${id}@${version}` : id;
-    await runCliAsAdmin(`plugin uninstall ${pluginId}`);
+    await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`);
   } else {
     if (!pluginInstalled(plugin)) {
       throw Error(
