@@ -30,8 +30,9 @@ async function init() {
 
 function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    console.log(`node "${__dirname}/admin.js" ${args}`);
-    sudoPrompt.exec(`node "${__dirname}/admin.js" ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+    const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
+    console.log(`node "${dirPathClean}/admin.js" ${args}`);
+    sudoPrompt.exec(`node "${dirPathClean}/admin.js" ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
         console.log('runCliAsAdmin', stdout);
       }
