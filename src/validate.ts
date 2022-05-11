@@ -76,7 +76,7 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
 
 async function validateInstall(): Promise<boolean> {
   // If binary does not exist, download Steinberg VST3 SDK validator binary
-  if (!dirExists(validatorFolder)) {
+  if (!dirExists(validatorPath)) {
     const data: Buffer = await getRaw(configGet('validatorUrl').replace('${platform}', getPlatform()));
     zipExtract(data, validatorFolder);
     fileExec(validatorPath);
