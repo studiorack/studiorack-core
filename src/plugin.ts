@@ -153,6 +153,7 @@ function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string,
     const fileSourceExt: string = path.join(dirTarget, path.basename(file));
     if (fileExists(fileSourceExt)) return;
     fileMove(file, fileSourceExt);
+    plugin.paths.push(fileSourceExt);
     fileJsonCreate(`${pathGetWithoutExt(fileSourceExt)}.json`, plugin);
     paths.push(fileSourceExt);
   });
