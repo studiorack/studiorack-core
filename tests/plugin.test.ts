@@ -92,17 +92,29 @@ const PLUGIN_LOCAL: PluginLocal = {
       "size": 24833093
     }
   },
-  "paths": [
-    path.join("test", "plugins", "Components", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.component"),
-    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.dll"),
-    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
-    path.join("test", "plugins", "VST", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst"),
-    path.join("test", "plugins", "VST3", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst3"),
-  ],
+  "paths": [],
   "release": "v1.0.2",
   "repo": "studiorack/adlplug",
   "status": "installed"
 };
+
+if (process.platform === 'win32') {
+  PLUGIN_LOCAL.paths = [
+    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.dll"),
+    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
+  ];
+} else if (process.platform === 'darwin') {
+  PLUGIN_LOCAL.paths = [
+    path.join("test", "plugins", "Components", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.component"),
+    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
+    path.join("test", "plugins", "VST", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst"),
+    path.join("test", "plugins", "VST3", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst3"),
+  ];
+} else {
+  PLUGIN_LOCAL.paths = [
+    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
+  ];
+}
 
 beforeAll(() => {
   configSet('pluginFolder', PLUGIN_DIR);
@@ -130,32 +142,17 @@ test('Get invalid PLUGIN by id from registry', async () => {
 });
 
 test('Install plugin by id', async () => {
-  const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  if (process.platform !== 'win32' && process.platform !== 'darwin') {
-    PLUGIN_LOCAL_UPDATED.paths = [
-      PLUGIN_LOCAL.paths[1]
-    ];
-  } else {
-    PLUGIN_LOCAL_UPDATED.paths = [
-      PLUGIN_LOCAL.paths[0],
-      PLUGIN_LOCAL.paths[2],
-      PLUGIN_LOCAL.paths[3],
-      PLUGIN_LOCAL.paths[4]
-    ];
-  }
   const pluginInstalled = await pluginInstall(PLUGIN_ID);
-  console.log('pluginInstalled', pluginInstalled.paths);
-  console.log('PLUGIN_LOCAL_UPDATED', PLUGIN_LOCAL_UPDATED.paths);
-  expect(pluginInstalled).toMatchObject(PLUGIN_LOCAL_UPDATED);
+  expect(pluginInstalled).toMatchObject(PLUGIN_LOCAL);
 });
 
 test('Check if plugin is installed locally', () => {
   expect(pluginInstalled(PLUGIN)).toEqual(true);
 });
 
-// test('Get plugin locally', async () => {
-//   expect(await pluginGetLocal('vst3/studiorack/adlplug')).toMatchObject(PLUGIN_LOCAL);
-// });
+test('Get plugin locally', async () => {
+  expect(await pluginGetLocal('studiorack/adlplug/adlplug')).toMatchObject(PLUGIN_LOCAL);
+});
 
 test('List plugins in registry', async () => {
   expect(await pluginsGet()).toBeDefined();
@@ -181,9 +178,9 @@ test('Search plugin registry', async () => {
   expect(await pluginSearch('delay')).toBeDefined();
 });
 
-// test('Uninstall plugin by id', async () => {
-//   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-//   delete PLUGIN_LOCAL_UPDATED.paths;
-//   PLUGIN_LOCAL_UPDATED.status = 'available';
-//   expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
-// });
+test('Uninstall plugin by id', async () => {
+  const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
+  delete PLUGIN_LOCAL_UPDATED.paths;
+  PLUGIN_LOCAL_UPDATED.status = 'available';
+  expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
+});
