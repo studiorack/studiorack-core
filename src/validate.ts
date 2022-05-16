@@ -95,15 +95,15 @@ function validatePlugin(pathItem: string, options?: any): PluginLocal {
     pluginJson = validateFiles(pathItem, pluginJson);
   }
   const filepath: string = pathGetWithoutExt(pathItem);
-  if (options && options.txt) {
+  if (options && options.txt && outputText) {
     console.log(outputText);
     fileCreate(`${filepath}.txt`, outputText);
   }
-  if (options && options.json) {
+  if (options && options.json && pluginJson.tags) {
     console.log(pluginJson);
     fileJsonCreate(`${filepath}.json`, pluginJson);
   }
-  if (options && options.zip) {
+  if (options && options.zip && filepath) {
     zipCreate(`${filepath}.*`, `${filepath}.zip`);
   }
   return pluginJson;
