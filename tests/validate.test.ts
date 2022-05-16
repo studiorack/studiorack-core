@@ -14,7 +14,7 @@ import {
   validateRun
 } from '../src/validate';
 
-const PLUGIN_ID: string = 'studiorack/adlplug/adlplug';
+const PLUGIN_ID: string = 'studiorack/adlplug/opnplug';
 const PLUGIN_DIR: string = path.join('test', 'plugins');
 const PLUGIN_PATH_INVALID: string = path.join('test', 'plugins', 'VST3', 'studiorack', 'invalid', 'invalid', '0.0.1', 'invalid.vst3');
 
@@ -22,19 +22,19 @@ let PLUGIN_PATH: string;
 let PLUGIN_METADATA: any;
 
 if (process.platform === 'win32') {
-  PLUGIN_PATH = path.join('test', 'plugins', 'DLL', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.dll');
+  PLUGIN_PATH = path.join('test', 'plugins', 'DLL', 'studiorack', 'adlplug', 'opnplug', '1.0.2', 'OPNplug.dll');
   PLUGIN_METADATA = {
     "date": "2022-05-15T22:41:44.112Z",
-    "id": "adlplug",
+    "id": "opnplug",
   };
 } else if (process.platform === 'darwin') {
-  PLUGIN_PATH = path.join('test', 'plugins', 'VST3', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.vst3');
+  PLUGIN_PATH = path.join('test', 'plugins', 'VST3', 'studiorack', 'adlplug', 'opnplug', '1.0.2', 'OPNplug.vst3');
   PLUGIN_METADATA = {
     "author": "Jean Pierre Cimalando",
     "date": "2022-05-15T22:41:44.112Z",
     "description": "Component Controller Class",
-    "id": "adlplug",
-    "name": "ADLplug",
+    "id": "opnplug",
+    "name": "OPNplug",
     "tags": [
       "Instrument",
       "Synth",
@@ -42,13 +42,13 @@ if (process.platform === 'win32') {
     "version": "1.0.2",
   };
 } else {
-  PLUGIN_PATH = path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.lv2');
+  PLUGIN_PATH = path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'opnplug', '1.0.2', 'OPNplug.lv2');
   PLUGIN_METADATA = {
     "author": "Jean Pierre Cimalando",
     "date": "2022-05-15T22:41:44.112Z",
     "description": "Component Controller Class",
-    "id": "adlplug",
-    "name": "ADLplug",
+    "id": "opnplug",
+    "name": "OPNplug",
     "tags": [
       "Instrument",
       "Synth",
