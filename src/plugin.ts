@@ -253,7 +253,7 @@ function pluginLatest(pluginEntry: PluginEntry): PluginInterface {
       return;
     }
   });
-  plugin.repo = pathGetRepo(pluginEntry.id);
+  plugin.repo = pathGetRepo(pluginEntry.id, path.sep);
   return plugin;
 }
 

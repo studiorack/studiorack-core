@@ -100,6 +100,7 @@ const PLUGIN_LOCAL: PluginLocal = {
 
 if (process.platform === 'win32') {
   PLUGIN_LOCAL.paths = [
+    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug-vst3.dll"),
     path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.dll"),
     path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
   ];

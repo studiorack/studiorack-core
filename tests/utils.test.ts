@@ -67,7 +67,7 @@ test('Path get id', () => {
 });
 
 test('Path get repo', () => {
-  expect(pathGetRepo(PLUGIN_PATH)).toEqual(PLUGIN_REPO);
+  expect(pathGetRepo(PLUGIN_PATH, path.sep)).toEqual(PLUGIN_REPO);
 });
 
 test('Path get version', () => {

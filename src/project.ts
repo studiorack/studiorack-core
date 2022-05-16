@@ -34,7 +34,7 @@ function projectCreate(id: string, prompt: boolean = true): ProjectLocal {
   }
   project.id = safeSlug(pathGetFilename(id));
   project.path = pathGetDirectory(id);
-  project.repo = pathGetRepo(id);
+  project.repo = pathGetRepo(id, path.sep);
   project.status = 'installed';
   const projectJsonPath: string = path.join(configGet('projectFolder'), `${id}.json`);
   dirCreate(pathGetDirectory(projectJsonPath, path.sep));
