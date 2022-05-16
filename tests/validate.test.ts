@@ -44,16 +44,8 @@ if (process.platform === 'win32') {
 } else {
   PLUGIN_PATH = path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'opnplug', '1.0.2', 'OPNplug.lv2');
   PLUGIN_METADATA = {
-    "author": "Jean Pierre Cimalando",
     "date": "2022-05-15T22:41:44.112Z",
-    "description": "Component Controller Class",
     "id": "opnplug",
-    "name": "OPNplug",
-    "tags": [
-      "Instrument",
-      "Synth",
-    ],
-    "version": "1.0.2",
   };
 }
 
