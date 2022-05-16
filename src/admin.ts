@@ -2,6 +2,7 @@
 // npm run build && node ./dist/admin.js --operation install --id studiorack/adlplug/adlplug
 // npm run build && node ./dist/admin.js --operation uninstall --id studiorack/adlplug/adlplug
 
+import path from 'path';
 import sudoPrompt from '@vscode/sudo-prompt';
 import { pluginInstall, pluginUninstall } from './plugin';
 
@@ -31,8 +32,8 @@ async function init() {
 function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
-    console.log(`node "${dirPathClean}/admin.js" ${args}`);
-    sudoPrompt.exec(`node "${dirPathClean}/admin.js" ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
+    console.log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
+    sudoPrompt.exec(`node "${dirPathClean}${path.sep}admin.js" ${args}`, { name: 'StudioRack' }, (error, stdout, stderr) => {
       if (stdout) {
         console.log('runCliAsAdmin', stdout);
       }
