@@ -70,7 +70,7 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     console.log('-', dirPath);
     console.log('+', newPath);
-    return fs.renameSync(dirPath, newPath);
+    return fsUtils.moveSync(dirPath, newPath);
   }
   return false;
 }
@@ -121,7 +121,7 @@ function dirRead(dirPath: string, options?: any): string[] {
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return fs.renameSync(oldPath, newPath);
+    return fsUtils.moveSync(oldPath, newPath);
   }
   return false;
 }
@@ -191,7 +191,7 @@ function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     console.log('-', dirPath);
     console.log('+', newPath);
-    return fs.renameSync(dirPath, newPath);
+    return fsUtils.moveSync(dirPath, newPath);
   }
   return false;
 }
