@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
-    "test": "jest --config jestconfig.json --coverage"
+    "test": "jest --config jestconfig.json --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",

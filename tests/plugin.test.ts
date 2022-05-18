@@ -143,8 +143,7 @@ test('Get invalid PLUGIN by id from registry', async () => {
 });
 
 test('Install plugin by id', async () => {
-  const pluginInstalled = await pluginInstall(PLUGIN_ID);
-  expect(pluginInstalled).toMatchObject(PLUGIN_LOCAL);
+  expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL);
 });
 
 test('Check if plugin is installed locally', () => {
