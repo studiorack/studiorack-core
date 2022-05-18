@@ -1,6 +1,6 @@
 import AdmZip from 'adm-zip';
 import { execFileSync, execSync } from 'child_process';
-import fs from 'fs';
+import fs from 'fs-extra';
 import glob from 'glob';
 import os from 'os';
 import path from 'path';
@@ -70,7 +70,7 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     console.log('-', dirPath);
     console.log('+', newPath);
-    return fsUtils.moveSync(dirPath, newPath);
+    return fs.moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -121,7 +121,7 @@ function dirRead(dirPath: string, options?: any): string[] {
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return fsUtils.moveSync(oldPath, newPath);
+    return fs.moveSync(oldPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -191,7 +191,7 @@ function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     console.log('-', dirPath);
     console.log('+', newPath);
-    return fsUtils.moveSync(dirPath, newPath);
+    return fs.moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
