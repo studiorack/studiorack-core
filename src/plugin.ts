@@ -16,6 +16,7 @@ import {
   fileJsonLoad,
   fileMove,
   isAdmin,
+  runCliAsAdmin,
   zipExtract,
 } from './file';
 import { getJSON, getRaw } from './api';
@@ -40,7 +41,6 @@ import {
   PluginTypes,
 } from './types/plugin';
 import { validateInstall, validatePlugin } from './validate';
-import { runCliAsAdmin } from './admin';
 
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 

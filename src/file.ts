@@ -5,6 +5,7 @@ import glob from 'glob';
 import os from 'os';
 import path from 'path';
 import { PlatformsSupported } from './types/config';
+import sudoPrompt from '@vscode/sudo-prompt';
 
 const fsUtils: any = require('nodejs-fs-utils');
 
@@ -230,6 +231,30 @@ function isAdmin(): boolean {
   }
 }
 
+function runCliAsAdmin(args: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
+    console.log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
+    sudoPrompt.exec(
+      `node "${dirPathClean}${path.sep}admin.js" ${args}`,
+      { name: 'StudioRack' },
+      (error, stdout, stderr) => {
+        if (stdout) {
+          console.log('runCliAsAdmin', stdout);
+        }
+        if (stderr) {
+          console.log('runCliAsAdmin', stderr);
+        }
+        if (error) {
+          reject(error);
+        } else {
+          resolve(stdout?.toString() || '');
+        }
+      }
+    );
+  });
+}
+
 function zipCreate(filesPath: string, zipPath: string): void {
   if (fileExists(zipPath)) {
     fs.unlinkSync(zipPath);
@@ -285,6 +310,7 @@ export {
   fileOpen,
   fileSize,
   isAdmin,
+  runCliAsAdmin,
   zipCreate,
   zipExtract,
 };
