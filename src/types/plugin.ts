@@ -86,6 +86,7 @@ interface PluginTypes {
   dynamicLinkLibrary: PluginType;
   ladspaVersion2: PluginType;
   realtimeAudiosuite: PluginType;
+  sf2: PluginType;
   sfz: PluginType;
   timeDivisionMultiplexing: PluginType;
   virtualStudioTechnology: PluginType;

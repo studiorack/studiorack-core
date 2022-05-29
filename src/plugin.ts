@@ -183,12 +183,17 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
       zipExtract(pluginData, dirDownloads);
-      if (plugin.tags.includes('sfz')) {
+      if (plugin.tags.includes('sfz') || plugin.tags.includes('sf2')) {
         // Plugin is a sample pack
-        dirCreate(pluginDirectory(plugin, 'SFZ'));
-        dirMove(dirDownloads, pluginDirectory(plugin, 'SFZ'));
-        const pluginSFZPath: string = path.join(pluginDirectory(plugin, 'SFZ'), '**', '*.sfz');
-        pathsAll = dirRead(pluginSFZPath);
+        const samplePackType: string = plugin.tags.includes('sfz') ? 'SFZ' : 'SF2';
+        dirCreate(pluginDirectory(plugin, samplePackType));
+        dirMove(dirDownloads, pluginDirectory(plugin, samplePackType));
+        const samplePackPath: string = path.join(
+          pluginDirectory(plugin, samplePackType),
+          '**',
+          `*.${samplePackType.toLowerCase()}`
+        );
+        pathsAll = dirRead(samplePackPath);
       } else {
         // Plugin is an instrument/effect
         const pathsCom: string[] = pluginOrganizeByType(
@@ -237,6 +242,7 @@ function pluginInstalled(plugin: PluginInterface): boolean {
   if (
     dirExists(pluginDirectory(plugin, 'Components')) ||
     dirExists(pluginDirectory(plugin, 'LV2')) ||
+    dirExists(pluginDirectory(plugin, 'SF2')) ||
     dirExists(pluginDirectory(plugin, 'SFZ')) ||
     dirExists(pluginDirectory(plugin, 'VST')) ||
     dirExists(pluginDirectory(plugin, 'VST3'))
@@ -307,6 +313,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
         ${pluginDirectory(plugin, 'Components')} 
         ${pluginDirectory(plugin, 'DLL')} 
         ${pluginDirectory(plugin, 'LV2')} 
+        ${pluginDirectory(plugin, 'SF2')} 
         ${pluginDirectory(plugin, 'SFZ')} 
         ${pluginDirectory(plugin, 'VST')} 
         ${pluginDirectory(plugin, 'VST3')}`
@@ -317,6 +324,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       removeDirectory(plugin, 'Components');
       removeDirectory(plugin, 'DLL');
       removeDirectory(plugin, 'LV2');
+      removeDirectory(plugin, 'SF2');
       removeDirectory(plugin, 'SFZ');
       removeDirectory(plugin, 'VST');
       removeDirectory(plugin, 'VST3');

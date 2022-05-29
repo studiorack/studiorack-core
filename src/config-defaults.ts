@@ -171,6 +171,10 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
         name: 'LADSPA Version 2',
         ext: 'lv2',
       },
+      sf2: {
+        name: 'SoundFont 2',
+        ext: 'sf2',
+      },
       sfz: {
         name: 'SFZ',
         ext: 'sfz',
