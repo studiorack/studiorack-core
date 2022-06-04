@@ -57,6 +57,7 @@ interface PluginLicense {
   key: string;
   name: string;
   url: string;
+  same: boolean;
 }
 
 interface PluginLocal extends PluginInterface {
