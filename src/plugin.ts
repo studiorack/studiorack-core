@@ -140,6 +140,10 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
 function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string, plugin: PluginLocal): string[] {
   const paths: string[] = [];
   const files: string[] = dirRead(`${dirSource}/**/*.${ext}`);
+  // Do not create directory unless there are plugins to copy
+  if (files.length === 0) {
+    return [];
+  }
   // Create a sub directory folder for files of that type
   dirCreate(dirTarget);
   files.forEach((file: string) => {
