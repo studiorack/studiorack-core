@@ -241,6 +241,7 @@ async function pluginInstallAll(): Promise<PluginLocal[]> {
 function pluginInstalled(plugin: PluginInterface): boolean {
   if (
     dirExists(pluginDirectory(plugin, 'Components')) ||
+    dirExists(pluginDirectory(plugin, 'DLL')) ||
     dirExists(pluginDirectory(plugin, 'LV2')) ||
     dirExists(pluginDirectory(plugin, 'SF2')) ||
     dirExists(pluginDirectory(plugin, 'SFZ')) ||
