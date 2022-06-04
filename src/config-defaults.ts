@@ -41,7 +41,7 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
       },
       {
         key: 'bsd-3-clause-clear',
-        name: "BSD 3-Clause Clear License",
+        name: 'BSD 3-Clause Clear License',
         url: 'https://choosealicense.com/licenses/bsd-3-clause-clear',
         same: false,
       },
