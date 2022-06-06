@@ -27,6 +27,9 @@ async function run() {
 
   // console.log('isCliInstalled', admin.isCliInstalled());
 
+  // Enable logging to see what is going on
+  utils.logEnable();
+
   const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
   console.log('pluginInstall', pluginInstall);
 

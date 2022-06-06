@@ -6,6 +6,7 @@ import os from 'os';
 import path from 'path';
 import { PlatformsSupported } from './types/config';
 import sudoPrompt from '@vscode/sudo-prompt';
+import { log } from './utils';
 
 const fsUtils: any = require('nodejs-fs-utils');
 
@@ -39,7 +40,7 @@ function dirContains(dirParent: string, dirChild: string): boolean {
 
 function dirCreate(dirPath: string): string | boolean {
   if (!dirExists(dirPath)) {
-    console.log('+', dirPath);
+    log('+', dirPath);
     fs.mkdirSync(dirPath, { recursive: true });
     return dirPath;
   }
@@ -48,7 +49,7 @@ function dirCreate(dirPath: string): string | boolean {
 
 function dirDelete(dirPath: string): void | boolean {
   if (dirExists(dirPath)) {
-    console.log('-', dirPath);
+    log('-', dirPath);
     return fs.rmSync(dirPath, { recursive: true });
   }
   return false;
@@ -69,8 +70,8 @@ function dirIs(dirPath: string): boolean {
 
 function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
-    console.log('-', dirPath);
-    console.log('+', newPath);
+    log('-', dirPath);
+    log('+', newPath);
     return fs.moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
@@ -90,7 +91,7 @@ function dirOpen(dirPath: string): Buffer {
       command = 'xdg-open';
       break;
   }
-  console.log('⎋', `${command} "${dirPath}"`);
+  log('⎋', `${command} "${dirPath}"`);
   return execSync(`${command} "${dirPath}"`);
 }
 
@@ -108,7 +109,7 @@ function dirProjects(): string {
 }
 
 function dirRead(dirPath: string, options?: any): string[] {
-  console.log('⌕', dirPath);
+  log('⌕', dirPath);
   // Glob returns relative paths with forward slashes on Windows
   // Convert every path to a Windows compatible path
   // https://github.com/isaacs/node-glob/issues/419
@@ -147,7 +148,7 @@ function fileAdd(filePath: string, fileName: string, fileType: string, json: any
 }
 
 function fileCreate(filePath: string, data: string | Buffer): void {
-  console.log('+', filePath);
+  log('+', filePath);
   return fs.writeFileSync(filePath, data);
 }
 
@@ -157,7 +158,7 @@ function fileDate(filePath: string): Date {
 
 function fileDelete(filePath: string): boolean | void {
   if (fileExists(filePath)) {
-    console.log('-', filePath);
+    log('-', filePath);
     return fs.unlinkSync(filePath);
   }
   return false;
@@ -177,21 +178,21 @@ function fileJsonCreate(filePath: string, data: object): void {
 
 function fileJsonLoad(filePath: string): any {
   if (fileExists(filePath)) {
-    console.log('⎋', filePath);
+    log('⎋', filePath);
     return JSON.parse(fs.readFileSync(filePath).toString());
   }
   return false;
 }
 
 function fileLoad(filePath: string): Buffer {
-  console.log('⎋', filePath);
+  log('⎋', filePath);
   return fs.readFileSync(filePath);
 }
 
 function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
-    console.log('-', dirPath);
-    console.log('+', newPath);
+    log('-', dirPath);
+    log('+', newPath);
     return fs.moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
@@ -210,7 +211,7 @@ function fileOpen(filePath: string): Buffer {
       command = 'xdg-open';
       break;
   }
-  console.log('⎋', `${command} "${filePath}"`);
+  log('⎋', `${command} "${filePath}"`);
   return execSync(`${command} "${filePath}"`);
 }
 
@@ -234,16 +235,16 @@ function isAdmin(): boolean {
 function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
-    console.log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
+    log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
     sudoPrompt.exec(
       `node "${dirPathClean}${path.sep}admin.js" ${args}`,
       { name: 'StudioRack' },
       (error, stdout, stderr) => {
         if (stdout) {
-          console.log('runCliAsAdmin', stdout);
+          log('runCliAsAdmin', stdout);
         }
         if (stderr) {
-          console.log('runCliAsAdmin', stderr);
+          log('runCliAsAdmin', stderr);
         }
         if (error) {
           reject(error);
@@ -262,7 +263,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
   const zip: AdmZip = new AdmZip();
   const pathList: string[] = dirRead(filesPath);
   pathList.forEach((pathItem) => {
-    console.log('⎋', pathItem);
+    log('⎋', pathItem);
     try {
       if (dirIs(pathItem)) {
         zip.addLocalFolder(pathItem, path.basename(pathItem));
@@ -270,15 +271,15 @@ function zipCreate(filesPath: string, zipPath: string): void {
         zip.addLocalFile(pathItem);
       }
     } catch (error) {
-      console.log(error);
+      log(error);
     }
   });
-  console.log('+', zipPath);
+  log('+', zipPath);
   return zip.writeZip(zipPath);
 }
 
 function zipExtract(content: any, dirPath: string): void {
-  console.log('⎋', dirPath);
+  log('⎋', dirPath);
   const zip: AdmZip = new AdmZip(content);
   return zip.extractAllTo(dirPath);
 }

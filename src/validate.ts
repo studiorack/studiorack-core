@@ -14,7 +14,7 @@ import {
   zipCreate,
   zipExtract,
 } from './file';
-import { getPlatform, pathGetDirectory, pathGetFilename, pathGetWithoutExt, safeSlug } from './utils';
+import { getPlatform, log, pathGetDirectory, pathGetFilename, pathGetWithoutExt, safeSlug } from './utils';
 import { getRaw } from './api';
 import { PluginLocal } from './types/plugin';
 import { configGet } from './config';
@@ -96,11 +96,11 @@ function validatePlugin(pathItem: string, options?: any): PluginLocal {
   }
   const filepath: string = pathGetWithoutExt(pathItem);
   if (options && options.txt && outputText) {
-    console.log(outputText);
+    log(outputText);
     fileCreate(`${filepath}.txt`, outputText);
   }
   if (options && options.json && pluginJson.tags) {
-    console.log(pluginJson);
+    log(pluginJson);
     fileJsonCreate(`${filepath}.json`, pluginJson);
   }
   if (options && options.zip && filepath) {
@@ -142,10 +142,10 @@ function validatePluginSchema(plugin: PluginLocal): string | boolean {
   return error.length === 0 ? false : error;
 }
 
-function validateProcess(pathItem: string, log: string): any {
+function validateProcess(pathItem: string, output: string): any {
   const json: { [property: string]: any } = {};
   // loop through validator output
-  for (let line of log.split('\n')) {
+  for (let line of output.split('\n')) {
     // remove whitespace at start and end of lines
     line = line.trim();
     // only process lines assigning values
@@ -189,7 +189,7 @@ function validateProcess(pathItem: string, log: string): any {
 function validateRun(filePath: string): string {
   // Run Steinberg VST3 SDK validator binary
   try {
-    console.log('⎋', `${validatorPath} "${filePath}"`);
+    log('⎋', `${validatorPath} "${filePath}"`);
     const sdout: Buffer = execSync(`${validatorPath} "${filePath}"`);
     return sdout.toString();
   } catch (error: any) {

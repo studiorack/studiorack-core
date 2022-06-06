@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 
 import { dirAppData, dirExists, dirRead, fileExec, fileJsonCreate, zipExtract } from './file';
-import { getPlatform } from './utils';
+import { getPlatform, log } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
 
@@ -57,7 +57,7 @@ function testPlugin(pathItem: string, options?: any): object {
     throw Error(`File does not exist: ${pathItem}`);
   }
   const outputText: string = testRun(pathItem);
-  console.log(outputText);
+  log(outputText);
   return {
     path: pathItem,
     valid: outputText.includes('ALL TESTS PASSED'),
@@ -68,7 +68,7 @@ function testPlugin(pathItem: string, options?: any): object {
 function testRun(filePath: string): string {
   // Run plugin validator binary
   try {
-    console.log('⎋', `${testerPath} --validate-in-process --validate "${filePath}"`);
+    log('⎋', `${testerPath} --validate-in-process --validate "${filePath}"`);
     const sdout: Buffer = execSync(`${testerPath} --validate-in-process --validate "${filePath}"`);
     return sdout.toString();
   } catch (error: any) {

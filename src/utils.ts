@@ -15,6 +15,7 @@ const platformTypes: PlatformTypes = {
   win32: 'win',
   win64: 'win',
 };
+let LOGGING_ENABLED: boolean = false;
 const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
@@ -32,6 +33,20 @@ function inputGetParts(input: string): string[] {
 
 function isTests() {
   return process.env.JEST_WORKER_ID !== undefined;
+}
+
+function log(...args: any) {
+  if (LOGGING_ENABLED) {
+    console.log(...args);
+  }
+}
+
+function logEnable(...args: any) {
+  LOGGING_ENABLED = true;
+}
+
+function logDisable(...args: any) {
+  LOGGING_ENABLED = false;
 }
 
 // Plugin paths are assumed to follow the following format:
@@ -113,6 +128,9 @@ export {
   idToSlug,
   inputGetParts,
   isTests,
+  log,
+  logEnable,
+  logDisable,
   pathGetDirectory,
   pathGetExt,
   pathGetFilename,
