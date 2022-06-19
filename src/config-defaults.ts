@@ -40,6 +40,12 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
         same: false,
       },
       {
+        key: 'bsd-2-clause',
+        name: "BSD 2-Clause 'Simplified' License",
+        url: 'https://choosealicense.com/licenses/bsd-2-clause',
+        same: false,
+      },
+      {
         key: 'bsd-3-clause-clear',
         name: 'BSD 3-Clause Clear License',
         url: 'https://choosealicense.com/licenses/bsd-3-clause-clear',
