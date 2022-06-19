@@ -274,12 +274,14 @@ async function pluginSearch(query?: string): Promise<PluginInterface[]> {
   return await pluginsGet().then((pluginPack: PluginPack) => {
     const plugins: PluginInterface[] = [];
     if (query) {
+      const queryLower: string = query.toLowerCase();
       Object.keys(pluginPack).filter((id: string) => {
         const plugin: PluginInterface = pluginLatest(pluginPack[id]);
+        const pluginTags: string[] = plugin.tags.map((str) => str.toLowerCase());
         if (
-          plugin.name.toLowerCase().indexOf(query) !== -1 ||
-          plugin.description.toLowerCase().indexOf(query) !== -1 ||
-          plugin.tags.includes(query)
+          plugin.name.toLowerCase().indexOf(queryLower) !== -1 ||
+          plugin.description.toLowerCase().indexOf(queryLower) !== -1 ||
+          pluginTags.includes(queryLower)
         ) {
           plugins.push(plugin);
         }

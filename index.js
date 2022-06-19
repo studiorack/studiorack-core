@@ -13,11 +13,14 @@ const tester = require('./dist/tester.js');
 const validate = require('./dist/validate.js');
 
 async function run() {
+  // Enable logging to see what is going on
+  utils.logEnable();
+
   // const pluginList = await plugin.pluginList();
   // console.log('pluginList', pluginList);
 
-  // const pluginSearch = await plugin.pluginSearch('delay');
-  // console.log('pluginSearch', pluginSearch);
+  const pluginSearch = await plugin.pluginSearch('delay');
+  console.log('pluginSearch', pluginSearch);
 
   // const pluginGet = await plugin.pluginGet('studiorack/oxe/oxe');
   // console.log('pluginGet', pluginGet);
@@ -27,11 +30,8 @@ async function run() {
 
   // console.log('isCliInstalled', admin.isCliInstalled());
 
-  // Enable logging to see what is going on
-  utils.logEnable();
-
-  const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
-  console.log('pluginInstall', pluginInstall);
+  // const pluginInstall = await plugin.pluginInstall('studiorack/adlplug/adlplug');
+  // console.log('pluginInstall', pluginInstall);
 
   // const pluginInstalled = await plugin.pluginInstalled('studiorack/adlplug/adlplug');
   // console.log('pluginInstalled', pluginInstalled);
