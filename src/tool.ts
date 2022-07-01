@@ -28,15 +28,20 @@ async function toolInstall(type: keyof Tools): Promise<string> {
 function toolGetPath(type: keyof Tools): string {
   const filename: string = (type === 'clapinfo' ? 'clap-info' : type);
   let fileext: string = '';
-  if (getPlatform() === 'mac' && type === 'pluginval') { fileext = '.app'; }
+  if (getPlatform() === 'mac' && type === 'pluginval') { fileext = '.app/Contents/MacOS/pluginval'; }
   if (getPlatform() === 'win') { fileext = '.exe'; }
   return path.join(toolFolder, filename + fileext);
 }
 
-function toolRun(type: keyof Tools, command:string): string {
+function toolRun(type: keyof Tools, command: string): string {
   try {
     log('⎋', `${toolGetPath(type)} "${command}"`);
-    const sdout: Buffer = execSync(`${toolGetPath(type)} "${command}"`);
+    if (type === 'pluginval') {
+      command = `--validate-in-process --validate "${command}"`;
+    } else {
+      command = `"${command}"`;
+    }
+    const sdout: Buffer = execSync(`${toolGetPath(type)} ${command}`);
     return sdout.toString();
   } catch (error: any) {
     return error.output ? error.output.toString() : error.toString();
