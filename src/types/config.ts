@@ -21,7 +21,8 @@ interface ConfigInterface {
   projectFolder: string;
   projectRegistry: string;
   projectTypes: ProjectTypes;
-  testerUrl: string;
+  clapinfoUrl: string;
+  pluginvalUrl: string;
   validatorUrl: string;
 }
 

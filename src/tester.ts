@@ -44,7 +44,7 @@ async function testInstall(): Promise<boolean> {
     if (platform === 'linux') platform = 'Linux';
     else if (platform === 'mac') platform = 'macOS';
     else if (platform === 'win') platform = 'windows';
-    const data: Buffer = await getRaw(configGet('testerUrl').replace('${platform}', platform));
+    const data: Buffer = await getRaw(configGet('pluginvalUrl').replace('${platform}', platform));
     zipExtract(data, testerFolder);
     fileExec(testerPath);
     return true;
