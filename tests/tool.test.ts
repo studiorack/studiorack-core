@@ -1,5 +1,5 @@
 import path from 'path';
-import { toolInstall, toolGetPath, toolRun } from '../src/tool';
+import { toolInstall, toolGetPath, toolRun, toolFolder } from '../src/tool';
 import { dirAppData, dirDelete } from '../src/file';
 import { configSet } from '../src/config';
 import { pluginInstall } from '../src/plugin';
@@ -70,4 +70,16 @@ test('Run pluginval', () => {
 
 test('Run validator', () => {
   expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
+});
+
+test('Folder clapinfo', () => {
+  expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'plugins', '**', '*.clap')).join('\n'))).toMatchSnapshot();
+});
+
+test('Folder pluginval', () => {
+  expect(cleanOutput(toolFolder('pluginval', path.join('test', 'plugins', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
+});
+
+test('Folder validator', () => {
+  expect(cleanOutput(toolFolder('validator', path.join('test', 'plugins', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
 });

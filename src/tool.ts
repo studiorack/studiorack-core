@@ -1,23 +1,28 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirAppData, dirExists, fileExec, zipExtract } from './file';
+import { dirAppData, dirExists, dirRead, fileExec, zipExtract } from './file';
 import { getPlatform, log } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
 import { ConfigInterface } from './types/config';
 import { Tools } from './types/tool';
 
-const toolFolder: string = path.join(dirAppData(), 'studiorack', 'bin');
+const toolBinDir: string = path.join(dirAppData(), 'studiorack', 'bin');
 
-async function toolInstall(type: keyof Tools): Promise<string> {
-  if (!dirExists(toolGetPath(type))) {
-    const toolUrl: string = configGet(`${type}Url` as keyof ConfigInterface).replace('${platform}', getPlatform());
-    const data: Buffer = await getRaw(toolUrl);
-    zipExtract(data, toolFolder);
-    fileExec(toolGetPath(type));
+function toolFolder(type: keyof Tools, pluginPath: string): string[] {
+  const toolResults: string[] = [];
+  if (pluginPath.includes('*')) {
+    const pathList = dirRead(pluginPath);
+    pathList.forEach((pathItem: string) => {
+      const testResult: string = toolRun(type, pathItem);
+      toolResults.push(testResult);
+    });
+  } else {
+    const testResult: any = toolRun(type, pluginPath);
+    toolResults.push(testResult);
   }
-  return toolGetPath(type);
+  return toolResults;
 }
 
 function toolGetPath(type: keyof Tools): string {
@@ -29,7 +34,17 @@ function toolGetPath(type: keyof Tools): string {
   if (getPlatform() === 'win') {
     fileext = '.exe';
   }
-  return path.join(toolFolder, filename + fileext);
+  return path.join(toolBinDir, filename + fileext);
+}
+
+async function toolInstall(type: keyof Tools): Promise<string> {
+  if (!dirExists(toolGetPath(type))) {
+    const toolUrl: string = configGet(`${type}Url` as keyof ConfigInterface).replace('${platform}', getPlatform());
+    const data: Buffer = await getRaw(toolUrl);
+    zipExtract(data, toolBinDir);
+    fileExec(toolGetPath(type));
+  }
+  return toolGetPath(type);
 }
 
 function toolRun(type: keyof Tools, command: string): string {
@@ -47,4 +62,4 @@ function toolRun(type: keyof Tools, command: string): string {
   }
 }
 
-export { toolInstall, toolGetPath, toolRun };
+export { toolFolder, toolGetPath, toolInstall, toolRun };
