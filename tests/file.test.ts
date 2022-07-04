@@ -32,6 +32,7 @@ import os from 'os';
 import path from 'path';
 
 const DIR_PATH: string = path.join('test', 'new-directory');
+const DIR_PATH_GLOB: string = path.join('test', 'new-directory', '**', '*.txt');
 const DIR_RENAME: string = path.join('test', 'new-directory-renamed');
 const DIR_APP_DATA: string = path.join(dirAppData(), 'studiorack');
 
@@ -93,6 +94,10 @@ test('Directory open', () => {
 
 test('Read directory', () => {
   expect(dirRead(DIR_PATH)).toMatchObject([DIR_PATH]);
+});
+
+test('Read directory glob', () => {
+  expect(dirRead(DIR_PATH_GLOB)).toMatchObject([FILE_PATH]);
 });
 
 test('Create file', () => {
