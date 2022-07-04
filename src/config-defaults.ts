@@ -346,6 +346,10 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
         name: 'Dynamic Link Library',
         ext: 'dll',
       },
+      cleverAudioPlugin: {
+        name: 'Clever Audio Plugin',
+        ext: 'clap',
+      },
       realtimeAudiosuite: {
         name: 'Real-Time AudioSuite',
         ext: 'rta',

@@ -137,7 +137,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   return Object.keys(pluginsFound).map((pluginKey: string) => pluginsFound[pluginKey]);
 }
 
-function pluginOrganizeByType(dirSource: string, ext: string, dirTarget: string, plugin: PluginLocal): string[] {
+function pluginOrganize(dirSource: string, ext: string, dirTarget: string, plugin: PluginLocal): string[] {
   const paths: string[] = [];
   const files: string[] = dirRead(`${dirSource}/**/*.${ext}`);
   // Do not create directory unless there are plugins to copy
@@ -181,17 +181,17 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
     // Download the plugin data
     const pluginData: Buffer = await getRaw(pluginUrl);
     const [pluginOwner, pluginRepo] = plugin.repo.split('/');
-    const dirDownloads: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
-    dirCreate(dirDownloads);
+    const dirTemp: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
+    dirCreate(dirTemp);
     // If the file is compressed
     if (pluginExt === 'zip') {
       let pathsAll: string[] = [];
-      zipExtract(pluginData, dirDownloads);
+      zipExtract(pluginData, dirTemp);
       if (plugin.tags.includes('sfz') || plugin.tags.includes('sf2')) {
         // Plugin is a sample pack
         const samplePackType: string = plugin.tags.includes('sfz') ? 'SFZ' : 'SF2';
         dirCreate(pluginDirectory(plugin, samplePackType));
-        dirMove(dirDownloads, pluginDirectory(plugin, samplePackType));
+        dirMove(dirTemp, pluginDirectory(plugin, samplePackType));
         const samplePackPath: string = path.join(
           pluginDirectory(plugin, samplePackType),
           '**',
@@ -200,26 +200,22 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
         pathsAll = dirRead(samplePackPath);
       } else {
         // Plugin is an instrument/effect
-        const pathsCom: string[] = pluginOrganizeByType(
-          dirDownloads,
-          'component',
-          pluginDirectory(plugin, 'Components'),
-          plugin
-        );
-        const pathsDll: string[] = pluginOrganizeByType(dirDownloads, 'dll', pluginDirectory(plugin, 'DLL'), plugin);
-        const pathsLv2: string[] = pluginOrganizeByType(dirDownloads, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
-        const pathsVst: string[] = pluginOrganizeByType(dirDownloads, 'vst', pluginDirectory(plugin, 'VST'), plugin);
-        const pathsVst3: string[] = pluginOrganizeByType(dirDownloads, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
-        pathsAll = pathsCom.concat(pathsDll, pathsLv2, pathsVst, pathsVst3);
+        const pathsClap: string[] = pluginOrganize(dirTemp, 'clap', pluginDirectory(plugin, 'CLAP'), plugin);
+        const pathsCom: string[] = pluginOrganize(dirTemp, 'component', pluginDirectory(plugin, 'Components'), plugin);
+        const pathsDll: string[] = pluginOrganize(dirTemp, 'dll', pluginDirectory(plugin, 'DLL'), plugin);
+        const pathsLv2: string[] = pluginOrganize(dirTemp, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
+        const pathsVst: string[] = pluginOrganize(dirTemp, 'vst', pluginDirectory(plugin, 'VST'), plugin);
+        const pathsVst3: string[] = pluginOrganize(dirTemp, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
+        pathsAll = pathsClap.concat(pathsCom, pathsDll, pathsLv2, pathsVst, pathsVst3);
       }
       // Save json metadata file alongside each plugin file/format
       pathsAll.forEach((pluginPath: string) => {
         plugin.paths.push(pluginPath);
       });
-      dirDelete(dirDownloads);
+      dirDelete(dirTemp);
     } else {
       // Plugin is an installer
-      const pluginPath: string = path.join(dirDownloads, plugin.files[getPlatform()].name);
+      const pluginPath: string = path.join(dirTemp, plugin.files[getPlatform()].name);
       fileCreate(pluginPath, pluginData);
       plugin.paths.push(pluginPath);
     }
@@ -244,6 +240,7 @@ async function pluginInstallAll(): Promise<PluginLocal[]> {
 
 function pluginInstalled(plugin: PluginInterface): boolean {
   if (
+    dirExists(pluginDirectory(plugin, 'CLAP')) ||
     dirExists(pluginDirectory(plugin, 'Components')) ||
     dirExists(pluginDirectory(plugin, 'DLL')) ||
     dirExists(pluginDirectory(plugin, 'LV2')) ||
@@ -317,6 +314,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     if (!pluginInstalled(plugin)) {
       throw Error(
         `Plugin not installed locally 
+        ${pluginDirectory(plugin, 'CLAP')} 
         ${pluginDirectory(plugin, 'Components')} 
         ${pluginDirectory(plugin, 'DLL')} 
         ${pluginDirectory(plugin, 'LV2')} 
@@ -328,6 +326,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
     } else {
       // Move all plugin formats from folders
       // TODO remove app if it exists
+      removeDirectory(plugin, 'CLAP');
       removeDirectory(plugin, 'Components');
       removeDirectory(plugin, 'DLL');
       removeDirectory(plugin, 'LV2');
