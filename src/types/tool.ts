@@ -4,6 +4,4 @@ interface Tools {
   validator: string;
 }
 
-export {
-  Tools,
-};
+export { Tools };

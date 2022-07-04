@@ -9,12 +9,15 @@ const file = require('./dist/file.js');
 const plugin = require('./dist/plugin.js');
 const project = require('./dist/project.js');
 const utils = require('./dist/utils.js');
-const tester = require('./dist/tester.js');
+const tool = require('./dist/tool.js');
 const validate = require('./dist/validate.js');
 
 async function run() {
   // Enable logging to see what is going on
   utils.logEnable();
+
+  // const toolInstall = await tool.toolInstall('pluginval');
+  // console.log('toolInstall', toolInstall);
 
   // const pluginList = await plugin.pluginList();
   // console.log('pluginList', pluginList);

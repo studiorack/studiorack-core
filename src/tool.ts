@@ -1,12 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import {
-  dirAppData,
-  dirExists,
-  fileExec,
-  zipExtract,
-} from './file';
+import { dirAppData, dirExists, fileExec, zipExtract } from './file';
 import { getPlatform, log } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
@@ -26,10 +21,14 @@ async function toolInstall(type: keyof Tools): Promise<string> {
 }
 
 function toolGetPath(type: keyof Tools): string {
-  const filename: string = (type === 'clapinfo' ? 'clap-info' : type);
+  const filename: string = type === 'clapinfo' ? 'clap-info' : type;
   let fileext: string = '';
-  if (getPlatform() === 'mac' && type === 'pluginval') { fileext = '.app/Contents/MacOS/pluginval'; }
-  if (getPlatform() === 'win') { fileext = '.exe'; }
+  if (getPlatform() === 'mac' && type === 'pluginval') {
+    fileext = '.app/Contents/MacOS/pluginval';
+  }
+  if (getPlatform() === 'win') {
+    fileext = '.exe';
+  }
   return path.join(toolFolder, filename + fileext);
 }
 
@@ -48,8 +47,4 @@ function toolRun(type: keyof Tools, command: string): string {
   }
 }
 
-export {
-  toolInstall,
-  toolGetPath,
-  toolRun
-};
+export { toolInstall, toolGetPath, toolRun };

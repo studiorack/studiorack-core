@@ -6,8 +6,9 @@ import { pluginInstall } from '../src/plugin';
 
 const APP_DIR: string = path.join(dirAppData(), 'studiorack');
 const PLUGIN_DIR: string = path.join('test', 'plugins');
-const PLUGIN_ID: string = 'studiorack/adlplug/adlplug';
-const PLUGIN_PATH: string = path.join('test', 'plugins', 'VST3', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.vst3');
+const PLUGIN_ID: string = 'studiorack/surge/surge';
+const PLUGIN_PATH: string = path.join('test', 'plugins', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
+const PLUGIN_PATH_CLAP: string = path.join('test', 'plugins', 'CLAP', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.clap');
 const SCRIPT_DIR: string = path.resolve(__dirname, '../');
 const TOOL_FOLDER = path.join(dirAppData(), 'studiorack', 'bin');
 let CLAPINFO_PATH: string = path.join(TOOL_FOLDER, 'clap-info');
@@ -60,7 +61,7 @@ test('Get path validator', () => {
 });
 
 test('Run clapinfo', () => {
-  expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH))).toMatchSnapshot();
+  expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
 });
 
 test('Run pluginval', () => {
