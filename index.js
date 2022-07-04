@@ -48,9 +48,6 @@ async function run() {
   // const pluginGetLocal = await plugin.pluginGetLocal('studiorack/adlplug/adlplug');
   // console.log('pluginGetLocal', pluginGetLocal);
 
-  // const testFolder = await tester.testFolder('/Library/Audio/Plug-ins/VST/*.vst');
-  // console.log('testFolder', testFolder);
-
   // const pluginInstallAll = await plugin.pluginInstallAll();
   // console.log('pluginInstallAll', pluginInstallAll);
 
