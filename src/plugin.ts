@@ -437,6 +437,39 @@ async function pluginValidateFolder(pluginPath: string, options: any): Promise<P
   return plugins;
 }
 
+function pluginValidateField(obj: any, field: string, type: string): string {
+  if (obj && !obj[field]) {
+    return `- ${field} field missing\n`;
+  }
+  if (obj && typeof obj[field] !== type) {
+    return `- ${field} field incorrect type ${typeof obj[field]}, expecting ${type}\n`;
+  }
+  return '';
+}
+
+function pluginValidateSchema(plugin: PluginLocal): string | boolean {
+  let error: string = '';
+  error += pluginValidateField(plugin, 'author', 'string');
+  error += pluginValidateField(plugin, 'homepage', 'string');
+  error += pluginValidateField(plugin, 'name', 'string');
+  error += pluginValidateField(plugin, 'description', 'string');
+  error += pluginValidateField(plugin, 'tags', 'object');
+  error += pluginValidateField(plugin, 'version', 'string');
+  if (!semver.valid(plugin.version)) {
+    error += `- version does not conform to semantic versioning ${plugin.version}\n`;
+  }
+  error += pluginValidateField(plugin, 'id', 'string');
+  error += pluginValidateField(plugin, 'date', 'string');
+  if (Number.isNaN(Date.parse(plugin.date))) {
+    error += `- date not valid ${plugin.date}\n`;
+  }
+  error += pluginValidateField(plugin, 'files', 'object');
+  error += pluginValidateField(plugin.files, 'audio', 'object');
+  error += pluginValidateField(plugin.files, 'image', 'object');
+
+  return error.length === 0 ? false : error;
+}
+
 function parseOutput(pathItem: string, output: string): any {
   const json: { [property: string]: any } = {};
   // loop through validator output
@@ -525,5 +558,7 @@ export {
   pluginUninstallAll,
   pluginValidate,
   pluginValidateFiles,
-  pluginValidateFolder
+  pluginValidateFolder,
+  pluginValidateField,
+  pluginValidateSchema
 };

@@ -10,7 +10,6 @@ const plugin = require('./dist/plugin.js');
 const project = require('./dist/project.js');
 const utils = require('./dist/utils.js');
 const tool = require('./dist/tool.js');
-const validate = require('./dist/validate.js');
 
 async function run() {
   // Enable logging to see what is going on
@@ -53,16 +52,6 @@ async function run() {
 
   // const pluginUninstallAll = await plugin.pluginUninstallAll();
   // console.log('pluginUninstallAll', pluginUninstallAll);
-
-  // const result = await validate.validateFolder('test/plugins/**/*.{dll,lv2,vst,vst3}', {
-  //   files: true,
-  //   json: true,
-  //   txt: true,
-  //   zip: true,
-  //   summary: true
-  // });
-  // console.log('validatePlugin', result);
-
 }
 
 run();
