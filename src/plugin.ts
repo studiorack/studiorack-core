@@ -40,7 +40,8 @@ import {
   PluginTemplate,
   PluginTypes,
 } from './types/plugin';
-import { validateInstall, validatePlugin } from './validate';
+import { validatePlugin } from './validate';
+import { toolInstall } from './tool';
 
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
@@ -102,7 +103,7 @@ async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
 }
 
 async function pluginsGetLocal(): Promise<PluginLocal[]> {
-  await validateInstall();
+  await toolInstall('validator');
   const pluginTypes: PluginTypes = configGet('pluginTypes');
   const pluginExts: string[] = Object.keys(pluginTypes).map((pluginTypeKey: string) => {
     return pluginTypes[pluginTypeKey as keyof PluginTypes].ext;

@@ -6,7 +6,6 @@ import { PluginLocal } from '../src/types/plugin';
 import {
   validateFiles,
   validateFolder,
-  validateInstall,
   validatePlugin,
   validatePluginField,
   validatePluginSchema,

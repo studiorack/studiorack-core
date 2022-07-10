@@ -18,7 +18,7 @@ To install the common package, run the command:
 
 Import the package using:
 
-    import { validateInstall } from '@studiorack/core';
+    import { toolInstall } from '@studiorack/core';
 
 Then use the available methods as normal.
 

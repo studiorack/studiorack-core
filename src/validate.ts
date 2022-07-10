@@ -18,6 +18,7 @@ import { getPlatform, log, pathGetDirectory, pathGetFilename, pathGetWithoutExt,
 import { getRaw } from './api';
 import { PluginLocal } from './types/plugin';
 import { configGet } from './config';
+import { toolInstall } from './tool';
 
 const map: { [property: string]: string } = {
   category: 'description',
@@ -51,7 +52,7 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
     throw Error(`Path does not exist: ${pluginPath}`);
   }
   const plugins: PluginLocal[] = [];
-  await validateInstall();
+  await toolInstall('validator');
   if (pluginPath.includes('*')) {
     const pathList = dirRead(pluginPath);
     pathList.forEach((pathItem: string) => {
@@ -72,17 +73,6 @@ async function validateFolder(pluginPath: string, options: any): Promise<PluginL
     fileJsonCreate(`${rootPath}plugins.json`, { plugins });
   }
   return plugins;
-}
-
-async function validateInstall(): Promise<boolean> {
-  // If binary does not exist, download Steinberg VST3 SDK validator binary
-  if (!dirExists(validatorPath)) {
-    const data: Buffer = await getRaw(configGet('validatorUrl').replace('${platform}', getPlatform()));
-    zipExtract(data, validatorFolder);
-    fileExec(validatorPath);
-    return true;
-  }
-  return false;
 }
 
 function validatePlugin(pathItem: string, options?: any): PluginLocal {
@@ -200,7 +190,6 @@ function validateRun(filePath: string): string {
 export {
   validateFiles,
   validateFolder,
-  validateInstall,
   validatePlugin,
   validatePluginField,
   validatePluginSchema,
