@@ -8,8 +8,8 @@ import { logEnable } from '../src/utils';
 const APP_DIR: string = path.join(dirAppData(), 'studiorack');
 const TEST_DIR: string = path.join('test', 'tool');
 const PLUGIN_ID: string = 'studiorack/surge/surge';
-const PLUGIN_PATH: string = path.join('test', 'plugins', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
-const PLUGIN_PATH_CLAP: string = path.join('test', 'plugins', 'CLAP', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.clap');
+const PLUGIN_PATH: string = path.join('test', 'tool', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
+const PLUGIN_PATH_CLAP: string = path.join('test', 'tool', 'CLAP', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.clap');
 const SCRIPT_DIR: string = path.resolve(__dirname, '../');
 const TOOL_FOLDER = path.join(dirAppData(), 'studiorack', 'bin');
 let CLAPINFO_PATH: string = path.join(TOOL_FOLDER, 'clap-info');
@@ -25,10 +25,21 @@ if (process.platform === 'darwin') {
 }
 
 function cleanOutput(output: string): string {
+  // Replace app path with variable
   const regex: RegExp = new RegExp(APP_DIR, 'g');
-  let output2: string = output.replace(regex, '${APP_DIR}');
+  const output2: string = output.replace(regex, '${APP_DIR}');
+  // Replace script path with variable
   const regex2: RegExp = new RegExp(SCRIPT_DIR, 'g');
-  return output2.replace(regex2, '${SCRIPT_DIR}');
+  const output3: string = output2.replace(regex2, '${SCRIPT_DIR}');
+  // Replace random seed with variable
+  const regex3: RegExp = new RegExp('Random seed: (.+)', 'g');
+  const output4: string = output3.replace(regex3, '${RANDOM_SEED}');
+  // Replace validation started with variable
+  const regex4: RegExp = new RegExp('Validation started: (.+)', 'g');
+  const output5: string = output4.replace(regex4, '${VALIDATION_STARTED}');
+  // Replace time taken to with variable
+  const regex5: RegExp = new RegExp('Time taken to (.+)', 'g');
+  return output5.replace(regex5, '${TIME_TAKEN_TO}');
 }
 
 beforeAll(async () => {
@@ -66,28 +77,26 @@ test('Get path validator', () => {
   expect(toolGetPath('validator')).toEqual(VALIDATOR_PATH);
 });
 
-// Command line tools do not produce same output every time
+test('Run clapinfo', () => {
+  expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
+});
 
-// test('Run clapinfo', () => {
-//   expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
-// });
+test('Run pluginval', () => {
+  expect(cleanOutput(toolRun('pluginval', PLUGIN_PATH))).toMatchSnapshot();
+});
 
-// test('Run pluginval', () => {
-//   expect(cleanOutput(toolRun('pluginval', PLUGIN_PATH))).toMatchSnapshot();
-// });
+test('Run validator', () => {
+  expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
+});
 
-// test('Run validator', () => {
-//   expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
-// });
+test('Folder clapinfo', () => {
+  expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
+});
 
-// test('Folder clapinfo', () => {
-//   expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'plugins', '**', '*.clap')).join('\n'))).toMatchSnapshot();
-// });
+test('Folder pluginval', () => {
+  expect(cleanOutput(toolFolder('pluginval', path.join('test', 'tool', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
+});
 
-// test('Folder pluginval', () => {
-//   expect(cleanOutput(toolFolder('pluginval', path.join('test', 'plugins', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
-// });
-
-// test('Folder validator', () => {
-//   expect(cleanOutput(toolFolder('validator', path.join('test', 'plugins', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
-// });
+test('Folder validator', () => {
+  expect(cleanOutput(toolFolder('validator', path.join('test', 'tool', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
+});

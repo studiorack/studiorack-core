@@ -9358,7 +9358,7 @@ exports[`Folder clapinfo 1`] = `
          ]
       }
    },
-   \\"file\\" : \\"test/plugins/CLAP/studiorack/surge/surge/1.9.0/Surge XT.clap\\",
+   \\"file\\" : \\"test/tool/CLAP/studiorack/surge/surge/1.9.0/Surge XT.clap\\",
    \\"id\\" : \\"org.surge-synth-team.surge-xt\\",
    \\"plugin-count\\" : 1,
    \\"version\\" : \\"1.0.2\\"
@@ -9369,44 +9369,44 @@ exports[`Folder clapinfo 1`] = `
 
 exports[`Folder pluginval 1`] = `
 ",pluginval v0.3.0 - JUCE v6.1.0
-Started validating: \${SCRIPT_DIR}/test/plugins/Components/studiorack/surge/surge/1.9.0/Surge XT.component
-Random seed: 0x71de7c9
-Validation started: 3 Jul 2022 10:08:57pm
+Started validating: \${SCRIPT_DIR}/test/tool/Components/studiorack/surge/surge/1.9.0/Surge XT.component
+\${RANDOM_SEED}
+\${VALIDATION_STARTED}
 
 Strictness level: 5
 -----------------------------------------------------------------
-Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/plugins/Components/studiorack/surge/surge/1.9.0/Surge XT.component...
+Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/tool/Components/studiorack/surge/surge/1.9.0/Surge XT.component...
 Num types found: 0
 !!! Test 1 failed: No types found
 FAILED!!  1 test failed, out of a total of 1
 
-Finished validating: \${SCRIPT_DIR}/test/plugins/Components/studiorack/surge/surge/1.9.0/Surge XT.component
+Finished validating: \${SCRIPT_DIR}/test/tool/Components/studiorack/surge/surge/1.9.0/Surge XT.component
 *** FAILED: 1 TESTS
 *** FAILED: 1 TESTS
 
 ,
-,pluginval v0.3.0 - JUCE v6.1.0
-Started validating: \${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
-Random seed: 0x3f38247
-Validation started: 3 Jul 2022 10:08:58pm
+pluginval v0.3.0 - JUCE v6.1.0
+Started validating: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+\${RANDOM_SEED}
+\${VALIDATION_STARTED}
 
 Strictness level: 5
 -----------------------------------------------------------------
-Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3...
+Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3...
 Num types found: 1
 
-Testing plugin: VST3-Surge XT-67e41bc8-190e4fbd
+Testing plugin: VST3-Surge XT-ced946e6-190e4fbd
 Surge Synth Team: Surge XT v1.1.0
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open plugin (cold)...
 
-Time taken to open plugin (cold): 256 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open plugin (warm)...
 
-Time taken to open plugin (warm): 113 ms
+\${TIME_TAKEN_TO}
 Running tests 1 times
 All tests completed successfully
 -----------------------------------------------------------------
@@ -9418,27 +9418,27 @@ SupportsDoublePrecision: no
 Reported latency: 0
 Reported taillength: 2
 
-Time taken to run test: 0
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Plugin programs...
 Num programs: 0
 All program names checked
 
-Time taken to run test: 0
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Editor...
 
-Time taken to open editor (cold): 516 ms
-Time taken to open editor (warm): 520 ms
+\${TIME_TAKEN_TO}
+\${TIME_TAKEN_TO}
 
-Time taken to run test: 1 sec
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open editor whilst processing...
 
-Time taken to run test: 698 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Audio processing...
@@ -9458,7 +9458,7 @@ Testing with sample rate [96000] and block size [256]
 Testing with sample rate [96000] and block size [512]
 Testing with sample rate [96000] and block size [1024]
 
-Time taken to run test: 29 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Non-releasing audio processing...
@@ -9478,12 +9478,12 @@ Testing with sample rate [96000] and block size [256]
 Testing with sample rate [96000] and block size [512]
 Testing with sample rate [96000] and block size [1024]
 
-Time taken to run test: 33 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Plugin state...
 
-Time taken to run test: 27 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Automation...
@@ -9496,49 +9496,64 @@ Testing with sample rate [48000] and block size [64] and sub-block size [32]
 Testing with sample rate [48000] and block size [128] and sub-block size [32]
 Testing with sample rate [48000] and block size [256] and sub-block size [32]
 Testing with sample rate [48000] and block size [512] and sub-block size [32]
+Testing with sample rate [48000] and block size [1024] and sub-block size [32]
+Testing with sample rate [96000] and block size [64] and sub-block size [32]
+Testing with sample rate [96000] and block size [128] and sub-block size [32]
+Testing with sample rate [96000] and block size [256] and sub-block size [32]
+Testing with sample rate [96000] and block size [512] and sub-block size [32]
+Testing with sample rate [96000] and block size [1024] and sub-block size [32]
 
-*** FAILED: VALIDATION CRASHED
+\${TIME_TAKEN_TO}
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Editor Automation...
 
-0   pluginval                           0x00000001093d41a0 _ZN4juce11SystemStats17getStackBacktraceEv + 64
-1   pluginval                           0x000000010921f9e6 _ZN12_GLOBAL__N_119getCrashLogContentsEv + 38
-2   pluginval                           0x000000010921f7e4 _ZN12_GLOBAL__N_111handleCrashEPv + 20
-3   pluginval                           0x00000001093d43bd _ZN4juceL11handleCrashEi + 13
-4   libsystem_platform.dylib            0x00007ff81de20dfd _sigtramp + 29
-5   libsystem_c.dylib                   0x00007ff85f559d60 __global_locale + 0
-6   Surge XT                            0x00000001111f9a5a _Z13ProcessFBQuadILi2ELb1ELb0ELb0EEvR20QuadFilterChainStateR10fbq_globalPfS4_ + 154
-7   Surge XT                            0x00000001111c4dc5 _ZN16SurgeSynthesizer7processEv + 2181
-8   Surge XT                            0x0000000110b36172 _ZN19SurgeSynthProcessor12processBlockERN4juce11AudioBufferIfEERNS0_10MidiBufferE + 1058
-9   Surge XT                            0x0000000110b233d9 _ZN4juce17JuceVST3Component12processAudioIfEEvRN9Steinberg3Vst11ProcessDataERNS_5ArrayIPT_NS_20DummyCriticalSectionELi0EEE + 2729
-10  Surge XT                            0x0000000110b1ca97 _ZN4juce17JuceVST3Component7processERN9Steinberg3Vst11ProcessDataE + 599
-11  pluginval                           0x000000010935c59d _ZN4juce18VST3PluginInstance12processAudioIfEEvRNS_11AudioBufferIT_EERNS_10MidiBufferEN9Steinberg3Vst19SymbolicSampleSizesEb + 829
-12  pluginval                           0x000000010935789f _ZN4juce18VST3PluginInstance12processBlockERNS_11AudioBufferIfEERNS_10MidiBufferE + 79
-13  pluginval                           0x0000000109239bd0 _ZN14AutomationTest7runTestER11PluginTestsRN4juce19AudioPluginInstanceE + 2528
-14  pluginval                           0x000000010922a328 _ZN11PluginTests8testTypeERKN4juce17PluginDescriptionE + 1912
-15  pluginval                           0x0000000109229aac _ZN11PluginTests7runTestEv + 652
-16  pluginval                           0x00000001093f528c _ZN4juce14UnitTestRunner8runTestsERKNS_5ArrayIPNS_8UnitTestENS_20DummyCriticalSectionELi0EEEx + 444
-17  pluginval                           0x0000000109233415 _Z8runTestsR11PluginTestsNSt3__18functionIFvRKN4juce6StringEEEE + 325
-18  pluginval                           0x000000010923303a _Z8validateRKN4juce6StringEN11PluginTests7OptionsENSt3__18functionIFvS2_EEE + 250
-19  pluginval                           0x0000000109231bef _ZN21ValidatorChildProcess14processRequestEN4juce11MemoryBlockE + 1791
-20  pluginval                           0x0000000109231456 _ZN21ValidatorChildProcess15processRequestsEv + 134
-21  pluginval                           0x0000000109230e64 _ZThn16_N21ValidatorChildProcess3runEv + 84
-22  pluginval                           0x00000001093e901a _ZN4juce6Thread16threadEntryPointEv + 282
-23  pluginval                           0x000000010941a8ea _ZN4juceL15threadEntryProcEPv + 26
-24  libsystem_pthread.dylib             0x00007ff81de0b4e1 _pthread_start + 125
-25  libsystem_pthread.dylib             0x00007ff81de06f6b thread_start + 15
+\${TIME_TAKEN_TO}
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Automatable Parameters...
 
-Binary Images:
-0x10920f000 pluginval
-0x7ff81de1d000 libsystem_platform.dylib
-0x7ff81dcd5000 libsystem_c.dylib
-0x110ae8000 Surge XT
-0x7ff81de05000 libsystem_pthread.dylib
-,"
+\${TIME_TAKEN_TO}
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Basic bus...
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Listing available buses...
+Inputs:
+	Named layouts: Mono, Stereo
+	Discrete layouts: Discrete #1
+Outputs:
+	Named layouts: Mono, Stereo, Stereo, Stereo
+	Discrete layouts: Discrete #1
+Main bus num input channels: 2
+Main bus num output channels: 2
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Enabling all buses...
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Disabling non-main busses...
+All tests completed successfully
+-----------------------------------------------------------------
+Starting test: pluginval / Restoring default layout...
+Main bus num input channels: 2
+Main bus num output channels: 2
+
+\${TIME_TAKEN_TO}
+
+\${TIME_TAKEN_TO}
+All tests completed successfully
+
+Finished validating: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+ALL TESTS PASSED
+"
 `;
 
 exports[`Folder validator 1`] = `
 ",* Loading module...
 
-	\${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+	\${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
 
 * Scanning classes...
 
@@ -22067,7 +22082,7 @@ exports[`Run clapinfo 1`] = `
          ]
       }
    },
-   \\"file\\" : \\"test/plugins/CLAP/studiorack/surge/surge/1.9.0/Surge XT.clap\\",
+   \\"file\\" : \\"test/tool/CLAP/studiorack/surge/surge/1.9.0/Surge XT.clap\\",
    \\"id\\" : \\"org.surge-synth-team.surge-xt\\",
    \\"plugin-count\\" : 1,
    \\"version\\" : \\"1.0.2\\"
@@ -22078,27 +22093,27 @@ exports[`Run clapinfo 1`] = `
 
 exports[`Run pluginval 1`] = `
 "pluginval v0.3.0 - JUCE v6.1.0
-Started validating: \${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
-Random seed: 0x40d5c31
-Validation started: 3 Jul 2022 10:08:49pm
+Started validating: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+\${RANDOM_SEED}
+\${VALIDATION_STARTED}
 
 Strictness level: 5
 -----------------------------------------------------------------
-Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3...
+Starting test: pluginval / Scan for known types: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3...
 Num types found: 1
 
-Testing plugin: VST3-Surge XT-67e41bc8-190e4fbd
+Testing plugin: VST3-Surge XT-ced946e6-190e4fbd
 Surge Synth Team: Surge XT v1.1.0
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open plugin (cold)...
 
-Time taken to open plugin (cold): 263 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open plugin (warm)...
 
-Time taken to open plugin (warm): 108 ms
+\${TIME_TAKEN_TO}
 Running tests 1 times
 All tests completed successfully
 -----------------------------------------------------------------
@@ -22110,27 +22125,27 @@ SupportsDoublePrecision: no
 Reported latency: 0
 Reported taillength: 2
 
-Time taken to run test: 0
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Plugin programs...
 Num programs: 0
 All program names checked
 
-Time taken to run test: 0
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Editor...
 
-Time taken to open editor (cold): 525 ms
-Time taken to open editor (warm): 529 ms
+\${TIME_TAKEN_TO}
+\${TIME_TAKEN_TO}
 
-Time taken to run test: 1 sec
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Open editor whilst processing...
 
-Time taken to run test: 692 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Audio processing...
@@ -22150,7 +22165,7 @@ Testing with sample rate [96000] and block size [256]
 Testing with sample rate [96000] and block size [512]
 Testing with sample rate [96000] and block size [1024]
 
-Time taken to run test: 36 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Non-releasing audio processing...
@@ -22170,12 +22185,12 @@ Testing with sample rate [96000] and block size [256]
 Testing with sample rate [96000] and block size [512]
 Testing with sample rate [96000] and block size [1024]
 
-Time taken to run test: 49 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Plugin state...
 
-Time taken to run test: 8 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Automation...
@@ -22195,17 +22210,17 @@ Testing with sample rate [96000] and block size [256] and sub-block size [32]
 Testing with sample rate [96000] and block size [512] and sub-block size [32]
 Testing with sample rate [96000] and block size [1024] and sub-block size [32]
 
-Time taken to run test: 519 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Editor Automation...
 
-Time taken to run test: 1 sec
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Automatable Parameters...
 
-Time taken to run test: 43 ms
+\${TIME_TAKEN_TO}
 All tests completed successfully
 -----------------------------------------------------------------
 Starting test: pluginval / Basic bus...
@@ -22232,12 +22247,12 @@ Starting test: pluginval / Restoring default layout...
 Main bus num input channels: 2
 Main bus num output channels: 2
 
-Time taken to run test: 21 ms
+\${TIME_TAKEN_TO}
 
-Time taken to run all tests: 4 secs
+\${TIME_TAKEN_TO}
 All tests completed successfully
 
-Finished validating: \${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+Finished validating: \${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
 ALL TESTS PASSED
 "
 `;
@@ -22245,7 +22260,7 @@ ALL TESTS PASSED
 exports[`Run validator 1`] = `
 ",* Loading module...
 
-	\${SCRIPT_DIR}/test/plugins/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
+	\${SCRIPT_DIR}/test/tool/VST3/studiorack/surge/surge/1.9.0/Surge XT.vst3
 
 * Scanning classes...
 
