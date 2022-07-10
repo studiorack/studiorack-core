@@ -95,6 +95,14 @@ interface PluginTypes {
   virtualStudioTechnology3: PluginType;
 }
 
+interface PluginValidationOptions {
+  files?: boolean;
+  json?: boolean;
+  summary?: boolean;
+  txt?: boolean;
+  zip?: boolean;
+}
+
 export {
   PlatformTypes,
   PluginCategory,
@@ -108,4 +116,5 @@ export {
   PluginTemplate,
   PluginType,
   PluginTypes,
+  PluginValidationOptions,
 };

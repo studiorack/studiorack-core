@@ -46,6 +46,7 @@ import {
   PluginPack,
   PluginTemplate,
   PluginTypes,
+  PluginValidationOptions,
 } from './types/plugin';
 import { toolInstall, toolRun } from './tool';
 
@@ -369,7 +370,7 @@ async function pluginUninstallAll(): Promise<PluginLocal[]> {
   });
 }
 
-function pluginValidate(dir: string, options?: any): PluginInterface {
+function pluginValidate(dir: string, options?: PluginValidationOptions): PluginInterface {
   if (!dir || !dirExists(dir)) {
     throw Error(`File does not exist: ${dir}`);
   }
@@ -401,7 +402,9 @@ function pluginValidateFiles(pathItem: string, json: any): any {
     json.files = {};
   }
   // Add audio, image and zip files
+  json = fileAdd(path.join(directory, `${slug}.flac`), `${slug}.flac`, 'audio', json);
   json = fileAdd(path.join(directory, `${slug}.wav`), `${slug}.wav`, 'audio', json);
+  json = fileAdd(path.join(directory, `${slug}.jpg`), `${slug}.jpg`, 'image', json);
   json = fileAdd(path.join(directory, `${slug}.png`), `${slug}.png`, 'image', json);
   json = fileAdd(path.join(directory, `${slug}-linux.zip`), `${slug}-linux.zip`, 'linux', json);
   json = fileAdd(path.join(directory, `${slug}-mac.zip`), `${slug}-mac.zip`, 'mac', json);
@@ -409,7 +412,7 @@ function pluginValidateFiles(pathItem: string, json: any): any {
   return json;
 }
 
-async function pluginValidateFolder(pluginPath: string, options: any): Promise<PluginLocal[]> {
+async function pluginValidateFolder(pluginPath: string, options: PluginValidationOptions): Promise<PluginLocal[]> {
   if (!pluginPath) {
     throw Error(`Path does not exist: ${pluginPath}`);
   }

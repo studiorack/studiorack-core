@@ -11,7 +11,7 @@ import {
   safeSlug,
 } from './utils';
 import { pluginInstall, pluginUninstall } from './plugin';
-import { PluginLocal } from './types/plugin';
+import { PluginLocal, PluginValidationOptions } from './types/plugin';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
 const readline = require('readline-sync');
 
@@ -183,7 +183,7 @@ async function projectUninstall(dir: string, id?: string, version?: string): Pro
   return projectSave(dir, project);
 }
 
-function projectValidate(dir: string, options?: any): ProjectInterface {
+function projectValidate(dir: string, options?: PluginValidationOptions): ProjectInterface {
   const relativePath: string = dir.replace(configGet('projectFolder') + path.sep, '');
   const type: ProjectType = projectType(pathGetExt(dir));
   let project: ProjectLocal = projectDefault() as ProjectLocal;

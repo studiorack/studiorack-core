@@ -52,6 +52,24 @@ async function run() {
 
   // const pluginUninstallAll = await plugin.pluginUninstallAll();
   // console.log('pluginUninstallAll', pluginUninstallAll);
+
+  // const pluginValidate = await plugin.pluginValidate('./test/plugins/VST3/studiorack/adlplug/adlplug/1.0.2/ADLplug.vst3', {
+  //   files: true,
+  //   json: false,
+  //   summary: false,
+  //   txt: false,
+  //   zip: false,
+  // });
+  // console.log('pluginValidate', pluginValidate);
+
+  // const pluginValidateFolder = await plugin.pluginValidateFolder('./test/plugins/**/*.vst3', {
+  //   files: true,
+  //   json: false,
+  //   summary: true,
+  //   txt: false,
+  //   zip: false,
+  // });
+  // console.log('pluginValidateFolder', pluginValidateFolder);
 }
 
 run();
