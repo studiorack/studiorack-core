@@ -47,34 +47,6 @@ function validateFiles(pathItem: string, json: any): any {
   return json;
 }
 
-async function validateFolder(pluginPath: string, options: any): Promise<PluginLocal[]> {
-  if (!pluginPath) {
-    throw Error(`Path does not exist: ${pluginPath}`);
-  }
-  const plugins: PluginLocal[] = [];
-  await toolInstall('validator');
-  if (pluginPath.includes('*')) {
-    const pathList = dirRead(pluginPath);
-    pathList.forEach((pathItem: string) => {
-      const plugin: any = validatePlugin(pathItem, options);
-      if (plugin.version) {
-        plugins.push(plugin);
-      }
-    });
-  } else {
-    const plugin: any = validatePlugin(pluginPath, options);
-    if (plugin.version) {
-      plugins.push(plugin);
-    }
-  }
-  if (options.summary) {
-    let rootPath = pluginPath.substring(0, pluginPath.lastIndexOf(path.sep)).replace('**', '');
-    rootPath += rootPath.endsWith(path.sep) ? '' : path.sep;
-    fileJsonCreate(`${rootPath}plugins.json`, { plugins });
-  }
-  return plugins;
-}
-
 function validatePlugin(pathItem: string, options?: any): PluginLocal {
   if (!pathItem || !dirExists(pathItem)) {
     throw Error(`File does not exist: ${pathItem}`);
@@ -189,7 +161,6 @@ function validateRun(filePath: string): string {
 
 export {
   validateFiles,
-  validateFolder,
   validatePlugin,
   validatePluginField,
   validatePluginSchema,
