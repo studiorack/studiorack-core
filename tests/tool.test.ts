@@ -1,11 +1,12 @@
 import path from 'path';
-import { toolInstall, toolGetPath, toolRun, toolFolder } from '../src/tool';
+import { toolInstall, toolInstalled, toolFolder, toolGetPath, toolRun } from '../src/tool';
 import { dirAppData, dirDelete } from '../src/file';
 import { configSet } from '../src/config';
 import { pluginInstall } from '../src/plugin';
+import { logEnable } from '../src/utils';
 
 const APP_DIR: string = path.join(dirAppData(), 'studiorack');
-const PLUGIN_DIR: string = path.join('test', 'plugins');
+const TEST_DIR: string = path.join('test', 'tool');
 const PLUGIN_ID: string = 'studiorack/surge/surge';
 const PLUGIN_PATH: string = path.join('test', 'plugins', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
 const PLUGIN_PATH_CLAP: string = path.join('test', 'plugins', 'CLAP', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.clap');
@@ -31,21 +32,26 @@ function cleanOutput(output: string): string {
 }
 
 beforeAll(async () => {
-  configSet('pluginFolder', PLUGIN_DIR);
-  dirDelete(PLUGIN_DIR);
-  await pluginInstall(PLUGIN_ID)
+  configSet('pluginFolder', TEST_DIR);
+  dirDelete(TEST_DIR);
+  // Increase Jest timeout to allow large plugin to be installed
+  jest.setTimeout(60 * 1000);
+  await pluginInstall(PLUGIN_ID);
 });
 
 test('Install clapinfo', async () => {
   expect(await toolInstall('clapinfo')).toEqual(CLAPINFO_PATH);
+  expect(await toolInstalled('clapinfo')).toEqual(true);
 });
 
 test('Install pluginval', async () => {
   expect(await toolInstall('pluginval')).toEqual(PLUGINVAL_PATH);
+  expect(await toolInstalled('pluginval')).toEqual(true);
 });
 
 test('Install validator', async () => {
   expect(await toolInstall('validator')).toEqual(VALIDATOR_PATH);
+  expect(await toolInstalled('validator')).toEqual(true);
 });
 
 test('Get path clapinfo', () => {

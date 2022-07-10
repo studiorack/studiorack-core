@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirAppData, dirExists, dirRead, fileExec, zipExtract } from './file';
+import { dirAppData, dirExists, dirRead, fileExec, fileExists, zipExtract } from './file';
 import { getPlatform, log } from './utils';
 import { getRaw } from './api';
 import { configGet } from './config';
@@ -38,13 +38,17 @@ function toolGetPath(type: keyof Tools): string {
 }
 
 async function toolInstall(type: keyof Tools): Promise<string> {
-  if (!dirExists(toolGetPath(type))) {
+  if (!toolInstalled(type)) {
     const toolUrl: string = configGet(`${type}Url` as keyof ConfigInterface).replace('${platform}', getPlatform());
     const data: Buffer = await getRaw(toolUrl);
     zipExtract(data, toolBinDir);
     fileExec(toolGetPath(type));
   }
   return toolGetPath(type);
+}
+
+function toolInstalled(type: keyof Tools): boolean {
+  return fileExists(toolGetPath(type));
 }
 
 function toolRun(type: keyof Tools, command: string): string {
@@ -62,4 +66,4 @@ function toolRun(type: keyof Tools, command: string): string {
   }
 }
 
-export { toolFolder, toolGetPath, toolInstall, toolRun };
+export { toolFolder, toolGetPath, toolInstall, toolInstalled, toolRun };

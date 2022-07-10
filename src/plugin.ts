@@ -424,7 +424,7 @@ async function pluginValidateFolder(pluginPath: string, options: any): Promise<P
       }
     });
   } else {
-    const plugin: any = pluginValidate( pluginPath, options);
+    const plugin: any = pluginValidate(pluginPath, options);
     if (plugin.version) {
       plugins.push(plugin);
     }
@@ -560,5 +560,5 @@ export {
   pluginValidateFiles,
   pluginValidateFolder,
   pluginValidateField,
-  pluginValidateSchema
+  pluginValidateSchema,
 };

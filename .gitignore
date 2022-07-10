@@ -7,3 +7,4 @@ temp
 config.json
 test/plugins
 test/projects/songs
+test/tool

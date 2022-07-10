@@ -5,13 +5,22 @@ import {
   pluginCreate,
   pluginDirectory,
   pluginGet,
+  pluginGetLocal,
+  pluginsGet,
   pluginsGetLocal,
   pluginInstall,
+  pluginInstallAll,
   pluginInstalled,
+  pluginLatest,
   pluginSearch,
+  pluginSource,
   pluginUninstall,
-  pluginGetLocal,
-  pluginsGet
+  pluginUninstallAll,
+  pluginValidate,
+  pluginValidateFiles,
+  pluginValidateFolder,
+  pluginValidateField,
+  pluginValidateSchema,
 } from '../src/plugin';
 import { PluginInterface, PluginLocal, PluginTemplate } from '../src/types/plugin';
 
