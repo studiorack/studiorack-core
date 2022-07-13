@@ -1,12 +1,26 @@
 import path from 'path';
 import { ConfigInterface } from './types/config';
-import { dirAppData, dirCreate, dirPlugins, dirProjects, fileDelete, fileJsonCreate, fileJsonLoad } from './file';
+import {
+  dirAppData,
+  dirCreate,
+  dirPlugins,
+  dirProjects,
+  fileDelete,
+  fileExists,
+  fileJsonCreate,
+  fileJsonLoad,
+} from './file';
 import { configDefaults } from './config-defaults';
 
 const appDir: string = path.join(dirAppData(), 'studiorack');
 const CONFIG_FILE_PATH = path.join(appDir, 'config.json');
 dirCreate(appDir);
-const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH) || configDefaults(appDir, dirPlugins(), dirProjects());
+
+// If config file does not exist, then create it from defaults.
+if (!fileExists(CONFIG_FILE_PATH)) {
+  fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirProjects()));
+}
+const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH);
 
 function configDelete(): boolean | void {
   return fileDelete(CONFIG_FILE_PATH);
