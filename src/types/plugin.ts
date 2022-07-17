@@ -70,9 +70,13 @@ interface PluginPack {
 }
 
 interface PluginTemplate {
+  clap: string;
+  dpf: string;
   dplug: string;
   iplug: string;
   juce: string;
+  sf2: string;
+  sfz: string;
   steinberg: string;
 }
 
