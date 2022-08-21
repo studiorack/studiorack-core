@@ -34,12 +34,12 @@ function cleanOutput(output: string): string {
   // Replace random seed with variable
   const regex3: RegExp = new RegExp('Random seed: (.+)', 'g');
   const output4: string = output3.replace(regex3, '${RANDOM_SEED}');
-  // Replace validation started with variable
-  const regex4: RegExp = new RegExp('Validation started: (.+)', 'g');
-  const output5: string = output4.replace(regex4, '${VALIDATION_STARTED}');
-  // Replace time taken to with variable
-  const regex5: RegExp = new RegExp('Time taken to (.+)', 'g');
-  return output5.replace(regex5, '${TIME_TAKEN_TO}');
+  // Replace inconsistent line
+  const regex4: RegExp = new RegExp('Info:  The component reported a wrong silent flag for its output buffer! : output is silent but silenceFlags not set !\n', 'g');
+  const output5: string = output4.replace(regex4, '');
+  // Replace inconsistent line 2
+  const regex5: RegExp = new RegExp('Info:     Not all points have been read via IParameterChanges\n', 'g');
+  return output5.replace(regex5, '');
 }
 
 beforeAll(async () => {
@@ -78,28 +78,29 @@ test('Get path validator', () => {
 });
 
 // Output is not consistent across versions yet
+// Using cleanOutput() method to workaround inconsistencies in test output
 // Working with binary owners to see if that can be improved
 
-// test('Run clapinfo', () => {
-//   expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
-// });
+test('Run clapinfo', () => {
+  expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
+});
 
 // test('Run pluginval', () => {
 //   expect(cleanOutput(toolRun('pluginval', PLUGIN_PATH))).toMatchSnapshot();
 // });
 
-// test('Run validator', () => {
-//   expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
-// });
+test('Run validator', () => {
+  expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
+});
 
-// test('Folder clapinfo', () => {
-//   expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
-// });
+test('Folder clapinfo', () => {
+  expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
+});
 
 // test('Folder pluginval', () => {
 //   expect(cleanOutput(toolFolder('pluginval', path.join('test', 'tool', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
 // });
 
-// test('Folder validator', () => {
-//   expect(cleanOutput(toolFolder('validator', path.join('test', 'tool', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
-// });
+test('Folder validator', () => {
+  expect(cleanOutput(toolFolder('validator', path.join('test', 'tool', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
+});

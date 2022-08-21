@@ -18,7 +18,7 @@ async function run() {
   // const toolInstall = await tool.toolInstall('pluginval');
   // console.log('toolInstall', toolInstall);
 
-  // const toolFolder = await tool.toolFolder('clapinfo', 'test/plugins/**/*.clap');
+  // const toolFolder = await tool.toolFolder('pluginval', 'test/tool/**/*.vst3');
   // console.log('toolFolder', toolFolder);
 
   // const pluginList = await plugin.pluginList();

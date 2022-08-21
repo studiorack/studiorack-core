@@ -409,7 +409,7 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
       },
     },
     clapinfoUrl: 'https://github.com/studiorack/clap-info/releases/download/v1.0.0/clap-info-${platform}.zip',
-    pluginvalUrl: 'https://github.com/studiorack/pluginval/releases/download/v0.3.0/pluginval-${platform}.zip',
+    pluginvalUrl: 'https://github.com/studiorack/pluginval/releases/download/v1.0.1/pluginval-${platform}.zip',
     validatorUrl:
       'https://github.com/studiorack/studiorack-template-steinberg/releases/latest/download/validator-${platform}.zip',
   };
