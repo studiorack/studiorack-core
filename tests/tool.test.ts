@@ -101,9 +101,9 @@ test('Get path validator', () => {
 //   expect(cleanOutput(toolRun('pluginval', PLUGIN_PATH))).toMatchSnapshot();
 // });
 
-test('Run validator', () => {
-  expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
-});
+// test('Run validator', () => {
+//   expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
+// });
 
 // test('Folder clapinfo', () => {
 //   expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
@@ -113,6 +113,6 @@ test('Run validator', () => {
 //   expect(cleanOutput(toolFolder('pluginval', path.join('test', 'tool', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
 // });
 
-test('Folder validator', () => {
-  expect(cleanOutput(toolFolder('validator', path.join('test', 'tool', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
-});
+// test('Folder validator', () => {
+//   expect(cleanOutput(toolFolder('validator', path.join('test', 'tool', '**', '*.vst3')).join('\n'))).toMatchSnapshot();
+// });
