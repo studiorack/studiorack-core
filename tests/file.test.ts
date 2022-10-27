@@ -93,7 +93,7 @@ test('Directory plugins', () => {
   } else if (process.platform === 'darwin') {
     expect(dirPlugins()).toEqual(`${os.homedir()}/Library/Audio/Plug-ins`);
   } else {
-    expect(dirPlugins()).toEqual('/usr/local/lib');
+    expect(dirPlugins()).toEqual('usr/local/lib');
   }
 });
 
