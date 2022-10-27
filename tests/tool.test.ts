@@ -93,9 +93,9 @@ test('Get path validator', () => {
 // Using cleanOutput() method to workaround inconsistencies in test output
 // Working with binary owners to see if that can be improved
 
-test('Run clapinfo', () => {
-  expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
-});
+// test('Run clapinfo', () => {
+//   expect(cleanOutput(toolRun('clapinfo', PLUGIN_PATH_CLAP))).toMatchSnapshot();
+// });
 
 // test('Run pluginval', () => {
 //   expect(cleanOutput(toolRun('pluginval', PLUGIN_PATH))).toMatchSnapshot();
@@ -105,9 +105,9 @@ test('Run validator', () => {
   expect(cleanOutput(toolRun('validator', PLUGIN_PATH))).toMatchSnapshot();
 });
 
-test('Folder clapinfo', () => {
-  expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
-});
+// test('Folder clapinfo', () => {
+//   expect(cleanOutput(toolFolder('clapinfo', path.join('test', 'tool', '**', '*.clap')).join('\n'))).toMatchSnapshot();
+// });
 
 // test('Folder pluginval', () => {
 //   expect(cleanOutput(toolFolder('pluginval', path.join('test', 'tool', '**', '*.{component,vst,vst3}')).join('\n'))).toMatchSnapshot();
