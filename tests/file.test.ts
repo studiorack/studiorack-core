@@ -87,9 +87,7 @@ test('Directory open', () => {
 
 test('Directory plugins', () => {
   if (process.platform === 'win32') {
-    expect(dirPlugins()).toEqual(
-      process.arch === 'x32' ? path.join('Program Files (x86)', 'Common Files') : path.join('Program Files', 'Common Files')
-    );
+    expect(dirPlugins()).toEqual(path.join('Program Files', 'Common Files'));
   } else if (process.platform === 'darwin') {
     expect(dirPlugins()).toEqual(`${os.homedir()}/Library/Audio/Plug-ins`);
   } else {

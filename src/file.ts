@@ -23,10 +23,7 @@ const pluginDirectories: PlatformsSupported = {
   netbsd: path.join('usr', 'local', 'lib'),
   openbsd: path.join('usr', 'local', 'lib'),
   sunos: path.join('usr', 'local', 'lib'),
-  win32:
-    process.arch === 'x32'
-      ? path.join('Program Files (x86)', 'Common Files')
-      : path.join('Program Files', 'Common Files'),
+  win32: path.join('Program Files', 'Common Files'),
 };
 
 // Preset directories
