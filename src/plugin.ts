@@ -226,9 +226,18 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
 
         // If a preset directory exists
         const dirTempPresets: string = path.join(dirTemp, 'Presets');
+        log('dirTempPresets', dirTempPresets);
         if (dirExists(dirTempPresets)) {
-          log(dirTempPresets, configGet('presetFolder'));
-          dirMove(dirTempPresets, configGet('presetFolder'));
+          const dirTarget: string = configGet('presetFolder');
+          const files: string[] = dirRead(`${dirTempPresets}/**/*`);
+          log('dirTarget', dirTarget);
+          files.forEach((file: string) => {
+            if (file.includes('__MACOSX')) return;
+            const fileSourceExt: string = path.join(dirTarget, path.basename(file));
+            if (fileExists(fileSourceExt)) return;
+            fileMove(file, fileSourceExt);
+            log('fileMove', file, fileSourceExt);
+          });
         }
       }
       // Save json metadata file alongside each plugin file/format
