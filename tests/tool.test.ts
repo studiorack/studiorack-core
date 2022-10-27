@@ -9,19 +9,28 @@ const APP_DIR: string = path.join(dirAppData(), 'studiorack');
 const TEST_DIR: string = path.join('test', 'tool');
 const PLUGIN_ID: string = 'studiorack/surge/surge';
 const PLUGIN_PATH: string = path.join('test', 'tool', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
-const PLUGIN_PATH_CLAP: string = path.join('test', 'tool', 'CLAP', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.clap');
+const PLUGIN_PATH_CLAP: string = path.join(
+  'test',
+  'tool',
+  'CLAP',
+  'studiorack',
+  'surge',
+  'surge',
+  '1.9.0',
+  'Surge XT.clap'
+);
 const SCRIPT_DIR: string = path.resolve(__dirname, '../');
 const TOOL_FOLDER = path.join(dirAppData(), 'studiorack', 'bin');
 let CLAPINFO_PATH: string = path.join(TOOL_FOLDER, 'clap-info');
 let PLUGINVAL_PATH: string = path.join(TOOL_FOLDER, 'pluginval');
 let VALIDATOR_PATH: string = path.join(TOOL_FOLDER, 'validator');
 
-if (process.platform === 'darwin') {
-  PLUGINVAL_PATH = PLUGINVAL_PATH + '.app/Contents/MacOS/pluginval';
-} else if (process.platform === 'win32') {
+if (process.platform === 'win32') {
   CLAPINFO_PATH = CLAPINFO_PATH + '.exe';
   PLUGINVAL_PATH = PLUGINVAL_PATH + '.exe';
   VALIDATOR_PATH = VALIDATOR_PATH + '.exe';
+} else if (process.platform === 'darwin') {
+  PLUGINVAL_PATH = PLUGINVAL_PATH + '.app/Contents/MacOS/pluginval';
 }
 
 function cleanOutput(output: string): string {
@@ -35,7 +44,10 @@ function cleanOutput(output: string): string {
   const regex3: RegExp = new RegExp('Random seed: (.+)', 'g');
   const output4: string = output3.replace(regex3, '${RANDOM_SEED}');
   // Replace inconsistent line
-  const regex4: RegExp = new RegExp('Info:  The component reported a wrong silent flag for its output buffer! : output is silent but silenceFlags not set !\n', 'g');
+  const regex4: RegExp = new RegExp(
+    'Info:  The component reported a wrong silent flag for its output buffer! : output is silent but silenceFlags not set !\n',
+    'g'
+  );
   const output5: string = output4.replace(regex4, '');
   // Replace inconsistent line 2
   const regex5: RegExp = new RegExp('Info:     Not all points have been read via IParameterChanges\n', 'g');

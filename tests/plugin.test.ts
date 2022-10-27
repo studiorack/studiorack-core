@@ -32,97 +32,91 @@ const PLUGIN: PluginInterface = {
   author: 'Jean Pierre Cimalando',
   homepage: 'https://github.com/jpcima/ADLplug',
   name: 'ADLplug',
-  description: 'FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.',
-  tags: [
-    'Instrument',
-    'Synth',
-    'FM'
-  ],
+  description:
+    'FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.',
+  tags: ['Instrument', 'Synth', 'FM'],
   version: '1.0.2',
   id: 'adlplug',
   date: '2020-08-05T08:00:00.000Z',
   files: {
     audio: {
       name: 'adlplug.flac',
-      size: 60649
+      size: 60649,
     },
     image: {
       name: 'adlplug.jpg',
-      size: 140267
+      size: 140267,
     },
     linux: {
       name: 'adlplug-linux.zip',
-      size: 11068718
+      size: 11068718,
     },
     mac: {
       name: 'adlplug-mac.zip',
-      size: 33551714
+      size: 33551714,
     },
     win: {
       name: 'adlplug-win.zip',
-      size: 24833093
-    }
+      size: 24833093,
+    },
   },
   release: 'v1.0.2',
-  repo: 'studiorack/adlplug'
+  repo: 'studiorack/adlplug',
 };
 const PLUGIN_LOCAL: PluginLocal = {
-  "author": "Jean Pierre Cimalando",
-  "homepage": "https://github.com/jpcima/ADLplug",
-  "name": "ADLplug",
-  "description": "FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.",
-  "tags": [
-    "Instrument",
-    "Synth",
-    "FM"
-  ],
-  "version": "1.0.2",
-  "id": "adlplug",
-  "date": "2020-08-05T08:00:00.000Z",
-  "files": {
-    "audio": {
-      "name": "adlplug.flac",
-      "size": 60649
+  author: 'Jean Pierre Cimalando',
+  homepage: 'https://github.com/jpcima/ADLplug',
+  name: 'ADLplug',
+  description:
+    'FM synthesizer based on OPL3 and OPN2 sound chip emulations. Synthesis of melodic and percussive instruments, support for dynamic parameterization and automation.',
+  tags: ['Instrument', 'Synth', 'FM'],
+  version: '1.0.2',
+  id: 'adlplug',
+  date: '2020-08-05T08:00:00.000Z',
+  files: {
+    audio: {
+      name: 'adlplug.flac',
+      size: 60649,
     },
-    "image": {
-      "name": "adlplug.jpg",
-      "size": 140267
+    image: {
+      name: 'adlplug.jpg',
+      size: 140267,
     },
-    "linux": {
-      "name": "adlplug-linux.zip",
-      "size": 11068718
+    linux: {
+      name: 'adlplug-linux.zip',
+      size: 11068718,
     },
-    "mac": {
-      "name": "adlplug-mac.zip",
-      "size": 33551714
+    mac: {
+      name: 'adlplug-mac.zip',
+      size: 33551714,
     },
-    "win": {
-      "name": "adlplug-win.zip",
-      "size": 24833093
-    }
+    win: {
+      name: 'adlplug-win.zip',
+      size: 24833093,
+    },
   },
-  "paths": [],
-  "release": "v1.0.2",
-  "repo": "studiorack/adlplug",
-  "status": "installed"
+  paths: [],
+  release: 'v1.0.2',
+  repo: 'studiorack/adlplug',
+  status: 'installed',
 };
 
 if (process.platform === 'win32') {
   PLUGIN_LOCAL.paths = [
-    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug-vst3.dll"),
-    path.join("test", "plugins", "DLL", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.dll"),
-    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
+    path.join('test', 'plugins', 'DLL', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug-vst3.dll'),
+    path.join('test', 'plugins', 'DLL', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.dll'),
+    path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.lv2'),
   ];
 } else if (process.platform === 'darwin') {
   PLUGIN_LOCAL.paths = [
-    path.join("test", "plugins", "Components", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.component"),
-    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
-    path.join("test", "plugins", "VST", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst"),
-    path.join("test", "plugins", "VST3", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.vst3"),
+    path.join('test', 'plugins', 'Components', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.component'),
+    path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.lv2'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.vst'),
+    path.join('test', 'plugins', 'VST3', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.vst3'),
   ];
 } else {
   PLUGIN_LOCAL.paths = [
-    path.join("test", "plugins", "LV2", "studiorack", "adlplug", "adlplug", "1.0.2", "ADLplug.lv2"),
+    path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.lv2'),
   ];
 }
 
@@ -137,8 +131,12 @@ test('Create a plugin from a valid template', async () => {
 
 test('Get plugin directory', () => {
   const [pluginOwner, pluginRepo] = PLUGIN.repo.split('/');
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id, PLUGIN.version));
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id));
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(
+    path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id, PLUGIN.version)
+  );
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 3)).toEqual(
+    path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo, PLUGIN.id)
+  );
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, pluginOwner, pluginRepo));
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE));
 });

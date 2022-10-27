@@ -1,8 +1,4 @@
-import {
-  configDelete,
-  configGet,
-  configSet
-} from '../src/config';
+import { configDelete, configGet, configSet } from '../src/config';
 import { ConfigInterface } from '../src/types/config';
 
 const CONFIG_KEY: keyof ConfigInterface = 'pluginFile';

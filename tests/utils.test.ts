@@ -11,12 +11,12 @@ import {
   pathGetVersion,
   pathGetWithoutExt,
   safeSlug,
-  slugToId
+  slugToId,
 } from '../src/utils';
 
 // Plugin paths are assumed to follow the following format:
 // {userId}/{repoId}/{pluginId}/{versionId}/{pluginFilename}
-// 
+//
 // For example:
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
@@ -27,13 +27,16 @@ const PLUGIN_REPO_INCORRECT = 'Studiorack/Oxe/Oxe';
 const PLUGIN_ID = 'oxe';
 const PLUGIN_VERSION = '1.3.5';
 const PLUGIN_FILENAME = 'oxe';
-const PLUGIN_EXT= 'vst3';
+const PLUGIN_EXT = 'vst3';
 const PLUGIN_SLUG = 'studiorack_oxe_oxe';
 
 test('Get platform', () => {
   let currentPlatform: string = 'linux';
-  if (process.platform === 'darwin') { currentPlatform = 'mac' }
-  else if (process.platform === 'win32') { currentPlatform = 'win' }
+  if (process.platform === 'win32') {
+    currentPlatform = 'win';
+  } else if (process.platform === 'darwin') {
+    currentPlatform = 'mac';
+  }
   expect(getPlatform()).toEqual(currentPlatform);
 });
 
@@ -42,7 +45,10 @@ test('Id to slug', () => {
 });
 
 test('Input get parts', () => {
-  expect(inputGetParts(`${PLUGIN_REPO}/${PLUGIN_ID}@${PLUGIN_VERSION}`)).toEqual([`${PLUGIN_REPO}/${PLUGIN_ID}`, PLUGIN_VERSION]);
+  expect(inputGetParts(`${PLUGIN_REPO}/${PLUGIN_ID}@${PLUGIN_VERSION}`)).toEqual([
+    `${PLUGIN_REPO}/${PLUGIN_ID}`,
+    PLUGIN_VERSION,
+  ]);
 });
 
 // test('Move process', async () => {

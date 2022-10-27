@@ -21,66 +21,66 @@ const PROJECT_DIR: string = path.join('test', 'projects');
 const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = path.join('Banwer Project', 'Banwer.json');
 const PROJECT_DEFAULT: ProjectInterface = {
-  "author": "studiorack-user",
-  "homepage": "https://studiorack.github.io/studiorack-site/",
-  "description": "Created using StudioRack",
-  "tags": [ "StudioRack" ],
-  "version": "1.0.0",
-  "date": "2020-11-21T06:51:57.879Z",
-  "type": {
-    "ext": "als",
-    "name": "Ableton"
+  author: 'studiorack-user',
+  homepage: 'https://studiorack.github.io/studiorack-site/',
+  description: 'Created using StudioRack',
+  tags: ['StudioRack'],
+  version: '1.0.0',
+  date: '2020-11-21T06:51:57.879Z',
+  type: {
+    ext: 'als',
+    name: 'Ableton',
   },
-  "id": "example",
-  "name": "StudioRack Project",
-  "repo": "songs/april",
-  "files": {
-    "audio": {
-      "name": "",
-      "size": 0,
+  id: 'example',
+  name: 'StudioRack Project',
+  repo: 'songs/april',
+  files: {
+    audio: {
+      name: '',
+      size: 0,
     },
-    "image": {
-      "name": "",
-      "size": 0,
+    image: {
+      name: '',
+      size: 0,
     },
-    "project": {
-      "name": "",
-      "size": 0,
-    }
+    project: {
+      name: '',
+      size: 0,
+    },
   },
-    "plugins": {}
+  plugins: {},
 };
 const PROJECT_LOCAL: ProjectLocal = {
-  "id": "banwer",
-  "author": "studiorack-user",
-  "homepage": "https://studiorack.github.io/studiorack-site/",
-  "name": "Banwer",
-  "description": "Created using StudioRack",
-  "tags": [ "Ableton" ],
-  "version": "1.0.0",
-  "date": "2020-11-21T06:51:57.879Z",
-  "type": {
-    "ext": "als",
-    "name": "Ableton"
+  id: 'banwer',
+  author: 'studiorack-user',
+  homepage: 'https://studiorack.github.io/studiorack-site/',
+  name: 'Banwer',
+  description: 'Created using StudioRack',
+  tags: ['Ableton'],
+  version: '1.0.0',
+  date: '2020-11-21T06:51:57.879Z',
+  type: {
+    ext: 'als',
+    name: 'Ableton',
   },
-  "repo": "banwer-project",
-  "path": path.join('test', 'projects', 'Banwer Project'),
-  "status": "installed",
-  "files": {
-    "audio": {
-      "name": "Banwer.wav",
-      "size": 1539540,
+  repo: 'banwer-project',
+  path: path.join('test', 'projects', 'Banwer Project'),
+  status: 'installed',
+  files: {
+    audio: {
+      name: 'Banwer.wav',
+      size: 1539540,
     },
-    "image": {
-      "name": "Banwer.png",
-      "size": 16300,
+    image: {
+      name: 'Banwer.png',
+      size: 16300,
     },
-    "project": {
-      "name": "Banwer.als",
-      "size": 236613,
-    }
+    project: {
+      name: 'Banwer.als',
+      size: 236613,
+    },
   },
-  "plugins": {}
+  plugins: {},
 };
 
 beforeAll(() => {
@@ -161,6 +161,6 @@ test('Validate project', () => {
 
 test('Validate project files', () => {
   expect(projectValidateFiles(path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.als'), {})).toEqual({
-    files: PROJECT_LOCAL.files
+    files: PROJECT_LOCAL.files,
   });
 });
