@@ -17,6 +17,7 @@ interface ConfigInterface {
   pluginRelease: string;
   pluginTemplate: string;
   pluginTypes: PluginTypes;
+  presetFolder: string;
   projectFile: string;
   projectFolder: string;
   projectRegistry: string;

@@ -4,6 +4,7 @@ import {
   dirAppData,
   dirCreate,
   dirPlugins,
+  dirPresets,
   dirProjects,
   fileDelete,
   fileExists,
@@ -18,7 +19,7 @@ dirCreate(appDir);
 
 // If config file does not exist, then create it from defaults.
 if (!fileExists(CONFIG_FILE_PATH)) {
-  fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirProjects()));
+  fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirPresets(), dirProjects()));
 }
 const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH);
 

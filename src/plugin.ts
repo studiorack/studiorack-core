@@ -223,6 +223,13 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
         const pathsVst: string[] = pluginOrganize(dirTemp, 'vst', pluginDirectory(plugin, 'VST'), plugin);
         const pathsVst3: string[] = pluginOrganize(dirTemp, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
         pathsAll = pathsClap.concat(pathsCom, pathsDll, pathsLv2, pathsVst, pathsVst3);
+
+        // If a preset directory exists
+        const dirTempPresets: string = path.join(dirTemp, 'Presets');
+        if (dirExists(dirTempPresets)) {
+          log(dirTempPresets, configGet('presetFolder'));
+          dirMove(dirTempPresets, configGet('presetFolder'));
+        }
       }
       // Save json metadata file alongside each plugin file/format
       pathsAll.forEach((pluginPath: string) => {
@@ -350,6 +357,13 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginLoca
       removeDirectory(plugin, 'SFZ');
       removeDirectory(plugin, 'VST');
       removeDirectory(plugin, 'VST3');
+
+      // If a preset directory exists
+      const dirPresets: string = path.join(configGet('presetFolder'), plugin.id);
+      if (dirExists(dirPresets)) {
+        log('delete', dirPresets);
+        dirDelete(dirPresets);
+      }
     }
   }
   plugin.paths = [];

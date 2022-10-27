@@ -1,6 +1,11 @@
 import { ConfigInterface } from './types/config';
 
-function configDefaults(appFolder: string, pluginFolder: string, projectFolder: string): ConfigInterface {
+function configDefaults(
+  appFolder: string,
+  pluginFolder: string,
+  presetFolder: string,
+  projectFolder: string
+): ConfigInterface {
   return {
     appFolder,
     extAudio: '.wav',
@@ -379,6 +384,7 @@ function configDefaults(appFolder: string, pluginFolder: string, projectFolder: 
         ext: 'vst3',
       },
     },
+    presetFolder,
     projectFile: 'project.json',
     projectFolder,
     projectRegistry: 'https://studiorack.github.io/studiorack-registry/',

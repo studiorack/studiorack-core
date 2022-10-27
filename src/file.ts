@@ -10,18 +10,38 @@ import { log } from './utils';
 
 const fsUtils: any = require('nodejs-fs-utils');
 
+// Plugin directories
+// https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Plugin+Locations.html
+
 const pluginDirectories: PlatformsSupported = {
-  aix: '/usr/local/lib',
-  android: '/usr/local/lib',
-  cygwin: '/usr/local/lib',
-  darwin: `${os.homedir()}/Library/Audio/Plug-ins`,
-  freebsd: '/usr/local/lib',
-  linux: '/usr/local/lib',
-  netbsd: '/usr/local/lib',
-  openbsd: '/usr/local/lib',
-  sunos: '/usr/local/lib',
-  win32: '/Program Files (x86)/Common Files',
-  win64: '/Program Files/Common Files',
+  aix: path.join('usr', 'local', 'lib'),
+  android: path.join('usr', 'local', 'lib'),
+  cygwin: path.join('usr', 'local', 'lib'),
+  darwin: path.join(os.homedir(), 'Library', 'Audio', 'Plug-ins'),
+  freebsd: path.join('usr', 'local', 'lib'),
+  linux: path.join('usr', 'local', 'lib'),
+  netbsd: path.join('usr', 'local', 'lib'),
+  openbsd: path.join('usr', 'local', 'lib'),
+  sunos: path.join('usr', 'local', 'lib'),
+  win32: path.join('Program Files (x86)', 'Common Files'),
+  win64: path.join('Program Files', 'Common Files'),
+};
+
+// Preset directories
+// https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Preset+Locations.html
+
+const presetDirectories: PlatformsSupported = {
+  aix: path.join(os.homedir(), '.vst3', 'presets'),
+  android: path.join(os.homedir(), '.vst3', 'presets'),
+  cygwin: path.join(os.homedir(), '.vst3', 'presets'),
+  darwin: path.join(os.homedir(), 'Library', 'Audio', 'Presets'),
+  freebsd: path.join(os.homedir(), '.vst3', 'presets'),
+  linux: path.join(os.homedir(), '.vst3', 'presets'),
+  netbsd: path.join(os.homedir(), '.vst3', 'presets'),
+  openbsd: path.join(os.homedir(), '.vst3', 'presets'),
+  sunos: path.join(os.homedir(), '.vst3', 'presets'),
+  win32: path.join(os.homedir(), 'Documents', 'VST3 Presets'),
+  win64: path.join(os.homedir(), 'Documents', 'VST3 Presets'),
 };
 
 function dirAppData(): string {
@@ -97,6 +117,10 @@ function dirOpen(dirPath: string): Buffer {
 
 function dirPlugins(): string {
   return pluginDirectories[process.platform];
+}
+
+function dirPresets(): string {
+  return presetDirectories[process.platform];
 }
 
 function dirProjects(): string {
@@ -295,6 +319,7 @@ export {
   dirMove,
   dirOpen,
   dirPlugins,
+  dirPresets,
   dirProjects,
   dirRead,
   dirRename,
