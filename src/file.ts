@@ -23,8 +23,10 @@ const pluginDirectories: PlatformsSupported = {
   netbsd: path.join('usr', 'local', 'lib'),
   openbsd: path.join('usr', 'local', 'lib'),
   sunos: path.join('usr', 'local', 'lib'),
-  win32: path.join('Program Files (x86)', 'Common Files'),
-  win64: path.join('Program Files', 'Common Files'),
+  win32:
+    process.arch === 'x32'
+      ? path.join('Program Files (x86)', 'Common Files')
+      : path.join('Program Files', 'Common Files'),
 };
 
 // Preset directories
@@ -41,12 +43,11 @@ const presetDirectories: PlatformsSupported = {
   openbsd: path.join(os.homedir(), '.vst3', 'presets'),
   sunos: path.join(os.homedir(), '.vst3', 'presets'),
   win32: path.join(os.homedir(), 'Documents', 'VST3 Presets'),
-  win64: path.join(os.homedir(), 'Documents', 'VST3 Presets'),
 };
 
 function dirAppData(): string {
-  if (process.env.APPDATA) {
-    return process.env.APPDATA;
+  if (process.platform === 'win32') {
+    return process.env.APPDATA || os.homedir();
   } else if (process.platform === 'darwin') {
     return path.join(os.homedir(), 'Library', 'Preferences');
   }
@@ -125,11 +126,8 @@ function dirPresets(): string {
 
 function dirProjects(): string {
   // Windows throws permissions errors if you scan hidden folders
-  // Therefore setting Windows to a more specific path
-  if (process.platform === 'win32') {
-    return path.join(os.homedir(), 'Documents', 'Audio');
-  }
-  return path.join(os.homedir(), 'Documents');
+  // Therefore set to a more specific path than Documents
+  return path.join(os.homedir(), 'Documents', 'Audio');
 }
 
 function dirRead(dirPath: string, options?: any): string[] {

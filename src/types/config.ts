@@ -38,7 +38,6 @@ interface PlatformsSupported {
   openbsd: string;
   sunos: string;
   win32: string;
-  win64: string;
 }
 
 export { ConfigInterface, PlatformsSupported };
