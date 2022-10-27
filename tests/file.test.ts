@@ -88,7 +88,7 @@ test('Directory open', () => {
 test('Directory plugins', () => {
   if (process.platform === 'win32') {
     expect(dirPlugins()).toEqual(
-      process.arch === 'x32' ? '/Program Files (x86)/Common Files' : '/Program Files/Common Files'
+      process.arch === 'x32' ? path.join('Program Files (x86)', 'Common Files') : path.join('Program Files', 'Common Files')
     );
   } else if (process.platform === 'darwin') {
     expect(dirPlugins()).toEqual(`${os.homedir()}/Library/Audio/Plug-ins`);
@@ -99,7 +99,7 @@ test('Directory plugins', () => {
 
 test('Directory presets', () => {
   if (process.platform === 'win32') {
-    expect(dirPresets()).toEqual(`${os.homedir()}/Documents/VST3 Presets`);
+    expect(dirPresets()).toEqual(path.join(os.homedir(), 'Documents', 'VST3 Presets'));
   } else if (process.platform === 'darwin') {
     expect(dirPresets()).toEqual(`${os.homedir()}/Library/Audio/Presets`);
   } else {
@@ -109,7 +109,7 @@ test('Directory presets', () => {
 
 test('Directory projects', () => {
   if (process.platform === 'win32') {
-    expect(dirProjects()).toEqual(`${os.homedir()}/Documents/Audio`);
+    expect(dirProjects()).toEqual(path.join(os.homedir(), 'Documents', 'Audio'));
   } else if (process.platform === 'darwin') {
     expect(dirProjects()).toEqual(`${os.homedir()}/Documents/Audio`);
   } else {
