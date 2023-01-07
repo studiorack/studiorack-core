@@ -401,8 +401,15 @@ function pluginValidate(dir: string, options?: PluginValidationOptions): PluginI
   if (!dir || !dirExists(dir)) {
     throw Error(`File does not exist: ${dir}`);
   }
-  const outputText: string = toolRun('validator', dir);
-  let pluginJson: PluginLocal = parseOutput(dir, outputText);
+  let outputText: string;
+  let pluginJson: PluginLocal;
+  if (pathGetExt(dir) === 'clap') {
+    outputText = toolRun('clapinfo', dir);
+    pluginJson = parseClapOutput(dir, outputText) as any;
+  } else {
+    outputText = toolRun('validator', dir);
+    pluginJson = parseValidatorOutput(dir, outputText);
+  }
   if (options && options.files) {
     pluginJson = pluginValidateFiles(dir, pluginJson);
   }
@@ -444,7 +451,11 @@ async function pluginValidateFolder(pluginPath: string, options: PluginValidatio
     throw Error(`Path does not exist: ${pluginPath}`);
   }
   const plugins: PluginLocal[] = [];
-  await toolInstall('validator');
+  if (pluginPath.includes('clap')) {
+    await toolInstall('clapinfo');
+  } else {
+    await toolInstall('validator');
+  }
   if (pluginPath.includes('*')) {
     const pathList = dirRead(pluginPath);
     pathList.forEach((pathItem: string) => {
@@ -500,7 +511,24 @@ function pluginValidateSchema(plugin: PluginLocal): string | boolean {
   return error.length === 0 ? false : error;
 }
 
-function parseOutput(pathItem: string, output: string): any {
+function parseClapOutput(pathItem: string, output: string) {
+  const outputJson: any = JSON.parse(output);
+  const pluginHeader: any = outputJson['clap.plugin-factory'][0];
+  const pluginJson: any = {
+    author: '',
+    homepage: '',
+    name: pluginHeader.name,
+    description: pluginHeader.description,
+    tags: pluginHeader.features,
+    version: pluginHeader.version,
+    id: safeSlug(pluginHeader.name),
+    date: new Date().toISOString(),
+  };
+  log('parseClapOutput', pathItem, output);
+  return pluginJson;
+}
+
+function parseValidatorOutput(pathItem: string, output: string): any {
   const json: { [property: string]: any } = {};
   // loop through validator output
   for (let line of output.split('\n')) {

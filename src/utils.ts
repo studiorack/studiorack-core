@@ -15,7 +15,7 @@ const platformTypes: PlatformTypes = {
   win32: 'win',
   win64: 'win',
 };
-let LOGGING_ENABLED: boolean = false;
+let LOGGING_ENABLED: boolean = true;
 const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
