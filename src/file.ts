@@ -1,7 +1,18 @@
 import AdmZip from 'adm-zip';
 import { execFileSync, execSync } from 'child_process';
-import fs from 'fs-extra';
-import glob from 'glob';
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  moveSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs-extra';
+import { globSync } from 'glob';
 import os from 'os';
 import path from 'path';
 import { PlatformsSupported } from './types/config';
@@ -59,7 +70,7 @@ function dirContains(dirParent: string, dirChild: string): boolean {
 function dirCreate(dirPath: string): string | boolean {
   if (!dirExists(dirPath)) {
     log('+', dirPath);
-    fs.mkdirSync(dirPath, { recursive: true });
+    mkdirSync(dirPath, { recursive: true });
     return dirPath;
   }
   return false;
@@ -68,29 +79,29 @@ function dirCreate(dirPath: string): string | boolean {
 function dirDelete(dirPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
-    return fs.rmSync(dirPath, { recursive: true });
+    return rmSync(dirPath, { recursive: true });
   }
   return false;
 }
 
 function dirEmpty(dirPath: string): boolean {
-  const files: string[] = fs.readdirSync(dirPath);
+  const files: string[] = readdirSync(dirPath);
   return files.length === 0 || (files.length === 1 && files[0] === '.DS_Store');
 }
 
 function dirExists(dirPath: string): boolean {
-  return fs.existsSync(dirPath);
+  return existsSync(dirPath);
 }
 
 function dirIs(dirPath: string): boolean {
-  return fs.statSync(dirPath).isDirectory();
+  return statSync(dirPath).isDirectory();
 }
 
 function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return fs.moveSync(dirPath, newPath, { overwrite: true });
+    return moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -129,20 +140,17 @@ function dirProjects(): string {
 
 function dirRead(dirPath: string, options?: any): string[] {
   log('⌕', dirPath);
-  // Glob returns relative paths with forward slashes on Windows
-  // Convert every path to a Windows compatible path
-  // https://github.com/isaacs/node-glob/issues/419
+  // Glob now expects forward slashes on Windows
+  // Convert backslashes from path.join() to forwardslashes
   if (process.platform === 'win32') {
-    return glob.sync(dirPath, options).map((subDirPath: string) => {
-      return subDirPath.split('/').join(path.sep);
-    });
+    dirPath = dirPath.replace(/\\/g, '/');
   }
-  return glob.sync(dirPath, options);
+  return globSync(dirPath, options);
 }
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return fs.moveSync(oldPath, newPath, { overwrite: true });
+    return moveSync(oldPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -168,51 +176,38 @@ function fileAdd(filePath: string, fileName: string, fileType: string, json: any
 
 function fileCreate(filePath: string, data: string | Buffer): void {
   log('+', filePath);
-  return fs.writeFileSync(filePath, data);
+  return writeFileSync(filePath, data);
 }
 
 function fileDate(filePath: string): Date {
-  return fs.statSync(filePath).mtime;
+  return statSync(filePath).mtime;
 }
 
 function fileDelete(filePath: string): boolean | void {
   if (fileExists(filePath)) {
     log('-', filePath);
-    return fs.unlinkSync(filePath);
+    return unlinkSync(filePath);
   }
   return false;
 }
 
 function fileExec(filePath: string): void {
-  return fs.chmodSync(filePath, '755');
+  return chmodSync(filePath, '755');
 }
 
 function fileExists(filePath: string): boolean {
-  return fs.existsSync(filePath);
+  return existsSync(filePath);
 }
 
 function fileJsonCreate(filePath: string, data: object): void {
   return fileCreate(filePath, JSON.stringify(data, null, 2));
 }
 
-function fileJsonLoad(filePath: string): any {
-  if (fileExists(filePath)) {
-    log('⎋', filePath);
-    return JSON.parse(fs.readFileSync(filePath).toString());
-  }
-  return false;
-}
-
-function fileLoad(filePath: string): Buffer {
-  log('⎋', filePath);
-  return fs.readFileSync(filePath);
-}
-
 function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return fs.moveSync(dirPath, newPath, { overwrite: true });
+    return moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -232,6 +227,24 @@ function fileOpen(filePath: string): Buffer {
   }
   log('⎋', `${command} "${filePath}"`);
   return execSync(`${command} "${filePath}"`);
+}
+
+function fileRead(filePath: string): Buffer {
+  log('⎋', filePath);
+  return readFileSync(filePath);
+}
+
+function fileReadJson(filePath: string): any {
+  if (fileExists(filePath)) {
+    log('⎋', filePath);
+    return JSON.parse(readFileSync(filePath).toString());
+  }
+  return false;
+}
+
+function fileReadString(filePath: string): string {
+  log('⎋', filePath);
+  return readFileSync(filePath).toString();
 }
 
 function fileSize(filePath: string): number {
@@ -277,7 +290,7 @@ function runCliAsAdmin(args: string): Promise<string> {
 
 function zipCreate(filesPath: string, zipPath: string): void {
   if (fileExists(zipPath)) {
-    fs.unlinkSync(zipPath);
+    unlinkSync(zipPath);
   }
   const zip: AdmZip = new AdmZip();
   const pathList: string[] = dirRead(filesPath);
@@ -325,10 +338,11 @@ export {
   fileExec,
   fileExists,
   fileJsonCreate,
-  fileJsonLoad,
-  fileLoad,
   fileMove,
   fileOpen,
+  fileRead,
+  fileReadJson,
+  fileReadString,
   fileSize,
   isAdmin,
   runCliAsAdmin,

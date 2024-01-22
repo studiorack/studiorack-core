@@ -1,9 +1,9 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirAppData, dirExists, dirRead, fileExec, fileExists, zipExtract } from './file';
+import { dirAppData, dirRead, fileExec, fileExists, zipExtract } from './file';
 import { getPlatform, log } from './utils';
-import { getRaw } from './api';
+import { apiBuffer } from './api';
 import { configGet } from './config';
 import { ConfigInterface } from './types/config';
 import { Tools } from './types/tool';
@@ -40,7 +40,7 @@ function toolGetPath(type: keyof Tools): string {
 async function toolInstall(type: keyof Tools): Promise<string> {
   if (!toolInstalled(type)) {
     const toolUrl: string = configGet(`${type}Url` as keyof ConfigInterface).replace('${platform}', getPlatform());
-    const data: Buffer = await getRaw(toolUrl);
+    const data: Buffer = await apiBuffer(toolUrl);
     zipExtract(data, toolBinDir);
     fileExec(toolGetPath(type));
   }

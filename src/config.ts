@@ -9,7 +9,7 @@ import {
   fileDelete,
   fileExists,
   fileJsonCreate,
-  fileJsonLoad,
+  fileReadJson,
 } from './file';
 import { configDefaults } from './config-defaults';
 
@@ -21,7 +21,7 @@ dirCreate(appDir);
 if (!fileExists(CONFIG_FILE_PATH)) {
   fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirPresets(), dirProjects()));
 }
-const config: ConfigInterface = fileJsonLoad(CONFIG_FILE_PATH);
+const config: ConfigInterface = fileReadJson(CONFIG_FILE_PATH);
 
 function configDelete(): boolean | void {
   return fileDelete(CONFIG_FILE_PATH);

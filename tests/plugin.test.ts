@@ -119,6 +119,7 @@ if (process.platform === 'win32') {
     path.join('test', 'plugins', 'LV2', 'studiorack', 'adlplug', 'adlplug', '1.0.2', 'ADLplug.lv2'),
   ];
 }
+PLUGIN_LOCAL.paths.sort();
 
 beforeAll(() => {
   configSet('pluginFolder', PLUGIN_DIR);

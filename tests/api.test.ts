@@ -1,4 +1,4 @@
-import { get, getJSON, getRaw } from '../src/api';
+import { apiBuffer, apiJson, apiText } from '../src/api';
 
 const API_URL: string = 'https://jsonplaceholder.typicode.com/todos/1';
 const API_TEXT: string = `{
@@ -21,13 +21,13 @@ const API_BUFFER: Buffer = Buffer.from([
 ]);
 
 test('Get plain text', async () => {
-  expect(await get(API_URL)).toEqual(API_TEXT);
+  expect(await apiText(API_URL)).toEqual(API_TEXT);
 });
 
 test('Get json', async () => {
-  expect(await getJSON(API_URL)).toEqual(API_JSON);
+  expect(await apiJson(API_URL)).toEqual(API_JSON);
 });
 
 test('Get raw buffer', async () => {
-  expect(await getRaw(API_URL)).toEqual(API_BUFFER);
+  expect(await apiBuffer(API_URL)).toEqual(API_BUFFER);
 });

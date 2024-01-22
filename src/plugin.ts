@@ -16,14 +16,14 @@ import {
   fileDate,
   fileExists,
   fileJsonCreate,
-  fileJsonLoad,
+  fileReadJson,
   fileMove,
   isAdmin,
   runCliAsAdmin,
   zipCreate,
   zipExtract,
 } from './file';
-import { getJSON, getRaw } from './api';
+import { apiBuffer, apiJson } from './api';
 import {
   getPlatform,
   isTests,
@@ -64,7 +64,7 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
   if (dirExists(dir)) {
     throw Error(`Directory already exists: ${dir}`);
   }
-  const data: Buffer = await getRaw(configGet('pluginTemplate').replace('${template}', template));
+  const data: Buffer = await apiBuffer(configGet('pluginTemplate').replace('${template}', template));
   const tempDir: string = path.join(dirAppData(), 'studiorack', 'temp', template);
   dirCreate(tempDir);
   zipExtract(data, tempDir);
@@ -112,7 +112,7 @@ async function pluginGetLocal(id: string, version?: string): Promise<PluginLocal
 
 async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
   const url: string = configGet('pluginRegistry').replace('${type}', type);
-  return await getJSON(url).then((data) => {
+  return await apiJson(url).then((data) => {
     return data.objects;
   });
 }
@@ -128,7 +128,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
   const pluginsFound: { [property: string]: PluginLocal } = {};
   pluginPaths.forEach((pluginPath: string) => {
     const relativePath: string = pluginPath.replace(configGet('pluginFolder') + path.sep, '');
-    let plugin: PluginLocal = fileJsonLoad(`${pathGetWithoutExt(pluginPath)}.json`);
+    let plugin: PluginLocal = fileReadJson(`${pathGetWithoutExt(pluginPath)}.json`);
     if (!plugin) {
       // If there is no metadata json file, attempt to auto create one using validator
       if (pathGetExt(pluginPath) === 'vst3') {
@@ -149,6 +149,7 @@ async function pluginsGetLocal(): Promise<PluginLocal[]> {
     const pluginId: string = `${plugin.repo}/${plugin.id}`;
     if (pluginsFound[pluginId]) {
       pluginsFound[pluginId].paths.push(pluginPath);
+      pluginsFound[pluginId].paths.sort();
     } else {
       pluginsFound[pluginId] = plugin;
     }
@@ -199,7 +200,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       throw Error(`Unsupported file type ${pluginExt}`);
     }
     // Download the plugin data
-    const pluginData: Buffer = await getRaw(pluginUrl);
+    const pluginData: Buffer = await apiBuffer(pluginUrl);
     const [pluginOwner, pluginRepo] = plugin.repo.split('/');
     const dirTemp: string = path.join(dirAppData(), 'studiorack', 'downloads', pluginOwner, pluginRepo, plugin.id);
     dirCreate(dirTemp);
@@ -256,6 +257,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginLocal>
       plugin.paths.push(pluginPath);
     }
   }
+  plugin.paths.sort();
   plugin.status = 'installed';
   return plugin;
 }

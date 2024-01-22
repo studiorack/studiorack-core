@@ -1,6 +1,6 @@
 import path from 'path';
 import { configGet } from './config';
-import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileJsonLoad, fileOpen } from './file';
+import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileReadJson, fileOpen } from './file';
 import {
   pathGetDirectory,
   pathGetExt,
@@ -100,7 +100,7 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
   projectPaths.forEach((projectPath: string) => {
     if (projectPath.includes('/Backup/')) return;
     const relativePath: string = projectPath.replace(configGet('projectFolder') + path.sep, '');
-    let project: any = fileJsonLoad(`${pathGetWithoutExt(projectPath)}.json`);
+    let project: any = fileReadJson(`${pathGetWithoutExt(projectPath)}.json`);
     if (!project) {
       project = projectValidate(projectPath, { files: true, json: true });
     }
@@ -131,7 +131,7 @@ async function projectInstall(dir: string, id?: string, version?: string): Promi
 }
 
 function projectLoad(dir: string): ProjectLocal {
-  const projectJson: ProjectLocal = fileJsonLoad(dir);
+  const projectJson: ProjectLocal = fileReadJson(dir);
   if (projectJson && !projectJson.plugins) {
     projectJson.plugins = {};
   }
