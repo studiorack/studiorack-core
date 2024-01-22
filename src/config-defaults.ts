@@ -397,6 +397,10 @@ function configDefaults(
         name: 'Cubase',
         ext: 'cpr',
       },
+      dawproject: {
+        name: 'DAWproject',
+        ext: 'dawproject',
+      },
       flStudio: {
         name: 'FL Studio',
         ext: 'flp',

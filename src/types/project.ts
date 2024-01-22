@@ -48,6 +48,7 @@ interface ProjectPack {
 interface ProjectTemplate {
   ableton: string;
   cubase: string;
+  dawproject: string;
   flStudio: string;
   logic: string;
   proTools: string;
@@ -62,6 +63,7 @@ interface ProjectType {
 interface ProjectTypes {
   ableton: ProjectType;
   cubase: ProjectType;
+  dawproject: ProjectType;
   flStudio: ProjectType;
   logic: ProjectType;
   proTools: ProjectType;

@@ -4,6 +4,7 @@
     "forin": false,
     "no-console": false,
     "no-var-requires": false,
-    "semicolon": [true, "always", "ignore-bound-class-methods"]
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "no-empty-interface": false
   }
 }
