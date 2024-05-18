@@ -69,6 +69,13 @@ interface PluginPack {
   [property: string]: PluginEntry;
 }
 
+interface PluginRegistry {
+  name: string;
+  url: string;
+  version: string;
+  objects: PluginPack;
+}
+
 interface PluginTemplate {
   clap: string;
   dpf: string;
@@ -117,6 +124,7 @@ export {
   PluginLicense,
   PluginLocal,
   PluginPack,
+  PluginRegistry,
   PluginTemplate,
   PluginType,
   PluginTypes,
