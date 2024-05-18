@@ -294,15 +294,21 @@ function pluginInstalled(plugin: PluginInterface): boolean {
 
 function pluginLatest(pluginEntry: PluginEntry): PluginInterface {
   const plugin: PluginInterface = pluginEntry.versions[pluginEntry.version];
+  pluginEntry.license = pluginLicense(pluginEntry);
+  plugin.repo = pathGetRepo(pluginEntry.id);
+  return plugin;
+}
+
+function pluginLicense(plugin: PluginEntry | PluginInterface) {
   const licenses: PluginLicense[] = configGet('licenses');
+  let licenseMatch: any = 'unlicense';
   licenses.forEach((license: PluginLicense) => {
-    if (pluginEntry.license === license.key) {
-      plugin.license = license;
+    if (plugin.license === license.key) {
+      licenseMatch = license;
       return;
     }
   });
-  plugin.repo = pathGetRepo(pluginEntry.id);
-  return plugin;
+  return licenseMatch;
 }
 
 async function pluginSearch(query?: string): Promise<PluginInterface[]> {
@@ -493,20 +499,24 @@ function pluginValidateField(obj: any, field: string, type: string): string {
 function pluginValidateSchema(plugin: PluginLocal): string | boolean {
   let error: string = '';
   error += pluginValidateField(plugin, 'author', 'string');
+  error += pluginValidateField(plugin, 'date', 'string');
+  error += pluginValidateField(plugin, 'description', 'string');
   error += pluginValidateField(plugin, 'homepage', 'string');
   error += pluginValidateField(plugin, 'name', 'string');
-  error += pluginValidateField(plugin, 'description', 'string');
+  error += pluginValidateField(plugin, 'files', 'object');
+  error += pluginValidateField(plugin, 'license', 'string');
+
   error += pluginValidateField(plugin, 'tags', 'object');
   error += pluginValidateField(plugin, 'version', 'string');
   if (!semver.valid(plugin.version)) {
     error += `- version does not conform to semantic versioning ${plugin.version}\n`;
   }
   error += pluginValidateField(plugin, 'id', 'string');
-  error += pluginValidateField(plugin, 'date', 'string');
+
   if (Number.isNaN(Date.parse(plugin.date))) {
     error += `- date not valid ${plugin.date}\n`;
   }
-  error += pluginValidateField(plugin, 'files', 'object');
+
   error += pluginValidateField(plugin.files, 'audio', 'object');
   error += pluginValidateField(plugin.files, 'image', 'object');
 
@@ -612,6 +622,7 @@ export {
   pluginInstallAll,
   pluginInstalled,
   pluginLatest,
+  pluginLicense,
   pluginSearch,
   pluginSource,
   pluginUninstall,
