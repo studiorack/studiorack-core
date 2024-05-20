@@ -1,12 +1,12 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { dirAppData, dirRead, fileExec, fileExists, zipExtract } from './file';
-import { getPlatform, log } from './utils';
-import { apiBuffer } from './api';
-import { configGet } from './config';
-import { ConfigInterface } from './types/config';
-import { Tools } from './types/tool';
+import { dirAppData, dirRead, fileExec, fileExists, zipExtract } from './file.js';
+import { getPlatform, log } from './utils.js';
+import { apiBuffer } from './api.js';
+import { configGet } from './config.js';
+import { ConfigInterface } from './types/config.js';
+import { Tools } from './types/tool.js';
 
 const toolBinDir: string = path.join(dirAppData(), 'studiorack', 'bin');
 

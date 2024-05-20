@@ -2,7 +2,7 @@
 // npm run build && node ./dist/admin.js --operation install --id studiorack/adlplug/adlplug
 // npm run build && node ./dist/admin.js --operation uninstall --id studiorack/adlplug/adlplug
 
-import { pluginInstall, pluginUninstall } from './plugin';
+import { pluginInstall, pluginUninstall } from './plugin.js';
 
 interface Arguments {
   operation: string;

@@ -1,27 +1,27 @@
-interface ProjectCategory {
+export interface ProjectCategory {
   name: string;
   tags: string[];
 }
 
-interface ProjectEntry {
+export interface ProjectEntry {
   id: string;
   license: string;
   version: string;
   versions: { [version: string]: ProjectInterface };
 }
 
-interface ProjectFile {
+export interface ProjectFile {
   name: string;
   size: number;
 }
 
-interface ProjectFiles {
+export interface ProjectFiles {
   audio: ProjectFile;
   image: ProjectFile;
   project: ProjectFile;
 }
 
-interface ProjectInterface {
+export interface ProjectInterface {
   author: string;
   date: string;
   description: string;
@@ -36,16 +36,16 @@ interface ProjectInterface {
   version: string;
 }
 
-interface ProjectLocal extends ProjectInterface {
+export interface ProjectLocal extends ProjectInterface {
   path: string;
   status: string;
 }
 
-interface ProjectPack {
+export interface ProjectPack {
   [property: string]: ProjectEntry;
 }
 
-interface ProjectTemplate {
+export interface ProjectTemplate {
   ableton: string;
   cubase: string;
   dawproject: string;
@@ -55,12 +55,12 @@ interface ProjectTemplate {
   reaper: string;
 }
 
-interface ProjectType {
+export interface ProjectType {
   name: string;
   ext: string;
 }
 
-interface ProjectTypes {
+export interface ProjectTypes {
   ableton: ProjectType;
   cubase: ProjectType;
   dawproject: ProjectType;
@@ -69,16 +69,3 @@ interface ProjectTypes {
   proTools: ProjectType;
   reaper: ProjectType;
 }
-
-export {
-  ProjectCategory,
-  ProjectEntry,
-  ProjectFile,
-  ProjectFiles,
-  ProjectInterface,
-  ProjectLocal,
-  ProjectPack,
-  ProjectTemplate,
-  ProjectType,
-  ProjectTypes,
-};

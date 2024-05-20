@@ -1,5 +1,5 @@
 import path from 'path';
-import { ConfigInterface } from './types/config';
+import { ConfigInterface } from './types/config.js';
 import {
   dirAppData,
   dirCreate,
@@ -10,8 +10,8 @@ import {
   fileExists,
   fileJsonCreate,
   fileReadJson,
-} from './file';
-import { configDefaults } from './config-defaults';
+} from './file.js';
+import { configDefaults } from './config-defaults.js';
 
 const appDir: string = path.join(dirAppData(), 'studiorack');
 const CONFIG_FILE_PATH = path.join(appDir, 'config.json');

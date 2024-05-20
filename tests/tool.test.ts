@@ -1,3 +1,4 @@
+import { beforeAll, expect, test } from 'vitest';
 import path from 'path';
 import { toolInstall, toolInstalled, toolFolder, toolGetPath, toolRun } from '../src/tool';
 import { dirAppData, dirDelete } from '../src/file';
@@ -7,7 +8,7 @@ import { logEnable } from '../src/utils';
 
 const APP_DIR: string = path.join(dirAppData(), 'studiorack');
 const TEST_DIR: string = path.join('test', 'tool');
-const PLUGIN_ID: string = 'studiorack/surge/surge';
+const PLUGIN_ID: string = 'surge-synthesizer/surge';
 const PLUGIN_PATH: string = path.join('test', 'tool', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
 const PLUGIN_PATH_CLAP: string = path.join(
   'test',
@@ -57,8 +58,6 @@ function cleanOutput(output: string): string {
 beforeAll(async () => {
   configSet('pluginFolder', TEST_DIR);
   dirDelete(TEST_DIR);
-  // Increase Jest timeout to allow large plugin to be installed
-  jest.setTimeout(60 * 1000);
   await pluginInstall(PLUGIN_ID);
 });
 

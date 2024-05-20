@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { log } from './utils';
+import { log } from './utils.js';
 
 async function apiBuffer(url: string): Promise<Buffer> {
   log('⤓', url);

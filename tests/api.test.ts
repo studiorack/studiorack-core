@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { apiBuffer, apiJson, apiText } from '../src/api';
 
 const API_URL: string = 'https://jsonplaceholder.typicode.com/todos/1';

@@ -1,7 +1,7 @@
-import { PluginCategory, PluginLicense, PluginTypes } from './plugin';
-import { ProjectTypes } from './project';
+import { PluginCategory, PluginFiles, PluginLicense, PluginTypes } from './plugin.js';
+import { ProjectTypes } from './project.js';
 
-interface ConfigInterface {
+export interface ConfigInterface {
   appFolder: string;
   extAudio: string;
   extFile: string;
@@ -27,7 +27,21 @@ interface ConfigInterface {
   validatorUrl: string;
 }
 
-interface PlatformsSupported {
+export interface PlatformTypes {
+  aix: keyof PluginFiles;
+  android: keyof PluginFiles;
+  cygwin: keyof PluginFiles;
+  darwin: keyof PluginFiles;
+  freebsd: keyof PluginFiles;
+  linux: keyof PluginFiles;
+  netbsd: keyof PluginFiles;
+  openbsd: keyof PluginFiles;
+  sunos: keyof PluginFiles;
+  win32: keyof PluginFiles;
+  win64: keyof PluginFiles;
+}
+
+export interface PlatformsSupported {
   aix: string;
   android: string;
   cygwin: string;
@@ -39,5 +53,3 @@ interface PlatformsSupported {
   sunos: string;
   win32: string;
 }
-
-export { ConfigInterface, PlatformsSupported };

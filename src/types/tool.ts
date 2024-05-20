@@ -1,7 +1,5 @@
-interface Tools {
+export interface Tools {
   clapinfo: string;
   pluginval: string;
   validator: string;
 }
-
-export { Tools };

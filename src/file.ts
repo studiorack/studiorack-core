@@ -15,9 +15,9 @@ import {
 import { globSync } from 'glob';
 import os from 'os';
 import path from 'path';
-import { PlatformsSupported } from './types/config';
+import { PlatformsSupported } from './types/config.js';
 import sudoPrompt from '@vscode/sudo-prompt';
-import { log } from './utils';
+import { log } from './utils.js';
 
 const fsUtils: any = require('nodejs-fs-utils');
 
@@ -125,11 +125,11 @@ function dirOpen(dirPath: string): Buffer {
 }
 
 function dirPlugins(): string {
-  return pluginDirectories[process.platform];
+  return pluginDirectories[process.platform as keyof PlatformsSupported];
 }
 
 function dirPresets(): string {
-  return presetDirectories[process.platform];
+  return presetDirectories[process.platform as keyof PlatformsSupported];
 }
 
 function dirProjects(): string {
@@ -260,7 +260,7 @@ function isAdmin(): boolean {
       return false;
     }
   } else {
-    return process.getuid() === 0;
+    return process && process.getuid ? (process.getuid() === 0) : false;
   }
 }
 

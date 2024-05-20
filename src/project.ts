@@ -1,6 +1,6 @@
 import path from 'path';
-import { configGet } from './config';
-import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileReadJson, fileOpen } from './file';
+import { configGet } from './config.js';
+import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileReadJson, fileOpen } from './file.js';
 import {
   pathGetDirectory,
   pathGetExt,
@@ -9,10 +9,10 @@ import {
   pathGetRepo,
   pathGetWithoutExt,
   safeSlug,
-} from './utils';
-import { pluginInstall, pluginUninstall } from './plugin';
-import { PluginLocal, PluginValidationOptions } from './types/plugin';
-import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project';
+} from './utils.js';
+import { pluginInstall, pluginUninstall } from './plugin.js';
+import { PluginVersionLocal, PluginValidationOptions } from './types/plugin.js';
+import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project.js';
 const readline = require('readline-sync');
 
 function askQuestion(label: string, input: any, fallback: string) {
@@ -118,9 +118,9 @@ async function projectsGetLocal(): Promise<ProjectLocal[]> {
 async function projectInstall(dir: string, id?: string, version?: string): Promise<ProjectLocal> {
   const project: ProjectLocal = projectLoad(dir);
   if (id) {
-    const pluginLocal: PluginLocal = await pluginInstall(id, version);
+    const pluginLocal: PluginVersionLocal = await pluginInstall(id, version);
     if (pluginLocal) {
-      project.plugins[id] = pluginLocal.version;
+      project.plugins[id] = pluginLocal.version || '';
     }
   } else {
     for (const pluginId in project.plugins) {
@@ -171,7 +171,7 @@ async function projectUninstall(dir: string, id?: string, version?: string): Pro
     if (!version) {
       result = project.plugins[id];
     }
-    const pluginLocal: PluginLocal = await pluginUninstall(id, result);
+    const pluginLocal: PluginVersionLocal = await pluginUninstall(id, result);
     if (pluginLocal) {
       delete project.plugins[id];
     }

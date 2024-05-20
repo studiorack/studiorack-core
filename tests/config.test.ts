@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, expect, test } from 'vitest';
 import { configDelete, configGet, configSet } from '../src/config';
 import { ConfigInterface } from '../src/types/config';
 

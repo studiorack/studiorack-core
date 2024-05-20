@@ -3,8 +3,8 @@
 
 Common methods package shared across StudioRack CLI, app and website. Handling installing DAW VST plugin dependencies using:
 
-* NodeJS 12.x
-* TypeScript 4.x
+- NodeJS 20.x
+- TypeScript 5.x
 
 
 ## Installation

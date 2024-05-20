@@ -1,6 +1,7 @@
 import slugify from 'slugify';
 
-import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
+import { PluginFiles, PluginVersion } from './types/plugin.js';
+import { PlatformTypes } from './types/config.js';
 
 const platformTypes: PlatformTypes = {
   aix: 'linux',
@@ -20,7 +21,7 @@ const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function getPlatform(): keyof PluginFiles {
-  return platformTypes[process.platform];
+  return platformTypes[process.platform as keyof PlatformTypes];
 }
 
 function idToSlug(id: string): string {
@@ -107,15 +108,12 @@ function pathGetWithoutExt(pathItem: string): string {
   return pathItem;
 }
 
-function pluginFileUrl(plugin: PluginInterface, type: keyof PluginFiles): string {
-  const file = plugin.files[type];
-  if (file.name.startsWith('https://')) {
-    return file.name;
-  }
-  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${file.name}`;
+function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
+  return plugin.files[type].url;
 }
 
 function safeSlug(val: string): string {
+  // @ts-ignore
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 

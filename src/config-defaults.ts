@@ -1,4 +1,4 @@
-import { ConfigInterface } from './types/config';
+import { ConfigInterface } from './types/config.js';
 
 function configDefaults(
   appFolder: string,
