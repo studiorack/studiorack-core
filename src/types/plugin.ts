@@ -1,4 +1,3 @@
-
 export interface PluginCategory {
   name: string;
   tags: string[];

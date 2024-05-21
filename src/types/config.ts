@@ -9,8 +9,8 @@ export interface ConfigInterface {
   extZip: string;
   ignoredFolders: string[];
   licenses: PluginLicense[];
-  pluginEffectCategories: { [property: string]: PluginCategory };
-  pluginInstrumentCategories: { [property: string]: PluginCategory };
+  pluginEffectCategories: ConfigList;
+  pluginInstrumentCategories: ConfigList;
   pluginFile: string;
   pluginFolder: string;
   pluginRegistry: string;
@@ -25,6 +25,10 @@ export interface ConfigInterface {
   clapinfoUrl: string;
   pluginvalUrl: string;
   validatorUrl: string;
+}
+
+export interface ConfigList {
+  [property: string]: PluginCategory;
 }
 
 export interface PlatformTypes {

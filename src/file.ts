@@ -260,7 +260,7 @@ function isAdmin(): boolean {
       return false;
     }
   } else {
-    return process && process.getuid ? (process.getuid() === 0) : false;
+    return process && process.getuid ? process.getuid() === 0 : false;
   }
 }
 
@@ -283,7 +283,7 @@ function runCliAsAdmin(args: string): Promise<string> {
         } else {
           resolve(stdout?.toString() || '');
         }
-      }
+      },
     );
   });
 }
@@ -294,7 +294,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
   }
   const zip: AdmZip = new AdmZip();
   const pathList: string[] = dirRead(filesPath);
-  pathList.forEach((pathItem) => {
+  pathList.forEach(pathItem => {
     log('⎋', pathItem);
     try {
       if (dirIs(pathItem)) {

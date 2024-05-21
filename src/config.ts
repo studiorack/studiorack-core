@@ -31,7 +31,7 @@ function configGet(key: keyof ConfigInterface): any {
   return config[key];
 }
 
-function configSet(key: keyof ConfigInterface, val: any): any {
+function configSet(key: keyof ConfigInterface, val: any) {
   config[key] = val;
   fileJsonCreate(CONFIG_FILE_PATH, config);
   return configGet(key);

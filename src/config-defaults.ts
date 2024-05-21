@@ -4,7 +4,7 @@ function configDefaults(
   appFolder: string,
   pluginFolder: string,
   presetFolder: string,
-  projectFolder: string
+  projectFolder: string,
 ): ConfigInterface {
   return {
     appFolder,

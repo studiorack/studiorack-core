@@ -17,7 +17,7 @@ const platformTypes: PlatformTypes = {
   win64: 'win',
 };
 let LOGGING_ENABLED: boolean = false;
-const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
+const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function getPlatform(): keyof PluginFiles {
@@ -42,11 +42,11 @@ function log(...args: any) {
   }
 }
 
-function logEnable(...args: any) {
+function logEnable() {
   LOGGING_ENABLED = true;
 }
 
-function logDisable(...args: any) {
+function logDisable() {
   LOGGING_ENABLED = false;
 }
 
@@ -113,7 +113,7 @@ function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
 }
 
 function safeSlug(val: string): string {
-  // @ts-ignore
+  // @ts-expect-error slugify library issue with ESM modules
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 

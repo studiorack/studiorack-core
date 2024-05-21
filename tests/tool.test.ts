@@ -1,26 +1,25 @@
 import { beforeAll, expect, test } from 'vitest';
 import path from 'path';
-import { toolInstall, toolInstalled, toolFolder, toolGetPath, toolRun } from '../src/tool';
+import { toolInstall, toolInstalled, toolGetPath } from '../src/tool';
 import { dirAppData, dirDelete } from '../src/file';
 import { configSet } from '../src/config';
 import { pluginInstall } from '../src/plugin';
-import { logEnable } from '../src/utils';
 
-const APP_DIR: string = path.join(dirAppData(), 'studiorack');
+// const APP_DIR: string = path.join(dirAppData(), 'studiorack');
 const TEST_DIR: string = path.join('test', 'tool');
 const PLUGIN_ID: string = 'surge-synthesizer/surge';
-const PLUGIN_PATH: string = path.join('test', 'tool', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
-const PLUGIN_PATH_CLAP: string = path.join(
-  'test',
-  'tool',
-  'CLAP',
-  'studiorack',
-  'surge',
-  'surge',
-  '1.9.0',
-  'Surge XT.clap'
-);
-const SCRIPT_DIR: string = path.resolve(__dirname, '../');
+// const PLUGIN_PATH: string = path.join('test', 'tool', 'VST3', 'studiorack', 'surge', 'surge', '1.9.0', 'Surge XT.vst3');
+// const PLUGIN_PATH_CLAP: string = path.join(
+//   'test',
+//   'tool',
+//   'CLAP',
+//   'studiorack',
+//   'surge',
+//   'surge',
+//   '1.9.0',
+//   'Surge XT.clap',
+// );
+// const SCRIPT_DIR: string = path.resolve(__dirname, '../');
 const TOOL_FOLDER = path.join(dirAppData(), 'studiorack', 'bin');
 let CLAPINFO_PATH: string = path.join(TOOL_FOLDER, 'clap-info');
 let PLUGINVAL_PATH: string = path.join(TOOL_FOLDER, 'pluginval');
@@ -34,26 +33,26 @@ if (process.platform === 'win32') {
   PLUGINVAL_PATH = PLUGINVAL_PATH + '.app/Contents/MacOS/pluginval';
 }
 
-function cleanOutput(output: string): string {
-  // Replace app path with variable
-  const regex: RegExp = new RegExp(APP_DIR, 'g');
-  const output2: string = output.replace(regex, '${APP_DIR}');
-  // Replace script path with variable
-  const regex2: RegExp = new RegExp(SCRIPT_DIR, 'g');
-  const output3: string = output2.replace(regex2, '${SCRIPT_DIR}');
-  // Replace random seed with variable
-  const regex3: RegExp = new RegExp('Random seed: (.+)', 'g');
-  const output4: string = output3.replace(regex3, '${RANDOM_SEED}');
-  // Replace inconsistent line
-  const regex4: RegExp = new RegExp(
-    'Info:  The component reported a wrong silent flag for its output buffer! : output is silent but silenceFlags not set !\n',
-    'g'
-  );
-  const output5: string = output4.replace(regex4, '');
-  // Replace inconsistent line 2
-  const regex5: RegExp = new RegExp('Info:     Not all points have been read via IParameterChanges\n', 'g');
-  return output5.replace(regex5, '');
-}
+// function cleanOutput(output: string): string {
+//   // Replace app path with variable
+//   const regex: RegExp = new RegExp(APP_DIR, 'g');
+//   const output2: string = output.replace(regex, '${APP_DIR}');
+//   // Replace script path with variable
+//   const regex2: RegExp = new RegExp(SCRIPT_DIR, 'g');
+//   const output3: string = output2.replace(regex2, '${SCRIPT_DIR}');
+//   // Replace random seed with variable
+//   const regex3: RegExp = new RegExp('Random seed: (.+)', 'g');
+//   const output4: string = output3.replace(regex3, '${RANDOM_SEED}');
+//   // Replace inconsistent line
+//   const regex4: RegExp = new RegExp(
+//     'Info:  The component reported a wrong silent flag for its output buffer! : output is silent but silenceFlags not set !\n',
+//     'g',
+//   );
+//   const output5: string = output4.replace(regex4, '');
+//   // Replace inconsistent line 2
+//   const regex5: RegExp = new RegExp('Info:     Not all points have been read via IParameterChanges\n', 'g');
+//   return output5.replace(regex5, '');
+// }
 
 beforeAll(async () => {
   configSet('pluginFolder', TEST_DIR);

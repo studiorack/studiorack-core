@@ -11,18 +11,9 @@ import {
   pluginsGet,
   pluginsGetLocal,
   pluginInstall,
-  pluginInstallAll,
   pluginInstalled,
-  pluginLatest,
   pluginSearch,
-  pluginSource,
   pluginUninstall,
-  pluginUninstallAll,
-  pluginValidate,
-  pluginValidateFiles,
-  pluginValidateFolder,
-  pluginValidateField,
-  pluginValidateSchema,
 } from '../src/plugin';
 import { PluginEntry, PluginRegistry, PluginVersion, PluginVersionLocal, PluginTemplate } from '../src/types/plugin';
 
@@ -143,7 +134,7 @@ const PLUGIN_LOCAL: PluginVersionLocal = {
   id: 'surge-synthesizer/surge',
   version: '1.3.1',
   paths: [],
-  status: 'installed'
+  status: 'installed',
 };
 
 if (process.platform === 'win32') {
@@ -160,9 +151,7 @@ if (process.platform === 'win32') {
     path.join('test', 'plugins', 'VST3', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.vst3'),
   ];
 } else {
-  PLUGIN_LOCAL.paths = [
-    path.join('test', 'plugins', 'LV2', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.lv2'),
-  ];
+  PLUGIN_LOCAL.paths = [path.join('test', 'plugins', 'LV2', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.lv2')];
 }
 PLUGIN_LOCAL.paths.sort();
 
@@ -189,11 +178,9 @@ test('Create a plugin from a valid template', async () => {
 
 test('Get plugin directory', () => {
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(
-    path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || '', PLUGIN.version || '')
+    path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || '', PLUGIN.version || ''),
   );
-  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(
-    path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || '')
-  );
+  expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || ''));
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE));
 });
 

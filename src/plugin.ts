@@ -32,7 +32,6 @@ import {
   pathGetExt,
   pathGetFilename,
   pathGetId,
-  pathGetRepo,
   pathGetVersion,
   pathGetWithoutExt,
   safeSlug,
@@ -75,11 +74,7 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
 }
 
 function pluginDirectory(plugin: PluginVersion, type = 'VST3', depth?: number): string {
-  const pluginPaths: string[] = [
-    path.join(configGet('pluginFolder'), type),
-    plugin.id || '',
-    plugin.version || '',
-  ];
+  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), plugin.id || '', plugin.version || ''];
   if (depth) {
     return pluginPaths.slice(0, depth).join(path.sep);
   }
@@ -104,13 +99,14 @@ async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
 async function pluginGetLocal(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugins: PluginVersionLocal[] = await pluginsGetLocal();
   return plugins.filter((plugin: PluginVersionLocal) => {
-    return id === plugin.id;
+    const matchVersion: boolean = version ? version === plugin.version : false;
+    return id === plugin.id && matchVersion;
   })[0];
 }
 
 async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
   const url: string = configGet('pluginRegistry').replace('${type}', type);
-  return await apiJson(url).then((data) => {
+  return await apiJson(url).then(data => {
     return data.objects;
   });
 }
@@ -212,7 +208,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginVersio
         const samplePackPath: string = path.join(
           pluginDirectory(plugin, samplePackType),
           '**',
-          `*.${samplePackType.toLowerCase()}`
+          `*.${samplePackType.toLowerCase()}`,
         );
         pathsAll = dirRead(samplePackPath);
       } else {
@@ -358,7 +354,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginVers
         ${pluginDirectory(plugin, 'SF2')} 
         ${pluginDirectory(plugin, 'SFZ')} 
         ${pluginDirectory(plugin, 'VST')} 
-        ${pluginDirectory(plugin, 'VST3')}`
+        ${pluginDirectory(plugin, 'VST3')}`,
       );
     } else {
       // Move all plugin formats from folders
@@ -390,7 +386,10 @@ async function pluginUninstallAll(): Promise<PluginVersionLocal[]> {
     const plugins: PluginVersionLocal[] = [];
     for (const PluginVersionLocal of pluginsLocal) {
       if (pluginInstalled(PluginVersionLocal)) {
-        const plugin: PluginVersionLocal = await pluginUninstall(PluginVersionLocal.id || '', PluginVersionLocal.version);
+        const plugin: PluginVersionLocal = await pluginUninstall(
+          PluginVersionLocal.id || '',
+          PluginVersionLocal.version,
+        );
         plugins.push(plugin);
       }
     }
@@ -447,7 +446,10 @@ function pluginValidateFiles(pathItem: string, json: any): any {
   return json;
 }
 
-async function pluginValidateFolder(pluginPath: string, options: PluginValidationOptions): Promise<PluginVersionLocal[]> {
+async function pluginValidateFolder(
+  pluginPath: string,
+  options: PluginValidationOptions,
+): Promise<PluginVersionLocal[]> {
   if (!pluginPath) {
     throw Error(`Path does not exist: ${pluginPath}`);
   }

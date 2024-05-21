@@ -1,15 +1,7 @@
 import path from 'path';
 import { configGet } from './config.js';
 import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileReadJson, fileOpen } from './file.js';
-import {
-  pathGetDirectory,
-  pathGetExt,
-  pathGetFilename,
-  pathGetId,
-  pathGetRepo,
-  pathGetWithoutExt,
-  safeSlug,
-} from './utils.js';
+import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetRepo, pathGetWithoutExt, safeSlug } from './utils.js';
 import { pluginInstall, pluginUninstall } from './plugin.js';
 import { PluginVersionLocal, PluginValidationOptions } from './types/plugin.js';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project.js';
@@ -82,10 +74,11 @@ function projectDirectory(project: ProjectInterface, depth?: number): string {
   return projectPaths.join(path.sep);
 }
 
-async function projectGetLocal(id: string, version?: string): Promise<ProjectLocal> {
+async function projectGetLocal(id: string, version = ''): Promise<ProjectLocal> {
   const projects: ProjectLocal[] = await projectsGetLocal();
   return projects.filter((project: ProjectLocal) => {
-    return id === `${project.repo}/${project.id}`;
+    const matchVersion: boolean = version ? version === project.version : false;
+    return id === `${project.repo}/${project.id}` && matchVersion;
   })[0];
 }
 
@@ -201,7 +194,7 @@ function projectValidate(dir: string, options?: PluginValidationOptions): Projec
   if (options && options.json) {
     const projectJsonPath: string = path.join(
       pathGetDirectory(dir, path.sep),
-      `${pathGetFilename(dir, path.sep)}.json`
+      `${pathGetFilename(dir, path.sep)}.json`,
     );
     fileJsonCreate(projectJsonPath, project);
   }
