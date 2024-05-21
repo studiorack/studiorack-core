@@ -5,10 +5,10 @@ import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetRepo, pathGetWith
 import { pluginInstall, pluginUninstall } from './plugin.js';
 import { PluginVersionLocal, PluginValidationOptions } from './types/plugin.js';
 import { ProjectInterface, ProjectLocal, ProjectType, ProjectTypes } from './types/project.js';
-const readline = require('readline-sync');
+import { question } from 'readline-sync';
 
 function askQuestion(label: string, input: any, fallback: string) {
-  return readline.question(`${label}: ($<defaultInput>) `, {
+  return question(`${label}: ($<defaultInput>) `, {
     defaultInput: input || fallback,
   });
 }

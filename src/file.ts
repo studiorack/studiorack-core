@@ -1,25 +1,23 @@
 import AdmZip from 'adm-zip';
 import { execFileSync, execSync } from 'child_process';
-import {
-  chmodSync,
-  existsSync,
-  mkdirSync,
-  moveSync,
-  readdirSync,
-  readFileSync,
-  rmSync,
-  statSync,
-  unlinkSync,
-  writeFileSync,
-} from 'fs-extra';
 import { globSync } from 'glob';
 import os from 'os';
 import path from 'path';
 import { PlatformsSupported } from './types/config.js';
 import sudoPrompt from '@vscode/sudo-prompt';
 import { log } from './utils.js';
-
-const fsUtils: any = require('nodejs-fs-utils');
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  renameSync,
+  rmSync,
+  statSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs';
 
 // Plugin directories
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Plugin+Locations.html
@@ -101,7 +99,7 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return moveSync(dirPath, newPath, { overwrite: true });
+    return renameSync(dirPath, newPath);
   }
   return false;
 }
@@ -150,7 +148,7 @@ function dirRead(dirPath: string, options?: any): string[] {
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return moveSync(oldPath, newPath, { overwrite: true });
+    return renameSync(oldPath, newPath);
   }
   return false;
 }
@@ -207,7 +205,7 @@ function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return moveSync(dirPath, newPath, { overwrite: true });
+    return renameSync(dirPath, newPath);
   }
   return false;
 }
@@ -248,7 +246,7 @@ function fileReadString(filePath: string): string {
 }
 
 function fileSize(filePath: string): number {
-  return fsUtils.fsizeSync(filePath);
+  return statSync(filePath).size;
 }
 
 function isAdmin(): boolean {
