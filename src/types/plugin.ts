@@ -6,6 +6,9 @@ export interface PluginCategory {
 export interface PluginEntry {
   version: string;
   versions: PluginVersions;
+  // Deprecated in v2
+  id?: string;
+  license?: string;
 }
 
 export interface PluginFile {
@@ -82,12 +85,15 @@ export interface PluginVersion {
   date: string;
   description: string;
   homepage: string;
-  id?: string;
   name: string;
   files: PluginFiles;
-  license: string;
+  license: string | PluginLicense;
   tags: string[];
+  // Deprecated in v2
+  id?: string;
   version?: string;
+  release?: string;
+  repo?: string;
 }
 
 export interface PluginVersions {
