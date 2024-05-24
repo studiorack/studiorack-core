@@ -1,6 +1,6 @@
 // Run when Electron needs elevated privileges
-// npm run build && node ./dist/admin.js --operation install --id studiorack/adlplug/adlplug
-// npm run build && node ./dist/admin.js --operation uninstall --id studiorack/adlplug/adlplug
+// npm run build && node ./build/admin.js --operation install --id studiorack/adlplug/adlplug
+// npm run build && node ./build/admin.js --operation uninstall --id studiorack/adlplug/adlplug
 
 import { pluginInstall, pluginUninstall } from './plugin.js';
 

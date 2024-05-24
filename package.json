@@ -3,18 +3,18 @@
   "version": "2.0.2",
   "description": "Core library containing shared functionality",
   "type": "module",
-  "main": "./dist/index.js",
-  "exports": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./build/index.js",
+  "exports": "./build/index.js",
+  "types": "./build/index.d.ts",
   "files": [
-    "dist"
+    "build"
   ],
   "scripts": {
-    "copy": "copyfiles -u 1 ./src/images/* ./dist",
-    "start": "node dist/src/index.js",
-    "clean": "rimraf coverage dist tmp",
+    "copy": "copyfiles -u 1 ./src/images/* ./build",
+    "start": "node build/src/index.js",
+    "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
-    "build": "rimraf ./dist && tsc && npm run copy",
+    "build": "rimraf ./build && tsc && npm run copy",
     "dev": "tsx ./src/index.ts",
     "lint": "eslint ./**/*.ts",
     "test": "vitest run ./tests",
