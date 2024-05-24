@@ -91,9 +91,9 @@ export interface PluginVersion {
   tags: string[];
   // Deprecated in v2
   id?: string;
-  version?: string;
   release?: string;
   repo?: string;
+  version?: string;
 }
 
 export interface PluginVersions {

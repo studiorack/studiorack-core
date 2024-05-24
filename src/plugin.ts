@@ -291,11 +291,11 @@ function pluginLatest(pluginEntry: PluginEntry): PluginVersion {
   return plugin;
 }
 
-function pluginLicense(plugin: PluginVersion) {
+function pluginLicense(key: string) {
   const licenses: PluginLicense[] = configGet('licenses');
-  let licenseMatch: any = 'unlicense';
+  let licenseMatch: PluginLicense = licenses[licenses.length - 1];
   licenses.forEach((license: PluginLicense) => {
-    if (plugin.license === license.key) {
+    if (key === license.key) {
       licenseMatch = license;
       return;
     }
@@ -499,7 +499,6 @@ function pluginValidateSchema(plugin: PluginVersionLocal): string | boolean {
   error += pluginValidateField(plugin, 'homepage', 'string');
   error += pluginValidateField(plugin, 'name', 'string');
   error += pluginValidateField(plugin, 'files', 'object');
-  error += pluginValidateField(plugin, 'license', 'string');
 
   error += pluginValidateField(plugin, 'tags', 'object');
   error += pluginValidateField(plugin, 'version', 'string');

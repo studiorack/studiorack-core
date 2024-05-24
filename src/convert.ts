@@ -104,6 +104,8 @@ export interface PluginRegistry {
 }
 
 export interface PluginPack {
+  id?: string;
+  license?: string;
   version: string;
   versions: { [key: string]: PluginVersions };
 }
@@ -115,8 +117,10 @@ export interface PluginVersions {
   files: PluginFiles;
   homepage: string;
   id?: string;
-  license: string;
+  license: PluginLicense | string;
   name: string;
+  release?: string;
+  repo?: string;
   tags: string[];
   version?: string;
 }
@@ -131,6 +135,13 @@ export interface PluginFiles {
 
 export interface PluginFile {
   size: number;
+  url: string;
+}
+
+export interface PluginLicense {
+  key: string;
+  name: string;
+  same: boolean;
   url: string;
 }
 
@@ -160,9 +171,11 @@ export interface PluginVersionLocal {
   files: PluginFiles;
   homepage: string;
   id?: string;
-  license: string;
+  license: PluginLicense | string;
   name: string;
   paths: string[];
+  release?: string;
+  repo?: string;
   status: string;
   tags: string[];
   version?: string;
@@ -262,13 +275,6 @@ export interface ConfigInterface {
   projectRegistry: string;
   projectTypes: ProjectTypes;
   validatorUrl: string;
-}
-
-export interface PluginLicense {
-  key: string;
-  name: string;
-  same: boolean;
-  url: string;
 }
 
 export interface ConfigList {
@@ -1684,6 +1690,8 @@ const typeMap: any = {
   ),
   PluginPack: o(
     [
+      { json: 'id', js: 'id', typ: u(undefined, '') },
+      { json: 'license', js: 'license', typ: u(undefined, '') },
       { json: 'version', js: 'version', typ: '' },
       { json: 'versions', js: 'versions', typ: m(r('PluginVersions')) },
     ],
@@ -1697,8 +1705,10 @@ const typeMap: any = {
       { json: 'files', js: 'files', typ: r('PluginFiles') },
       { json: 'homepage', js: 'homepage', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, '') },
-      { json: 'license', js: 'license', typ: '' },
+      { json: 'license', js: 'license', typ: u(r('PluginLicense'), '') },
       { json: 'name', js: 'name', typ: '' },
+      { json: 'release', js: 'release', typ: u(undefined, '') },
+      { json: 'repo', js: 'repo', typ: u(undefined, '') },
       { json: 'tags', js: 'tags', typ: a('') },
       { json: 'version', js: 'version', typ: u(undefined, '') },
     ],
@@ -1717,6 +1727,15 @@ const typeMap: any = {
   PluginFile: o(
     [
       { json: 'size', js: 'size', typ: 3.14 },
+      { json: 'url', js: 'url', typ: '' },
+    ],
+    false,
+  ),
+  PluginLicense: o(
+    [
+      { json: 'key', js: 'key', typ: '' },
+      { json: 'name', js: 'name', typ: '' },
+      { json: 'same', js: 'same', typ: true },
       { json: 'url', js: 'url', typ: '' },
     ],
     false,
@@ -1752,9 +1771,11 @@ const typeMap: any = {
       { json: 'files', js: 'files', typ: r('PluginFiles') },
       { json: 'homepage', js: 'homepage', typ: '' },
       { json: 'id', js: 'id', typ: u(undefined, '') },
-      { json: 'license', js: 'license', typ: '' },
+      { json: 'license', js: 'license', typ: u(r('PluginLicense'), '') },
       { json: 'name', js: 'name', typ: '' },
       { json: 'paths', js: 'paths', typ: a('') },
+      { json: 'release', js: 'release', typ: u(undefined, '') },
+      { json: 'repo', js: 'repo', typ: u(undefined, '') },
       { json: 'status', js: 'status', typ: '' },
       { json: 'tags', js: 'tags', typ: a('') },
       { json: 'version', js: 'version', typ: u(undefined, '') },
@@ -1872,15 +1893,6 @@ const typeMap: any = {
       { json: 'projectRegistry', js: 'projectRegistry', typ: '' },
       { json: 'projectTypes', js: 'projectTypes', typ: r('ProjectTypes') },
       { json: 'validatorUrl', js: 'validatorUrl', typ: '' },
-    ],
-    false,
-  ),
-  PluginLicense: o(
-    [
-      { json: 'key', js: 'key', typ: '' },
-      { json: 'name', js: 'name', typ: '' },
-      { json: 'same', js: 'same', typ: true },
-      { json: 'url', js: 'url', typ: '' },
     ],
     false,
   ),
