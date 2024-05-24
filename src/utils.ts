@@ -109,7 +109,12 @@ function pathGetWithoutExt(pathItem: string): string {
 }
 
 function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
-  return plugin.files[type].url;
+  const file = plugin.files[type];
+  const filepath: string = file.name ? file.name : file.url;
+  if (filepath.startsWith('https://')) {
+    return filepath;
+  }
+  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${filepath}`;
 }
 
 function safeSlug(val: string): string {

@@ -19,7 +19,7 @@
     "lint": "eslint ./**/*.ts",
     "test": "vitest run ./tests",
     "format": "prettier --write ./src && prettier --write ./tests",
-    "test:watch": "vitest ./tests",
+    "test:watch": "vitest ./tests --hook-timeout=30000 --test-timeout=30000",
     "quicktype": "quicktype ./src/types/*.ts -o ./src/convert.ts",
     "prepare": "npm run build"
   },

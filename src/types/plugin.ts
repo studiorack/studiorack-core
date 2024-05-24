@@ -14,6 +14,7 @@ export interface PluginEntry {
 export interface PluginFile {
   url: string;
   size: number;
+  name?: string;
 }
 
 export interface PluginFiles {

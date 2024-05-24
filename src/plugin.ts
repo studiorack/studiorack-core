@@ -93,6 +93,8 @@ async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
   if (!plugin) {
     throw Error(`Plugin version not found ${version}`);
   }
+  plugin.id = id;
+  plugin.version = version;
   return plugin;
 }
 
@@ -285,10 +287,7 @@ function pluginInstalled(plugin: PluginVersion): boolean {
 }
 
 function pluginLatest(pluginEntry: PluginEntry): PluginVersion {
-  const plugin: PluginVersion = pluginEntry.versions[pluginEntry.version];
-  // pluginEntry.license = pluginLicense(pluginEntry);
-  // plugin.repo = pathGetRepo(pluginEntry.id);
-  return plugin;
+  return pluginEntry.versions[pluginEntry.version];
 }
 
 function pluginLicense(key: string) {

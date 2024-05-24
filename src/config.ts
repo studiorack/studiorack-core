@@ -21,7 +21,12 @@ dirCreate(appDir);
 if (!fileExists(CONFIG_FILE_PATH)) {
   fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirPresets(), dirProjects()));
 }
-const config: ConfigInterface = fileReadJson(CONFIG_FILE_PATH);
+let config: ConfigInterface = fileReadJson(CONFIG_FILE_PATH);
+// If using config v1, then overwrite with v2 defaults.
+if (!config.version) {
+  fileJsonCreate(CONFIG_FILE_PATH, configDefaults(appDir, dirPlugins(), dirPresets(), dirProjects()));
+  config = fileReadJson(CONFIG_FILE_PATH);
+}
 
 function configDelete(): boolean | void {
   return fileDelete(CONFIG_FILE_PATH);

@@ -2,6 +2,7 @@ import { PluginCategory, PluginFiles, PluginLicense, PluginTypes } from './plugi
 import { ProjectTypes } from './project.js';
 
 export interface ConfigInterface {
+  version: string;
   appFolder: string;
   extAudio: string;
   extFile: string;
