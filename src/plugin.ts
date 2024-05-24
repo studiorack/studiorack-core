@@ -501,12 +501,6 @@ function pluginValidateSchema(plugin: PluginVersionLocal): string | boolean {
   error += pluginValidateField(plugin, 'files', 'object');
 
   error += pluginValidateField(plugin, 'tags', 'object');
-  error += pluginValidateField(plugin, 'version', 'string');
-  if (!semver.valid(plugin.version)) {
-    error += `- version does not conform to semantic versioning ${plugin.version}\n`;
-  }
-  error += pluginValidateField(plugin, 'id', 'string');
-
   if (Number.isNaN(Date.parse(plugin.date))) {
     error += `- date not valid ${plugin.date}\n`;
   }
