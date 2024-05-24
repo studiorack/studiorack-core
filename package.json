@@ -5,6 +5,10 @@
   "type": "module",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "copy": "copyfiles -u 1 ./src/images/* ./dist",
     "start": "node dist/src/index.js",
