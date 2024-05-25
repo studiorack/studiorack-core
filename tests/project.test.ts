@@ -5,7 +5,7 @@ import {
   projectCreate,
   projectDefault,
   projectDirectory,
-  projectGetLocal,
+  // projectGetLocal,
   projectsGetLocal,
   projectInstall,
   projectLoad,
@@ -19,7 +19,7 @@ import {
 import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = path.join('test', 'projects');
-const PROJECT_ID: string = 'banwer-project/banwer';
+// const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = path.join('Banwer Project', 'Banwer.json');
 const PROJECT_DEFAULT: ProjectInterface = {
   author: 'studiorack-user',
