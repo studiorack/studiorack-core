@@ -101,7 +101,7 @@ async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
 async function pluginGetLocal(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugins: PluginVersionLocal[] = await pluginsGetLocal();
   return plugins.filter((plugin: PluginVersionLocal) => {
-    const matchVersion: boolean = version ? version === plugin.version : false;
+    const matchVersion: boolean = version ? version === plugin.version : true;
     return id === plugin.id && matchVersion;
   })[0];
 }
@@ -179,77 +179,82 @@ function pluginOrganize(dirSource: string, ext: string, dirTarget: string, plugi
 // This is a prototype
 async function pluginInstall(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugin: PluginVersionLocal = (await pluginGet(id, version)) as PluginVersionLocal;
+  plugin.paths = [];
+
   // If plugin is already installed then abort
-  if (pluginInstalled(plugin)) {
-    return pluginGetLocal(id, version);
-  }
+  if (pluginInstalled(plugin)) return pluginGetLocal(id, version);
+
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
   if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
     await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`);
-  } else {
-    plugin.paths = [];
-    const pluginUrl: string = pluginSource(plugin);
-    const pluginExt = pathGetExt(pluginUrl);
-    if (!validPluginExt.includes(pluginExt)) {
-      throw Error(`Unsupported file type ${pluginExt}`);
-    }
-    // Download the plugin data
-    const pluginData: Buffer = await apiBuffer(pluginUrl);
-    const dirTemp: string = path.join(dirAppData(), 'studiorack', 'downloads', plugin.id || '');
-    dirCreate(dirTemp);
-    // If the file is compressed
-    if (pluginExt === 'zip') {
-      let pathsAll: string[] = [];
-      zipExtract(pluginData, dirTemp);
-      if (plugin.tags.includes('sfz') || plugin.tags.includes('sf2')) {
-        // Plugin is a sample pack
-        const samplePackType: string = plugin.tags.includes('sfz') ? 'SFZ' : 'SF2';
-        dirCreate(pluginDirectory(plugin, samplePackType));
-        dirMove(dirTemp, pluginDirectory(plugin, samplePackType));
-        const samplePackPath: string = path.join(
-          pluginDirectory(plugin, samplePackType),
-          '**',
-          `*.${samplePackType.toLowerCase()}`,
-        );
-        pathsAll = dirRead(samplePackPath);
-      } else {
-        // Plugin is an instrument/effect
-        const pathsClap: string[] = pluginOrganize(dirTemp, 'clap', pluginDirectory(plugin, 'CLAP'), plugin);
-        const pathsCom: string[] = pluginOrganize(dirTemp, 'component', pluginDirectory(plugin, 'Components'), plugin);
-        const pathsDll: string[] = pluginOrganize(dirTemp, 'dll', pluginDirectory(plugin, 'DLL'), plugin);
-        const pathsLv2: string[] = pluginOrganize(dirTemp, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
-        const pathsVst: string[] = pluginOrganize(dirTemp, 'vst', pluginDirectory(plugin, 'VST'), plugin);
-        const pathsVst3: string[] = pluginOrganize(dirTemp, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
-        pathsAll = pathsClap.concat(pathsCom, pathsDll, pathsLv2, pathsVst, pathsVst3);
+    return plugin;
+  }
 
-        // If a preset directory exists
-        const dirTempPresets: string = path.join(dirTemp, 'Presets');
-        log('dirTempPresets', dirTempPresets);
-        if (dirExists(dirTempPresets)) {
-          const dirTarget: string = configGet('presetFolder');
-          const files: string[] = dirRead(`${dirTempPresets}/**/*`);
-          log('dirTarget', dirTarget);
-          files.forEach((file: string) => {
-            if (file.includes('__MACOSX')) return;
-            const fileSourceExt: string = path.join(dirTarget, path.basename(file));
-            if (fileExists(fileSourceExt)) return;
-            fileMove(file, fileSourceExt);
-            log('fileMove', file, fileSourceExt);
-          });
-        }
-      }
-      // Save json metadata file alongside each plugin file/format
-      pathsAll.forEach((pluginPath: string) => {
-        plugin.paths.push(pluginPath);
-      });
-      dirDelete(dirTemp);
+  // Check file extension is supported
+  const pluginUrl: string = pluginSource(plugin);
+  const pluginExt = pathGetExt(pluginUrl);
+  if (!validPluginExt.includes(pluginExt)) {
+    throw Error(`Unsupported file type ${pluginExt}`);
+  }
+
+  // Download plugin data
+  const pluginData: Buffer = await apiBuffer(pluginUrl);
+  const dirTemp: string = path.join(dirAppData(), 'studiorack', 'downloads', plugin.id || '');
+  dirCreate(dirTemp);
+
+  // If the file is compressed
+  if (pluginExt === 'zip') {
+    let pathsAll: string[] = [];
+    zipExtract(pluginData, dirTemp);
+
+    // If plugin is a sample pack
+    if (plugin.tags.includes('sfz') || plugin.tags.includes('sf2')) {
+      const samplePackType: string = plugin.tags.includes('sfz') ? 'SFZ' : 'SF2';
+      dirCreate(pluginDirectory(plugin, samplePackType));
+      dirMove(dirTemp, pluginDirectory(plugin, samplePackType));
+      const samplePackPath: string = path.join(
+        pluginDirectory(plugin, samplePackType),
+        '**',
+        `*.${samplePackType.toLowerCase()}`,
+      );
+      pathsAll = dirRead(samplePackPath);
     } else {
-      // Plugin is an installer
-      const pluginPath: string = path.join(dirTemp, plugin.files[getPlatform()].url);
-      fileCreate(pluginPath, pluginData);
-      plugin.paths.push(pluginPath);
+      // Plugin is an instrument/effect
+      const pathsClap: string[] = pluginOrganize(dirTemp, 'clap', pluginDirectory(plugin, 'CLAP'), plugin);
+      const pathsCom: string[] = pluginOrganize(dirTemp, 'component', pluginDirectory(plugin, 'Components'), plugin);
+      const pathsDll: string[] = pluginOrganize(dirTemp, 'dll', pluginDirectory(plugin, 'DLL'), plugin);
+      const pathsLv2: string[] = pluginOrganize(dirTemp, 'lv2', pluginDirectory(plugin, 'LV2'), plugin);
+      const pathsVst: string[] = pluginOrganize(dirTemp, 'vst', pluginDirectory(plugin, 'VST'), plugin);
+      const pathsVst3: string[] = pluginOrganize(dirTemp, 'vst3', pluginDirectory(plugin, 'VST3'), plugin);
+      pathsAll = pathsClap.concat(pathsCom, pathsDll, pathsLv2, pathsVst, pathsVst3);
+
+      // If a preset directory exists
+      const dirTempPresets: string = path.join(dirTemp, 'Presets');
+      log('dirTempPresets', dirTempPresets);
+      if (dirExists(dirTempPresets)) {
+        const dirTarget: string = configGet('presetFolder');
+        const files: string[] = dirRead(`${dirTempPresets}/**/*`);
+        log('dirTarget', dirTarget);
+        files.forEach((file: string) => {
+          if (file.includes('__MACOSX')) return;
+          const fileSourceExt: string = path.join(dirTarget, path.basename(file));
+          if (fileExists(fileSourceExt)) return;
+          fileMove(file, fileSourceExt);
+          log('fileMove', file, fileSourceExt);
+        });
+      }
     }
+    // Save json metadata file alongside each plugin file/format
+    pathsAll.forEach((pluginPath: string) => {
+      plugin.paths.push(pluginPath);
+    });
+    dirDelete(dirTemp);
+  } else {
+    // Plugin is an installer
+    const pluginPath: string = path.join(dirTemp, plugin.files[getPlatform()].url);
+    fileCreate(pluginPath, pluginData);
+    plugin.paths.push(pluginPath);
   }
   plugin.paths.sort();
   plugin.status = 'installed';
@@ -325,6 +330,7 @@ async function pluginSearch(query?: string): Promise<PluginVersion[]> {
 
 function pluginSource(plugin: PluginVersion): string {
   const pluginFile: PluginFile = plugin.files[getPlatform()];
+  if (pluginFile.url) return pluginFile.url;
   const pluginRoot: string = configGet('pluginRelease').replace('${repo}');
   if (pluginFile) {
     return path.join(pluginRoot, plugin.id || '', plugin.files[getPlatform()].url);

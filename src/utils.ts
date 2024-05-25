@@ -33,7 +33,9 @@ function inputGetParts(input: string): string[] {
 }
 
 function isTests() {
-  return process.env.JEST_WORKER_ID !== undefined;
+  const jest: boolean = process.env.JEST_WORKER_ID !== undefined;
+  const vitest: boolean = process.env.VITEST_WORKER_ID !== undefined;
+  return jest || vitest;
 }
 
 function log(...args: any) {

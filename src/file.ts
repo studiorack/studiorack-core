@@ -6,6 +6,8 @@ import path from 'path';
 import { PlatformsSupported } from './types/config.js';
 import sudoPrompt from '@vscode/sudo-prompt';
 import { log } from './utils.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import {
   chmodSync,
   existsSync,
@@ -264,7 +266,8 @@ function isAdmin(): boolean {
 
 function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
+    const filename: string = fileURLToPath(import.meta.url).replace('src/', 'build/');
+    const dirPathClean: string = dirname(filename).replace('app.asar', 'app.asar.unpacked');
     log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
     sudoPrompt.exec(
       `node "${dirPathClean}${path.sep}admin.js" ${args}`,
