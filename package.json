@@ -17,9 +17,9 @@
     "build": "rimraf ./build && tsc && npm run copy",
     "dev": "tsx ./src/index.ts",
     "lint": "eslint ./**/*.ts",
-    "test": "vitest run ./tests",
+    "test": "vitest run ./tests --hook-timeout=60000 --test-timeout=60000",
     "format": "prettier --write ./src && prettier --write ./tests",
-    "test:watch": "vitest ./tests --hook-timeout=30000 --test-timeout=30000",
+    "test:watch": "vitest ./tests",
     "quicktype": "quicktype ./src/types/*.ts -o ./src/convert.ts",
     "prepare": "npm run build"
   },

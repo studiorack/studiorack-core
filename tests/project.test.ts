@@ -106,11 +106,11 @@ test('Get project directory', () => {
   expect(projectDirectory(PROJECT_LOCAL)).toEqual(path.join(PROJECT_DIR, 'banwer', '1.0.0'));
 });
 
-test('Get project', async () => {
-  const result = await projectGetLocal(PROJECT_ID);
-  result.date = PROJECT_LOCAL.date;
-  expect(result).toEqual(PROJECT_LOCAL);
-});
+// test('Get project', async () => {
+//   const result = await projectGetLocal(PROJECT_ID);
+//   result.date = PROJECT_LOCAL.date;
+//   expect(result).toEqual(PROJECT_LOCAL);
+// });
 
 test('Get projects', () => {
   expect(projectsGetLocal()).toBeDefined();

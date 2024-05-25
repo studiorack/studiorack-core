@@ -30,131 +30,139 @@ import { PluginVersion, PluginVersionLocal, PluginTemplate } from '../src/types/
 //   versions: {},
 // };
 
-// const PLUGIN_VERSION: PluginVersion = {
-//   name: 'Surge XT',
-//   author: 'Surge Synth Team',
-//   homepage: 'https://github.com/surge-synthesizer/surge',
-//   description:
-//     'Hybrid synthesizer featuring many synthesis techniques, a great selection of filters, a flexible modulation engine, a smorgasbord of effects, and modern features like MPE and microtuning.',
-//   date: '2024-02-06T00:00:00.000Z',
-//   license: 'gpl-3.0',
-//   tags: ['Instrument', 'Synth', 'Modulation'],
-//   files: {
-//     audio: {
-//       url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.flac',
-//       size: 141339,
-//     },
-//     image: {
-//       url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.jpg',
-//       size: 159518,
-//     },
-//     linux: {
-//       url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-linux-1.3.1-pluginsonly.tar.gz',
-//       size: 94448096,
-//     },
-//     mac: {
-//       url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-macos-1.3.1-pluginsonly.zip',
-//       size: 180726292,
-//     },
-//     win: {
-//       url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-win64-1.3.1-pluginsonly.zip',
-//       size: 48165645,
-//     },
-//   },
-// };
-
 const PLUGIN_DIR: string = path.join('test', 'plugins');
-const PLUGIN_ID: string = 'surge-synthesizer/surge';
+const PLUGIN_ID: string = 'studiorack/mda/mda';
 const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
 const PLUGIN: PluginVersion = {
-  name: 'Surge XT',
-  author: 'Surge Synth Team',
-  homepage: 'https://github.com/surge-synthesizer/surge',
-  description:
-    'Hybrid synthesizer featuring many synthesis techniques, a great selection of filters, a flexible modulation engine, a smorgasbord of effects, and modern features like MPE and microtuning.',
-  date: '2024-02-06T00:00:00.000Z',
-  license: 'gpl-3.0',
-  tags: ['Instrument', 'Synth', 'Modulation'],
+  author: 'Paul Kellett',
+  homepage: 'http://mda.smartelectronix.com',
+  name: 'MDA',
+  description: 'Collection of effect plug-ins, from delay to an overdrive and a vocoder.',
+  tags: ['Effect', 'Delay', 'Vocoder'],
+  date: '2020-12-20T08:00:00.000Z',
   files: {
     audio: {
-      url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.flac',
-      size: 141339,
+      name: 'mda.flac',
+      size: 127392,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda.flac',
     },
     image: {
-      url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.jpg',
-      size: 159518,
+      name: 'mda.jpg',
+      size: 104156,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda.jpg',
     },
     linux: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-linux-1.3.1-pluginsonly.tar.gz',
-      size: 94448096,
+      name: 'mda-linux.zip',
+      size: 70938,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-linux.zip',
     },
     mac: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-macos-1.3.1-pluginsonly.zip',
-      size: 180726292,
+      name: 'mda-mac.zip',
+      size: 5122516,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-mac.zip',
     },
     win: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-win64-1.3.1-pluginsonly.zip',
-      size: 48165645,
+      name: 'mda-win.zip',
+      size: 1247768,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-win.zip',
     },
   },
-  id: 'surge-synthesizer/surge',
-  version: '1.3.1',
+  license: 'gpl-3.0',
+  id: 'studiorack/mda/mda',
+  version: '1.0.4',
 };
 const PLUGIN_LOCAL: PluginVersionLocal = {
-  name: 'Surge XT',
-  author: 'Surge Synth Team',
-  homepage: 'https://github.com/surge-synthesizer/surge',
-  description:
-    'Hybrid synthesizer featuring many synthesis techniques, a great selection of filters, a flexible modulation engine, a smorgasbord of effects, and modern features like MPE and microtuning.',
-  date: '2024-02-06T00:00:00.000Z',
-  license: 'gpl-3.0',
-  tags: ['Instrument', 'Synth', 'Modulation'],
+  author: 'Paul Kellett',
+  homepage: 'http://mda.smartelectronix.com',
+  name: 'MDA',
+  description: 'Collection of effect plug-ins, from delay to an overdrive and a vocoder.',
+  tags: ['Effect', 'Delay', 'Vocoder'],
+  date: '2020-12-20T08:00:00.000Z',
   files: {
     audio: {
-      url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.flac',
-      size: 141339,
+      name: 'mda.flac',
+      size: 127392,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda.flac',
     },
     image: {
-      url: 'https://studiorack.github.io/studiorack-registry/plugins/surge-synthesizer/surge/surge.jpg',
-      size: 159518,
+      name: 'mda.jpg',
+      size: 104156,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda.jpg',
     },
     linux: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-linux-1.3.1-pluginsonly.tar.gz',
-      size: 94448096,
+      name: 'mda-linux.zip',
+      size: 70938,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-linux.zip',
     },
     mac: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-macos-1.3.1-pluginsonly.zip',
-      size: 180726292,
+      name: 'mda-mac.zip',
+      size: 5122516,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-mac.zip',
     },
     win: {
-      url: 'https://github.com/surge-synthesizer/releases-xt/releases/download/1.3.1/surge-xt-win64-1.3.1-pluginsonly.zip',
-      size: 48165645,
+      name: 'mda-win.zip',
+      size: 1247768,
+      url: 'https://github.com/studiorack/mda/releases/download/v1.0.4/mda-win.zip',
     },
   },
-  id: 'surge-synthesizer/surge',
-  version: '1.3.1',
+  license: 'gpl-3.0',
+  id: 'studiorack/mda/mda',
+  version: '1.0.4',
   paths: [],
   status: 'installed',
 };
 
 if (process.platform === 'win32') {
   PLUGIN_LOCAL.paths = [
-    path.join('test', 'plugins', 'DLL', 'surge-synthesizer', 'surge', '1.3.1', 'Surge-vst3.dll'),
-    path.join('test', 'plugins', 'DLL', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.dll'),
-    path.join('test', 'plugins', 'LV2', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.lv2'),
+    path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda.dll'),
+    path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda.dll'),
+    path.join('test', 'plugins', 'LV2', 'studiorack', 'mda', 'mda', '1.0.4', 'mda.lv2'),
   ];
 } else if (process.platform === 'darwin') {
   PLUGIN_LOCAL.paths = [
-    path.join('test', 'plugins', 'Components', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.component'),
-    path.join('test', 'plugins', 'LV2', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.lv2'),
-    path.join('test', 'plugins', 'VST', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.vst'),
-    path.join('test', 'plugins', 'VST3', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.vst3'),
+    path.join('test', 'plugins', 'Components', 'studiorack', 'mda', 'mda', '1.0.4', 'mda.component'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Ambience.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Bandisto.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda BeatBox.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Combo.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda DX10.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda De-ess.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Degrade.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Delay.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Detune.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Dither.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda DubDelay.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Dynamics.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Image.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda JX10.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Leslie.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Limiter.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Looplex.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Loudness.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda MultiBand.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Overdrive.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Piano.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda RePsycho!.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda RezFilter.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda RingMod.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda RoundPan.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Shepard.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Splitter.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Stereo.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda SubBass.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Talkbox.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda TestTone.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda ThruZero.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Tracker.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda VocInput.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Vocoder.vst'),
+    path.join('test', 'plugins', 'VST', 'studiorack', 'mda', 'mda', '1.0.4', 'mda ePiano.vst'),
   ];
 } else {
-  PLUGIN_LOCAL.paths = [path.join('test', 'plugins', 'LV2', 'surge-synthesizer', 'surge', '1.3.1', 'Surge.lv2')];
+  PLUGIN_LOCAL.paths = [path.join('test', 'plugins', 'LV2', 'studiorack', 'mda', 'mda', '1.0.4', 'mda.lv2')];
 }
-PLUGIN_LOCAL.paths.sort();
+// PLUGIN_LOCAL.paths.sort();
 
 beforeAll(() => {
   configSet('pluginFolder', PLUGIN_DIR);
@@ -202,7 +210,7 @@ test('Check if plugin is installed locally', () => {
 });
 
 test('Get plugin locally', async () => {
-  expect(await pluginGetLocal('surge-synthesizer/surge')).toMatchObject(PLUGIN_LOCAL);
+  expect(await pluginGetLocal('studiorack/mda/mda')).toMatchObject(PLUGIN_LOCAL);
 });
 
 test('List plugins in registry', async () => {
