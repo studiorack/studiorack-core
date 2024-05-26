@@ -10,11 +10,11 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import {
   chmodSync,
-  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
   readdirSync,
+  renameSync,
   rmSync,
   statSync,
   unlinkSync,
@@ -101,7 +101,7 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return copyFileSync(dirPath, newPath);
+    return renameSync(dirPath, newPath);
   }
   return false;
 }
@@ -150,7 +150,7 @@ function dirRead(dirPath: string, options?: any): string[] {
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return copyFileSync(oldPath, newPath);
+    return renameSync(oldPath, newPath);
   }
   return false;
 }
@@ -207,7 +207,7 @@ function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return copyFileSync(dirPath, newPath);
+    return renameSync(dirPath, newPath);
   }
   return false;
 }
