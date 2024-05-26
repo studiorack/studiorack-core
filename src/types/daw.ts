@@ -48,8 +48,6 @@ interface DAWProject {
   $version: string;
 }
 
-class Project {}
-
 interface DAWStructure {
   Track: DAWTrack;
   Channel: DAWChannel;
