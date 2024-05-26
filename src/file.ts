@@ -79,7 +79,7 @@ function dirCreate(dirPath: string): string | boolean {
 function dirDelete(dirPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
-    return rmSync(dirPath, { recursive: true });
+    return rmSync(dirPath, { force: true, recursive: true });
   }
   return false;
 }
