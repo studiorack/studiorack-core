@@ -145,7 +145,7 @@ if (process.platform === 'win32') {
     path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda ThruZero.dll'),
     path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Tracker.dll'),
     path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda VocInput.dll'),
-    path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Vocoder.vst'),
+    path.join('test', 'plugins', 'DLL', 'studiorack', 'mda', 'mda', '1.0.4', 'mda Vocoder.dll'),
   ];
 } else if (process.platform === 'darwin') {
   PLUGIN_LOCAL.paths = [
