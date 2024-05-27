@@ -1,6 +1,7 @@
 import slugify from 'slugify';
 
-import { PlatformTypes, PluginFiles, PluginInterface } from './types/plugin';
+import { PluginFiles, PluginVersion } from './types/plugin.js';
+import { PlatformTypes } from './types/config.js';
 
 const platformTypes: PlatformTypes = {
   aix: 'linux',
@@ -16,11 +17,11 @@ const platformTypes: PlatformTypes = {
   win64: 'win',
 };
 let LOGGING_ENABLED: boolean = false;
-const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@\/]+/g;
+const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
 function getPlatform(): keyof PluginFiles {
-  return platformTypes[process.platform];
+  return platformTypes[process.platform as keyof PlatformTypes];
 }
 
 function idToSlug(id: string): string {
@@ -32,7 +33,9 @@ function inputGetParts(input: string): string[] {
 }
 
 function isTests() {
-  return process.env.JEST_WORKER_ID !== undefined;
+  const jest: boolean = process.env.JEST_WORKER_ID !== undefined;
+  const vitest: boolean = process.env.VITEST_WORKER_ID !== undefined;
+  return jest || vitest;
 }
 
 function log(...args: any) {
@@ -41,11 +44,11 @@ function log(...args: any) {
   }
 }
 
-function logEnable(...args: any) {
+function logEnable() {
   LOGGING_ENABLED = true;
 }
 
-function logDisable(...args: any) {
+function logDisable() {
   LOGGING_ENABLED = false;
 }
 
@@ -107,15 +110,17 @@ function pathGetWithoutExt(pathItem: string): string {
   return pathItem;
 }
 
-function pluginFileUrl(plugin: PluginInterface, type: keyof PluginFiles): string {
+function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
   const file = plugin.files[type];
-  if (file.name.startsWith('https://')) {
-    return file.name;
+  const filepath: string = file.name ? file.name : file.url;
+  if (filepath.startsWith('https://')) {
+    return filepath;
   }
-  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${file.name}`;
+  return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${filepath}`;
 }
 
 function safeSlug(val: string): string {
+  // @ts-expect-error slugify library issue with ESM modules
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 

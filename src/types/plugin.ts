@@ -1,35 +1,23 @@
-interface PlatformTypes {
-  aix: keyof PluginFiles;
-  android: keyof PluginFiles;
-  cygwin: keyof PluginFiles;
-  darwin: keyof PluginFiles;
-  freebsd: keyof PluginFiles;
-  linux: keyof PluginFiles;
-  netbsd: keyof PluginFiles;
-  openbsd: keyof PluginFiles;
-  sunos: keyof PluginFiles;
-  win32: keyof PluginFiles;
-  win64: keyof PluginFiles;
-}
-
-interface PluginCategory {
+export interface PluginCategory {
   name: string;
   tags: string[];
 }
 
-interface PluginEntry {
-  id: string;
-  license: string;
+export interface PluginEntry {
   version: string;
-  versions: { [version: string]: PluginInterface };
+  versions: PluginVersions;
+  // Deprecated in v2
+  id?: string;
+  license?: string;
 }
 
-interface PluginFile {
-  name: string;
+export interface PluginFile {
+  url: string;
   size: number;
+  name?: string;
 }
 
-interface PluginFiles {
+export interface PluginFiles {
   audio: PluginFile;
   image: PluginFile;
   linux: PluginFile;
@@ -37,46 +25,25 @@ interface PluginFiles {
   win: PluginFile;
 }
 
-interface PluginInterface {
-  author: string;
-  date: string;
-  description: string;
-  homepage: string;
-  id: string;
-  name: string;
-  files: PluginFiles;
-  license?: PluginLicense;
-  release: string;
-  repo: string;
-  tags: string[];
-  type?: PluginType;
-  version: string;
-}
-
-interface PluginLicense {
+export interface PluginLicense {
   key: string;
   name: string;
   url: string;
   same: boolean;
 }
 
-interface PluginLocal extends PluginInterface {
-  paths: string[];
-  status: string;
+export interface PluginPack {
+  [id: string]: PluginEntry;
 }
 
-interface PluginPack {
-  [property: string]: PluginEntry;
-}
-
-interface PluginRegistry {
+export interface PluginRegistry {
   name: string;
   url: string;
   version: string;
   objects: PluginPack;
 }
 
-interface PluginTemplate {
+export interface PluginTemplate {
   clap: string;
   dpf: string;
   dplug: string;
@@ -87,12 +54,12 @@ interface PluginTemplate {
   steinberg: string;
 }
 
-interface PluginType {
+export interface PluginType {
   name: string;
   ext: string;
 }
 
-interface PluginTypes {
+export interface PluginTypes {
   audioUnits: PluginType;
   avidAudioExtension: PluginType;
   cleverAudioPlugin: PluginType;
@@ -106,7 +73,7 @@ interface PluginTypes {
   virtualStudioTechnology3: PluginType;
 }
 
-interface PluginValidationOptions {
+export interface PluginValidationOptions {
   files?: boolean;
   json?: boolean;
   summary?: boolean;
@@ -114,19 +81,27 @@ interface PluginValidationOptions {
   zip?: boolean;
 }
 
-export {
-  PlatformTypes,
-  PluginCategory,
-  PluginEntry,
-  PluginFile,
-  PluginFiles,
-  PluginInterface,
-  PluginLicense,
-  PluginLocal,
-  PluginPack,
-  PluginRegistry,
-  PluginTemplate,
-  PluginType,
-  PluginTypes,
-  PluginValidationOptions,
-};
+export interface PluginVersion {
+  author: string;
+  date: string;
+  description: string;
+  homepage: string;
+  name: string;
+  files: PluginFiles;
+  license: string | PluginLicense;
+  tags: string[];
+  // Deprecated in v2
+  id?: string;
+  release?: string;
+  repo?: string;
+  version?: string;
+}
+
+export interface PluginVersions {
+  [version: string]: PluginVersion;
+}
+
+export interface PluginVersionLocal extends PluginVersion {
+  paths: string[];
+  status: string;
+}

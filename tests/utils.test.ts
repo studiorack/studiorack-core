@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import path from 'path';
 import {
   getPlatform,

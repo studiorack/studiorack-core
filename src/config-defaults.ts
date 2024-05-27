@@ -1,12 +1,13 @@
-import { ConfigInterface } from './types/config';
+import { ConfigInterface } from './types/config.js';
 
 function configDefaults(
   appFolder: string,
   pluginFolder: string,
   presetFolder: string,
-  projectFolder: string
+  projectFolder: string,
 ): ConfigInterface {
   return {
+    version: '2.0.0',
     appFolder,
     extAudio: '.wav',
     extFile: '.json',
@@ -335,7 +336,7 @@ function configDefaults(
     },
     pluginFile: 'plugin.json',
     pluginFolder,
-    pluginRegistry: 'https://studiorack.github.io/studiorack-registry/${type}.json',
+    pluginRegistry: 'https://studiorack.github.io/studiorack-registry/v2/${type}.json',
     pluginRelease: 'https://github.com/${repo}/releases/download',
     pluginTemplate: 'https://github.com/studiorack/studiorack-template-${template}/archive/main.zip',
     pluginTypes: {
@@ -387,7 +388,7 @@ function configDefaults(
     presetFolder,
     projectFile: 'project.json',
     projectFolder,
-    projectRegistry: 'https://studiorack.github.io/studiorack-registry/',
+    projectRegistry: 'https://studiorack.github.io/studiorack-registry/v2/',
     projectTypes: {
       ableton: {
         name: 'Ableton',

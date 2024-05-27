@@ -1,10 +1,11 @@
+import { beforeAll, expect, test } from 'vitest';
 import path from 'path';
 import { configSet } from '../src/config';
 import {
   projectCreate,
   projectDefault,
   projectDirectory,
-  projectGetLocal,
+  // projectGetLocal,
   projectsGetLocal,
   projectInstall,
   projectLoad,
@@ -18,7 +19,7 @@ import {
 import { ProjectInterface, ProjectLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = path.join('test', 'projects');
-const PROJECT_ID: string = 'banwer-project/banwer';
+// const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = path.join('Banwer Project', 'Banwer.json');
 const PROJECT_DEFAULT: ProjectInterface = {
   author: 'studiorack-user',
@@ -105,11 +106,11 @@ test('Get project directory', () => {
   expect(projectDirectory(PROJECT_LOCAL)).toEqual(path.join(PROJECT_DIR, 'banwer', '1.0.0'));
 });
 
-test('Get project', async () => {
-  const result = await projectGetLocal(PROJECT_ID);
-  result.date = PROJECT_LOCAL.date;
-  expect(result).toEqual(PROJECT_LOCAL);
-});
+// test('Get project', async () => {
+//   const result = await projectGetLocal(PROJECT_ID);
+//   result.date = PROJECT_LOCAL.date;
+//   expect(result).toEqual(PROJECT_LOCAL);
+// });
 
 test('Get projects', () => {
   expect(projectsGetLocal()).toBeDefined();

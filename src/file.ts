@@ -1,25 +1,25 @@
 import AdmZip from 'adm-zip';
 import { execFileSync, execSync } from 'child_process';
+import { globSync } from 'glob';
+import os from 'os';
+import path from 'path';
+import { PlatformsSupported } from './types/config.js';
+import sudoPrompt from '@vscode/sudo-prompt';
+import { log } from './utils.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { moveSync } from 'fs-extra';
 import {
   chmodSync,
   existsSync,
   mkdirSync,
-  moveSync,
   readdirSync,
   readFileSync,
   rmSync,
   statSync,
   unlinkSync,
   writeFileSync,
-} from 'fs-extra';
-import { globSync } from 'glob';
-import os from 'os';
-import path from 'path';
-import { PlatformsSupported } from './types/config';
-import sudoPrompt from '@vscode/sudo-prompt';
-import { log } from './utils';
-
-const fsUtils: any = require('nodejs-fs-utils');
+} from 'fs';
 
 // Plugin directories
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Plugin+Locations.html
@@ -125,11 +125,11 @@ function dirOpen(dirPath: string): Buffer {
 }
 
 function dirPlugins(): string {
-  return pluginDirectories[process.platform];
+  return pluginDirectories[process.platform as keyof PlatformsSupported];
 }
 
 function dirPresets(): string {
-  return presetDirectories[process.platform];
+  return presetDirectories[process.platform as keyof PlatformsSupported];
 }
 
 function dirProjects(): string {
@@ -248,7 +248,7 @@ function fileReadString(filePath: string): string {
 }
 
 function fileSize(filePath: string): number {
-  return fsUtils.fsizeSync(filePath);
+  return statSync(filePath).size;
 }
 
 function isAdmin(): boolean {
@@ -260,13 +260,14 @@ function isAdmin(): boolean {
       return false;
     }
   } else {
-    return process.getuid() === 0;
+    return process && process.getuid ? process.getuid() === 0 : false;
   }
 }
 
 function runCliAsAdmin(args: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    const dirPathClean: string = __dirname.replace('app.asar', 'app.asar.unpacked');
+    const filename: string = fileURLToPath(import.meta.url).replace('src/', 'build/');
+    const dirPathClean: string = dirname(filename).replace('app.asar', 'app.asar.unpacked');
     log(`node "${dirPathClean}${path.sep}admin.js" ${args}`);
     sudoPrompt.exec(
       `node "${dirPathClean}${path.sep}admin.js" ${args}`,
@@ -283,7 +284,7 @@ function runCliAsAdmin(args: string): Promise<string> {
         } else {
           resolve(stdout?.toString() || '');
         }
-      }
+      },
     );
   });
 }
@@ -294,7 +295,7 @@ function zipCreate(filesPath: string, zipPath: string): void {
   }
   const zip: AdmZip = new AdmZip();
   const pathList: string[] = dirRead(filesPath);
-  pathList.forEach((pathItem) => {
+  pathList.forEach(pathItem => {
     log('⎋', pathItem);
     try {
       if (dirIs(pathItem)) {

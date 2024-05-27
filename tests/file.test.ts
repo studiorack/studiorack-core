@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import {
   dirAppData,
   dirContains,
@@ -13,21 +14,8 @@ import {
   dirProjects,
   dirRead,
   dirRename,
-  fileAdd,
   fileCreate,
-  fileDate,
-  fileDelete,
-  fileExec,
-  fileExists,
-  fileJsonCreate,
-  fileRead,
-  fileReadJson,
-  fileMove,
-  fileOpen,
-  fileSize,
   isAdmin,
-  zipCreate,
-  zipExtract,
 } from '../src/file';
 import os from 'os';
 import path from 'path';
