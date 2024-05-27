@@ -74,7 +74,8 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
 }
 
 function pluginDirectory(plugin: PluginVersion, type = 'VST3', depth?: number): string {
-  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), plugin.id || '', plugin.version || ''];
+  const pluginPath: string = (plugin.id || '').replace(/\//g, path.sep);
+  const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), pluginPath, plugin.version || ''];
   if (depth) {
     return pluginPaths.slice(0, depth).join(path.sep);
   }

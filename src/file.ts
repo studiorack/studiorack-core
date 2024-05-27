@@ -12,14 +12,14 @@ import {
   chmodSync,
   existsSync,
   mkdirSync,
-  readFileSync,
+  moveSync,
   readdirSync,
-  renameSync,
+  readFileSync,
   rmSync,
   statSync,
   unlinkSync,
   writeFileSync,
-} from 'fs';
+} from 'fs-extra';
 
 // Plugin directories
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Plugin+Locations.html
@@ -79,7 +79,7 @@ function dirCreate(dirPath: string): string | boolean {
 function dirDelete(dirPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
-    return rmSync(dirPath, { force: true, recursive: true });
+    return rmSync(dirPath, { recursive: true });
   }
   return false;
 }
@@ -101,7 +101,7 @@ function dirMove(dirPath: string, newPath: string): void | boolean {
   if (dirExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return renameSync(dirPath, newPath);
+    return moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -150,7 +150,7 @@ function dirRead(dirPath: string, options?: any): string[] {
 
 function dirRename(oldPath: string, newPath: string): void | boolean {
   if (dirExists(oldPath)) {
-    return renameSync(oldPath, newPath);
+    return moveSync(oldPath, newPath, { overwrite: true });
   }
   return false;
 }
@@ -207,7 +207,7 @@ function fileMove(dirPath: string, newPath: string): void | boolean {
   if (fileExists(dirPath)) {
     log('-', dirPath);
     log('+', newPath);
-    return renameSync(dirPath, newPath);
+    return moveSync(dirPath, newPath, { overwrite: true });
   }
   return false;
 }
