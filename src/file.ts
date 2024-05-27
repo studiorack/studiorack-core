@@ -8,18 +8,18 @@ import sudoPrompt from '@vscode/sudo-prompt';
 import { log } from './utils.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { moveSync } from 'fs-extra';
 import {
   chmodSync,
   existsSync,
   mkdirSync,
-  moveSync,
   readdirSync,
   readFileSync,
   rmSync,
   statSync,
   unlinkSync,
   writeFileSync,
-} from 'fs-extra';
+} from 'fs';
 
 // Plugin directories
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Locations+Format/Plugin+Locations.html
