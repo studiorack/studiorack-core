@@ -13,6 +13,16 @@ Common methods package shared across StudioRack CLI, app and website for handlin
 - tool - Utilities and tools for validating plugins
 - utils - Other helper methods and string utilities
 
+To install the common package, run the command:
+
+    npm install @studiorack/core
+
+Import the package using:
+
+    import { toolInstall } from '@studiorack/core';
+
+Then use the available methods as normal.
+
 ## Developer information
 
 StudioRack Core was built using:
@@ -22,26 +32,29 @@ StudioRack Core was built using:
 
 ## Installation
 
-To install the common package, run the command:
+To install, build and run code locally, first install dependencies:
 
-    npm install @studiorack/core
+    npm install
 
 ## Usage
 
-Import the package using:
+Run dev command:
 
-    import { toolInstall } from '@studiorack/core';
+    npm run dev
 
-Then use the available methods as normal.
+Or to create and run a production build:
+
+    npm run build
+    npm start
 
 ## Deployment
 
-Release an updated version on npm by simply creating a version tag:
+This package is versioned using git tags:
 
     npm version patch
     git push && git push origin --tags
 
-Then publish to npm using:
+It is published to npm using:
 
     npm publish
 
