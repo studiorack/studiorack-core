@@ -23,10 +23,6 @@
     "quicktype": "quicktype ./src/types/*.ts -o ./src/convert.ts",
     "prepare": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/studiorack/studiorack-core.git"
-  },
   "keywords": [
     "studiorack",
     "plugin",
@@ -36,10 +32,6 @@
   ],
   "author": "kmturley",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/studiorack/studiorack-core/issues"
-  },
-  "homepage": "https://github.com/studiorack/studiorack-core#readme",
   "engines": {
     "node": ">=18"
   },
@@ -73,5 +65,13 @@
     "typescript": "^5.4.2",
     "typescript-eslint": "^7.9.0",
     "vitest": "^1.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/studiorack/studiorack-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/studiorack/studiorack-core/issues"
+  },
+  "homepage": "https://github.com/studiorack/studiorack-core#readme"
 }
