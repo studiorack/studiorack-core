@@ -8,7 +8,7 @@ import sudoPrompt from '@vscode/sudo-prompt';
 import { log } from './utils.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { moveSync } from 'fs-extra';
+import { moveSync } from 'fs-extra/esm';
 import {
   chmodSync,
   existsSync,

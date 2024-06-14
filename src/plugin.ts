@@ -315,6 +315,8 @@ async function pluginSearch(query?: string): Promise<PluginVersion[]> {
       const queryLower: string = query.toLowerCase();
       Object.keys(pluginPack).filter((id: string) => {
         const plugin: PluginVersion = pluginLatest(pluginPack[id]);
+        plugin.id = id;
+        plugin.version = pluginPack[id].version;
         const pluginTags: string[] = plugin.tags.map((str: string) => str.toLowerCase());
         if (
           plugin.name.toLowerCase().indexOf(queryLower) !== -1 ||

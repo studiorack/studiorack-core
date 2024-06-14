@@ -14,7 +14,7 @@
     "start": "node build/index.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
-    "build": "rimraf ./build && tsc && npm run copy",
+    "build": "npm run clean && tsc && npm run copy",
     "dev": "tsx ./src/index.ts",
     "lint": "eslint ./**/*.ts",
     "test": "vitest run ./tests --hook-timeout=60000 --test-timeout=60000 --no-file-parallelism",
