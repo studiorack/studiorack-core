@@ -170,6 +170,10 @@ function fileAdd(filePath: string, fileName: string, fileType: string, json: any
     if (size) {
       json.files[fileType].size = size;
     }
+    // Add file path
+    if (filePath) {
+      json.files[fileType].url = filePath;
+    }
   }
   return json;
 }

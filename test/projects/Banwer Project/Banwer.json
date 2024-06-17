@@ -1,29 +1,34 @@
 {
-  "id": "banwer",
+  "id": "banwer-project/banwer",
   "author": "studiorack-user",
   "homepage": "https://studiorack.github.io/studiorack-site/",
   "name": "Banwer",
   "description": "Created using StudioRack",
-  "repo": "banwer-project",
-  "tags": ["Ableton"],
+  "tags": [
+    "Ableton"
+  ],
   "version": "1.0.0",
-  "date": "2020-11-21T06:51:57.879Z",
+  "license": "cc0-1.0",
+  "date": "2024-05-20T03:45:58.903Z",
   "type": {
     "name": "Ableton",
     "ext": "als"
   },
   "files": {
     "audio": {
-      "name": "Banwer.wav",
-      "size": 1539540
+      "url": "test/projects/Banwer Project/Banwer.wav",
+      "size": 1539540,
+      "name": "Banwer.wav"
     },
     "image": {
-      "name": "Banwer.png",
-      "size": 16300
+      "url": "test/projects/Banwer Project/Banwer.png",
+      "size": 16300,
+      "name": "Banwer.png"
     },
     "project": {
-      "name": "Banwer.als",
-      "size": 236613
+      "url": "test/projects/Banwer Project/Banwer.als",
+      "size": 236613,
+      "name": "Banwer.als"
     }
   },
   "plugins": {},

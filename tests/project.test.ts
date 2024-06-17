@@ -5,7 +5,7 @@ import {
   projectCreate,
   projectDefault,
   projectDirectory,
-  // projectGetLocal,
+  projectGetLocal,
   projectsGetLocal,
   projectInstall,
   projectLoad,
@@ -16,43 +16,43 @@ import {
   projectValidate,
   projectValidateFiles,
 } from '../src/project';
-import { ProjectInterface, ProjectLocal } from '../src/types/project';
+import { ProjectVersion, ProjectVersionLocal } from '../src/types/project';
 
 const PROJECT_DIR: string = path.join('test', 'projects');
-// const PROJECT_ID: string = 'banwer-project/banwer';
+const PROJECT_ID: string = 'banwer-project/banwer';
 const PROJECT_FILE: string = path.join('Banwer Project', 'Banwer.json');
-const PROJECT_DEFAULT: ProjectInterface = {
+const PROJECT_DEFAULT: ProjectVersion = {
   author: 'studiorack-user',
   homepage: 'https://studiorack.github.io/studiorack-site/',
   description: 'Created using StudioRack',
   tags: ['StudioRack'],
   version: '1.0.0',
   date: '2020-11-21T06:51:57.879Z',
+  license: 'cc0-1.0',
   type: {
     ext: 'als',
     name: 'Ableton',
   },
-  id: 'example',
+  id: 'songs/april/example',
   name: 'StudioRack Project',
-  repo: 'songs/april',
   files: {
     audio: {
-      name: '',
+      url: '',
       size: 0,
     },
     image: {
-      name: '',
+      url: '',
       size: 0,
     },
     project: {
-      name: '',
+      url: '',
       size: 0,
     },
   },
   plugins: {},
 };
-const PROJECT_LOCAL: ProjectLocal = {
-  id: 'banwer',
+const PROJECT_LOCAL: ProjectVersionLocal = {
+  id: 'banwer-project/banwer',
   author: 'studiorack-user',
   homepage: 'https://studiorack.github.io/studiorack-site/',
   name: 'Banwer',
@@ -60,25 +60,28 @@ const PROJECT_LOCAL: ProjectLocal = {
   tags: ['Ableton'],
   version: '1.0.0',
   date: '2020-11-21T06:51:57.879Z',
+  license: 'cc0-1.0',
   type: {
     ext: 'als',
     name: 'Ableton',
   },
-  repo: 'banwer-project',
   path: path.join('test', 'projects', 'Banwer Project'),
   status: 'installed',
   files: {
     audio: {
       name: 'Banwer.wav',
       size: 1539540,
+      url: 'test/projects/Banwer Project/Banwer.wav',
     },
     image: {
       name: 'Banwer.png',
       size: 16300,
+      url: 'test/projects/Banwer Project/Banwer.png',
     },
     project: {
       name: 'Banwer.als',
       size: 236613,
+      url: 'test/projects/Banwer Project/Banwer.als',
     },
   },
   plugins: {},
@@ -96,21 +99,20 @@ test('Create project locally', () => {
 
 test('Create project default', () => {
   const result = projectDefault();
-  result.id = 'example';
-  result.repo = 'songs/april';
+  result.id = 'songs/april/example';
   result.date = PROJECT_DEFAULT.date;
   expect(result).toMatchObject(PROJECT_DEFAULT);
 });
 
 test('Get project directory', () => {
-  expect(projectDirectory(PROJECT_LOCAL)).toEqual(path.join(PROJECT_DIR, 'banwer', '1.0.0'));
+  expect(projectDirectory(PROJECT_LOCAL)).toEqual(path.join(PROJECT_DIR, 'banwer-project', 'banwer', '1.0.0'));
 });
 
-// test('Get project', async () => {
-//   const result = await projectGetLocal(PROJECT_ID);
-//   result.date = PROJECT_LOCAL.date;
-//   expect(result).toEqual(PROJECT_LOCAL);
-// });
+test('Get project', async () => {
+  const result = await projectGetLocal(PROJECT_ID);
+  result.date = PROJECT_LOCAL.date;
+  expect(result).toEqual(PROJECT_LOCAL);
+});
 
 test('Get projects', () => {
   expect(projectsGetLocal()).toBeDefined();

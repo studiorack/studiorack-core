@@ -1,18 +1,22 @@
+import { PluginVersion } from './plugin.js';
+
 export interface ProjectCategory {
   name: string;
   tags: string[];
 }
 
 export interface ProjectEntry {
-  id: string;
-  license: string;
   version: string;
-  versions: { [version: string]: ProjectInterface };
+  versions: ProjectVersions;
+  // Deprecated in v2
+  id?: string;
+  license?: string;
 }
 
 export interface ProjectFile {
-  name: string;
+  url: string;
   size: number;
+  name?: string;
 }
 
 export interface ProjectFiles {
@@ -21,28 +25,22 @@ export interface ProjectFiles {
   project: ProjectFile;
 }
 
-export interface ProjectInterface {
-  author: string;
-  date: string;
-  description: string;
-  homepage: string;
-  id: string;
+export interface ProjectLicense {
+  key: string;
   name: string;
-  files: ProjectFiles;
-  plugins: { [property: string]: string };
-  repo: string;
-  tags: string[];
-  type?: ProjectType;
-  version: string;
-}
-
-export interface ProjectLocal extends ProjectInterface {
-  path: string;
-  status: string;
+  url: string;
+  same: boolean;
 }
 
 export interface ProjectPack {
-  [property: string]: ProjectEntry;
+  [id: string]: ProjectEntry;
+}
+
+export interface ProjectRegistry {
+  name: string;
+  url: string;
+  version: string;
+  objects: ProjectPack;
 }
 
 export interface ProjectTemplate {
@@ -68,4 +66,35 @@ export interface ProjectTypes {
   logic: ProjectType;
   proTools: ProjectType;
   reaper: ProjectType;
+}
+
+export interface ProjectVersion {
+  author: string;
+  date: string;
+  description: string;
+  homepage: string;
+  name: string;
+  files: ProjectFiles;
+  license: string | ProjectLicense;
+  plugins: ProjectVersionPlugins;
+  tags: string[];
+  type?: ProjectType;
+  // Deprecated in v2
+  id?: string;
+  release?: string;
+  repo?: string;
+  version?: string;
+}
+
+export interface ProjectVersionPlugins {
+  [id: string]: string;
+}
+
+export interface ProjectVersions {
+  [version: string]: ProjectVersion;
+}
+
+export interface ProjectVersionLocal extends ProjectVersion {
+  path: string;
+  status: string;
 }
