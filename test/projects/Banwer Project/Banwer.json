@@ -4,9 +4,7 @@
   "homepage": "https://studiorack.github.io/studiorack-site/",
   "name": "Banwer",
   "description": "Created using StudioRack",
-  "tags": [
-    "Ableton"
-  ],
+  "tags": ["Ableton"],
   "version": "1.0.0",
   "license": "cc0-1.0",
   "date": "2024-05-20T03:45:58.903Z",

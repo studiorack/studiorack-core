@@ -4,9 +4,7 @@
   "homepage": "https://studiorack.github.io/studiorack-site/",
   "name": "StudioRack Project",
   "description": "Created using StudioRack",
-  "tags": [
-    "StudioRack"
-  ],
+  "tags": ["StudioRack"],
   "version": "1.0.0",
   "license": "cc0-1.0",
   "date": "2024-06-17T04:44:04.036Z",

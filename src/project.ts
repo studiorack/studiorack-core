@@ -1,13 +1,7 @@
 import path from 'path';
 import { configGet } from './config.js';
 import { dirCreate, dirRead, fileAdd, fileDate, fileJsonCreate, fileReadJson, fileOpen } from './file.js';
-import {
-  pathGetDirectory,
-  pathGetExt,
-  pathGetFilename,
-  pathGetWithoutExt,
-  safeSlug,
-} from './utils.js';
+import { pathGetDirectory, pathGetExt, pathGetFilename, pathGetWithoutExt, safeSlug } from './utils.js';
 import { pluginInstall, pluginUninstall } from './plugin.js';
 import { PluginVersionLocal, PluginValidationOptions } from './types/plugin.js';
 import { ProjectType, ProjectTypes, ProjectVersion, ProjectVersionLocal } from './types/project.js';
