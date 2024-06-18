@@ -21,8 +21,11 @@ function projectCreate(projectPath: string, prompt: boolean = true): ProjectVers
     project.version = askQuestion('Version', project.version, '1.0.0');
     project.description = askQuestion('Description', project.description, `${projectName} description`);
     project.files.audio.name = askQuestion('Audio', project.files.audio.name, `${projectName}.wav`);
+    project.files.audio.url = project.files.audio.name;
     project.files.image.name = askQuestion('Image', project.files.image.name, `${projectName}.png`);
+    project.files.image.url = project.files.image.name;
     project.files.project.name = askQuestion('Main', project.files.project.name, `${projectName}.als`);
+    project.files.project.url = project.files.project.name;
   }
   project.id = safeSlug(projectPath);
   project.path = projectPath;

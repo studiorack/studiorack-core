@@ -217,6 +217,9 @@ test('Get plugin directory', () => {
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE)).toEqual(
     path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || '', PLUGIN.version || ''),
   );
+  expect(pluginDirectory({ id: 'studiorack/plugin' } as any, PLUGIN_TYPE)).toEqual(
+    path.join(PLUGIN_DIR, PLUGIN_TYPE, 'studiorack', 'plugin', '0.0.0'),
+  );
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 2)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE, PLUGIN.id || ''));
   expect(pluginDirectory(PLUGIN, PLUGIN_TYPE, 1)).toEqual(path.join(PLUGIN_DIR, PLUGIN_TYPE));
 });
