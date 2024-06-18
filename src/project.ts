@@ -143,7 +143,8 @@ function projectSave(dir: string, config: ProjectVersionLocal): ProjectVersionLo
 
 async function projectStart(dir: string): Promise<Buffer> {
   const project: ProjectVersionLocal = projectLoad(dir);
-  const projectFilePath: string = path.join(pathGetDirectory(dir, path.sep), project.files.project?.url);
+  const filepath: string = project.files.project.name ? project.files.project.name : project.files.project.url;
+  const projectFilePath: string = path.join(pathGetDirectory(dir, path.sep), filepath);
   return fileOpen(projectFilePath);
 }
 
