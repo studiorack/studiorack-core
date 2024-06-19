@@ -1,5 +1,3 @@
-import { PluginVersion } from './plugin.js';
-
 export interface ProjectCategory {
   name: string;
   tags: string[];
