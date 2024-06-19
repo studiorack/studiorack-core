@@ -112,7 +112,7 @@ function pathGetWithoutExt(pathItem: string): string {
 
 function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
   const file = plugin.files[type];
-  const filepath: string = file.name ? file.name : file.url;
+  const filepath: string = file.url ? file.url : file.name || '';
   if (filepath.startsWith('https://')) {
     return filepath;
   }

@@ -188,7 +188,10 @@ async function pluginInstall(id: string, version?: string): Promise<PluginVersio
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
   if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
-    await runCliAsAdmin(`--operation install --id ${id} --ver ${version}`);
+    let command: string = `--operation install`;
+    if (id) command += ` --id ${id}`;
+    if (version) command += ` --ver ${version}`;
+    await runCliAsAdmin(command);
     return plugin;
   }
 
@@ -350,7 +353,10 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginVers
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
   if (!isAdmin() && !isTests() && !dirContains(dirAppData(), pluginDirectory(plugin))) {
-    await runCliAsAdmin(`--operation uninstall --id ${id} --ver ${version}`);
+    let command: string = `--operation uninstall`;
+    if (id) command += ` --id ${id}`;
+    if (version) command += ` --ver ${version}`;
+    await runCliAsAdmin(command);
   } else {
     if (!pluginInstalled(plugin)) {
       throw Error(
