@@ -71,17 +71,17 @@ const PROJECT_LOCAL: ProjectVersionLocal = {
     audio: {
       name: 'Banwer.wav',
       size: 1539540,
-      url: 'test/projects/Banwer Project/Banwer.wav',
+      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.wav'),
     },
     image: {
       name: 'Banwer.png',
       size: 16300,
-      url: 'test/projects/Banwer Project/Banwer.png',
+      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.png'),
     },
     project: {
       name: 'Banwer.als',
       size: 236613,
-      url: 'test/projects/Banwer Project/Banwer.als',
+      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.als'),
     },
   },
   plugins: {},
@@ -121,9 +121,6 @@ test('Get projects', () => {
 test('Install project plugins', async () => {
   const result = await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE));
   result.date = PROJECT_LOCAL.date;
-  if (process.platform === 'win32') {
-    result.path = result.path.split('/').join('\\');
-  }
   expect(result).toEqual(PROJECT_LOCAL);
 });
 
