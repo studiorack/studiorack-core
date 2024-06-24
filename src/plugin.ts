@@ -299,7 +299,8 @@ function pluginLatest(pluginEntry: PluginEntry): PluginVersion {
   return pluginEntry.versions[pluginEntry.version];
 }
 
-function pluginLicense(key: string) {
+function pluginLicense(key: string | PluginLicense) {
+  if (typeof key !== 'string') return key;
   const licenses: PluginLicense[] = configGet('licenses');
   let licenseMatch: PluginLicense = licenses[licenses.length - 1];
   licenses.forEach((license: PluginLicense) => {

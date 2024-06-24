@@ -16,7 +16,7 @@ import {
   pluginUninstall,
   pluginLicense,
 } from '../src/plugin';
-import { PluginVersion, PluginVersionLocal, PluginTemplate } from '../src/types/plugin';
+import { PluginVersion, PluginVersionLocal, PluginTemplate, PluginLicense } from '../src/types/plugin';
 
 // const PLUGIN_REGISTRY: PluginRegistry = {
 //   name: 'StudioRack Registry - index',
@@ -34,6 +34,12 @@ const PLUGIN_DIR: string = path.join('test', 'plugins');
 const PLUGIN_ID: string = 'studiorack/mda/mda';
 const PLUGIN_TYPE: string = 'VST';
 const PLUGIN_TEMPLATE: keyof PluginTemplate = 'dplug';
+const PLUGIN_LICENSE: PluginLicense = {
+  key: 'gpl-3.0',
+  name: 'GNU General Public License v3.0',
+  url: 'https://choosealicense.com/licenses/gpl-3.0',
+  same: true,
+};
 const PLUGIN: PluginVersion = {
   author: 'Paul Kellett',
   homepage: 'http://mda.smartelectronix.com',
@@ -257,12 +263,8 @@ test('List plugins of type instruments in registry', async () => {
 });
 
 test('Get full plugin license information from config', async () => {
-  expect(pluginLicense('gpl-3.0')).toEqual({
-    key: 'gpl-3.0',
-    name: 'GNU General Public License v3.0',
-    url: 'https://choosealicense.com/licenses/gpl-3.0',
-    same: true,
-  });
+  expect(pluginLicense('gpl-3.0')).toEqual(PLUGIN_LICENSE);
+  expect(PLUGIN_LICENSE).toEqual(PLUGIN_LICENSE);
 });
 
 test('List plugins locally', async () => {
