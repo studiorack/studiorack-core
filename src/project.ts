@@ -13,7 +13,7 @@ function askQuestion(label: string, input: any, fallback: string) {
   });
 }
 
-function projectCreate(projectPath: string, prompt: boolean = true): ProjectVersionLocal {
+export function projectCreate(projectPath: string, prompt: boolean = true): ProjectVersionLocal {
   const project: ProjectVersionLocal = projectDefault() as ProjectVersionLocal;
   const projectName: string = pathGetFilename(projectPath);
   if (prompt) {
@@ -35,7 +35,7 @@ function projectCreate(projectPath: string, prompt: boolean = true): ProjectVers
   return projectSave(projectJsonPath, project);
 }
 
-function projectDefault(): ProjectVersion {
+export function projectDefault(): ProjectVersion {
   return {
     id: 'studiorack-project',
     author: 'studiorack-user',
@@ -68,7 +68,7 @@ function projectDefault(): ProjectVersion {
   };
 }
 
-function projectDirectory(project: ProjectVersion, depth?: number): string {
+export function projectDirectory(project: ProjectVersion, depth?: number): string {
   const projectPath: string = (project.id || '').replace(/\//g, path.sep);
   const projectPaths: string[] = [configGet('projectFolder'), projectPath, project.version || ''];
   if (depth) {
@@ -77,7 +77,7 @@ function projectDirectory(project: ProjectVersion, depth?: number): string {
   return projectPaths.join(path.sep);
 }
 
-async function projectGetLocal(id: string, version = ''): Promise<ProjectVersionLocal> {
+export async function projectGetLocal(id: string, version = ''): Promise<ProjectVersionLocal> {
   const projects: ProjectVersionLocal[] = await projectsGetLocal();
   return projects.filter((project: ProjectVersionLocal) => {
     const matchVersion: boolean = version ? version === project.version : true;
@@ -85,7 +85,7 @@ async function projectGetLocal(id: string, version = ''): Promise<ProjectVersion
   })[0];
 }
 
-async function projectsGetLocal(): Promise<ProjectVersionLocal[]> {
+export async function projectsGetLocal(): Promise<ProjectVersionLocal[]> {
   const projectTypes: ProjectTypes = configGet('projectTypes');
   const projectExts: string[] = Object.keys(projectTypes).map((projectTypeKey: string) => {
     return projectTypes[projectTypeKey as keyof ProjectTypes].ext;
@@ -110,7 +110,7 @@ async function projectsGetLocal(): Promise<ProjectVersionLocal[]> {
   return projects;
 }
 
-async function projectInstall(dir: string, id?: string, version?: string): Promise<ProjectVersionLocal> {
+export async function projectInstall(dir: string, id?: string, version?: string): Promise<ProjectVersionLocal> {
   const project: ProjectVersionLocal = projectLoad(dir);
   if (id) {
     const pluginLocal: PluginVersionLocal = await pluginInstall(id, version);
@@ -125,7 +125,7 @@ async function projectInstall(dir: string, id?: string, version?: string): Promi
   return projectSave(dir, project);
 }
 
-function projectLoad(dir: string): ProjectVersionLocal {
+export function projectLoad(dir: string): ProjectVersionLocal {
   const projectJson: ProjectVersionLocal = fileReadJson(dir);
   if (projectJson && !projectJson.plugins) {
     projectJson.plugins = {};
@@ -133,19 +133,19 @@ function projectLoad(dir: string): ProjectVersionLocal {
   return projectJson;
 }
 
-function projectSave(dir: string, config: ProjectVersionLocal): ProjectVersionLocal {
+export function projectSave(dir: string, config: ProjectVersionLocal): ProjectVersionLocal {
   fileJsonCreate(dir, config);
   return config;
 }
 
-async function projectStart(dir: string): Promise<Buffer> {
+export async function projectStart(dir: string): Promise<Buffer> {
   const project: ProjectVersionLocal = projectLoad(dir);
   const filepath: string = project.files.project.name ? project.files.project.name : project.files.project.url;
   const projectFilePath: string = path.join(pathGetDirectory(dir, path.sep), filepath);
   return fileOpen(projectFilePath);
 }
 
-function projectType(ext: string): ProjectType {
+export function projectType(ext: string): ProjectType {
   const projectTypes: ProjectTypes = configGet('projectTypes');
   let type: ProjectType = {
     name: 'Ableton',
@@ -160,7 +160,7 @@ function projectType(ext: string): ProjectType {
   return type;
 }
 
-async function projectUninstall(dir: string, id?: string, version?: string): Promise<ProjectVersionLocal> {
+export async function projectUninstall(dir: string, id?: string, version?: string): Promise<ProjectVersionLocal> {
   const project = projectLoad(dir);
   if (id) {
     let result = version;
@@ -179,7 +179,7 @@ async function projectUninstall(dir: string, id?: string, version?: string): Pro
   return projectSave(dir, project);
 }
 
-function projectValidate(dir: string, options?: PluginValidationOptions): ProjectVersion {
+export function projectValidate(dir: string, options?: PluginValidationOptions): ProjectVersion {
   const relativePath: string = dir.replace(configGet('projectFolder') + path.sep, '');
   const type: ProjectType = projectType(pathGetExt(dir));
   let project: ProjectVersionLocal = projectDefault() as ProjectVersionLocal;
@@ -203,7 +203,7 @@ function projectValidate(dir: string, options?: PluginValidationOptions): Projec
   return project;
 }
 
-function projectValidateFiles(pathItem: string, json: any): any {
+export function projectValidateFiles(pathItem: string, json: any): any {
   const ext: string = pathGetExt(pathItem);
   const directory: string = pathGetDirectory(pathItem, path.sep);
   const filename: string = pathGetFilename(pathItem, path.sep);
@@ -217,19 +217,3 @@ function projectValidateFiles(pathItem: string, json: any): any {
   json = fileAdd(path.join(directory, `${filename}.${ext}`), `${filename}.${ext}`, 'project', json);
   return json;
 }
-
-export {
-  projectCreate,
-  projectDefault,
-  projectDirectory,
-  projectGetLocal,
-  projectsGetLocal,
-  projectInstall,
-  projectLoad,
-  projectSave,
-  projectStart,
-  projectType,
-  projectUninstall,
-  projectValidate,
-  projectValidateFiles,
-};

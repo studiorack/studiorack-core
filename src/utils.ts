@@ -20,35 +20,35 @@ let LOGGING_ENABLED: boolean = false;
 const URLSAFE_REGEX: RegExp = /[^\w\s$*_+~.()'"!\-:@/]+/g;
 const VERSION_REGEX: RegExp = /([0-9]+)\.([0-9]+)\.([0-9]+)/g;
 
-function getPlatform(): keyof PluginFiles {
+export function getPlatform(): keyof PluginFiles {
   return platformTypes[process.platform as keyof PlatformTypes];
 }
 
-function idToSlug(id: string): string {
+export function idToSlug(id: string): string {
   return safeSlug(id.replace(/\//g, '_'));
 }
 
-function inputGetParts(input: string): string[] {
+export function inputGetParts(input: string): string[] {
   return input.split('@');
 }
 
-function isTests() {
+export function isTests() {
   const jest: boolean = process.env.JEST_WORKER_ID !== undefined;
   const vitest: boolean = process.env.VITEST_WORKER_ID !== undefined;
   return jest || vitest;
 }
 
-function log(...args: any) {
+export function log(...args: any) {
   if (LOGGING_ENABLED) {
     console.log(...args);
   }
 }
 
-function logEnable() {
+export function logEnable() {
   LOGGING_ENABLED = true;
 }
 
-function logDisable() {
+export function logDisable() {
   LOGGING_ENABLED = false;
 }
 
@@ -58,15 +58,15 @@ function logDisable() {
 // For example:
 // studiorack/oxe/oxe/1.3.5/oxe.vst3
 
-function pathGetDirectory(pathItem: string, separator: string = '/'): string {
+export function pathGetDirectory(pathItem: string, separator: string = '/'): string {
   return pathItem.substring(0, pathItem.lastIndexOf(separator));
 }
 
-function pathGetExt(pathItem: string): string {
+export function pathGetExt(pathItem: string): string {
   return pathItem.substring(pathItem.lastIndexOf('.') + 1);
 }
 
-function pathGetFilename(str: string, separator: string = '/'): string {
+export function pathGetFilename(str: string, separator: string = '/'): string {
   let base: string = str.substring(str.lastIndexOf(separator) + 1);
   if (base.lastIndexOf('.') !== -1) {
     base = base.substring(0, base.lastIndexOf('.'));
@@ -74,7 +74,7 @@ function pathGetFilename(str: string, separator: string = '/'): string {
   return base;
 }
 
-function pathGetId(pathItem: string, separator: string = '/'): string {
+export function pathGetId(pathItem: string, separator: string = '/'): string {
   const pathParts: string[] = pathGetDirectory(pathItem, separator).split(separator);
   if (pathParts.length > 2) {
     return safeSlug(pathParts[2]);
@@ -83,7 +83,7 @@ function pathGetId(pathItem: string, separator: string = '/'): string {
   return safeSlug(pathGetDirectory(pathItem, separator));
 }
 
-function pathGetRepo(pathItem: string, separator: string = '/'): string {
+export function pathGetRepo(pathItem: string, separator: string = '/'): string {
   const pathParts: string[] = pathGetDirectory(pathItem, separator).split(separator);
   if (pathParts.length > 1) {
     return safeSlug(`${pathParts[0]}/${pathParts[1]}`);
@@ -92,12 +92,12 @@ function pathGetRepo(pathItem: string, separator: string = '/'): string {
   return safeSlug(pathGetDirectory(pathItem, separator));
 }
 
-function pathGetVersion(pathItem: string): string {
+export function pathGetVersion(pathItem: string): string {
   const matches: any = pathItem.match(VERSION_REGEX);
   return matches ? matches[0] : '0.0.0';
 }
 
-function pathGetWithoutExt(pathItem: string): string {
+export function pathGetWithoutExt(pathItem: string): string {
   const extIndex = pathItem.lastIndexOf('.');
   // If string contains a period
   if (extIndex !== -1) {
@@ -110,7 +110,7 @@ function pathGetWithoutExt(pathItem: string): string {
   return pathItem;
 }
 
-function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
+export function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
   const file = plugin.files[type];
   const filepath: string = file.url ? file.url : file.name || '';
   if (filepath.startsWith('https://')) {
@@ -119,31 +119,11 @@ function pluginFileUrl(plugin: PluginVersion, type: keyof PluginFiles): string {
   return `https://github.com/${plugin.repo}/releases/download/${plugin.release}/${filepath}`;
 }
 
-function safeSlug(val: string): string {
+export function safeSlug(val: string): string {
   // @ts-expect-error slugify library issue with ESM modules
   return slugify(val, { lower: true, remove: URLSAFE_REGEX });
 }
 
-function slugToId(slug: string): string {
+export function slugToId(slug: string): string {
   return safeSlug(slug.replace(/_/g, '/'));
 }
-
-export {
-  getPlatform,
-  idToSlug,
-  inputGetParts,
-  isTests,
-  log,
-  logEnable,
-  logDisable,
-  pathGetDirectory,
-  pathGetExt,
-  pathGetFilename,
-  pathGetId,
-  pathGetRepo,
-  pathGetVersion,
-  pathGetWithoutExt,
-  pluginFileUrl,
-  safeSlug,
-  slugToId,
-};

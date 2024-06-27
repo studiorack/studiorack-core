@@ -4,13 +4,13 @@
 
 import { pluginInstall, pluginUninstall } from './plugin.js';
 
-interface Arguments {
+export interface Arguments {
   operation: string;
   id: string;
   ver: string;
 }
 
-function getArguments(): Arguments {
+export function getArguments(): Arguments {
   return {
     operation: process.argv[3],
     id: process.argv[5],
@@ -18,7 +18,7 @@ function getArguments(): Arguments {
   };
 }
 
-async function init() {
+export async function init() {
   const argv: Arguments = getArguments();
   if (argv.operation === 'install') {
     await pluginInstall(argv.id, argv.ver);
@@ -28,5 +28,3 @@ async function init() {
 }
 
 init();
-
-export { init, getArguments };

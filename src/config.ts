@@ -28,18 +28,16 @@ if (!config.version) {
   config = fileReadJson(CONFIG_FILE_PATH);
 }
 
-function configDelete(): boolean | void {
+export function configDelete(): boolean | void {
   return fileDelete(CONFIG_FILE_PATH);
 }
 
-function configGet(key: keyof ConfigInterface): any {
+export function configGet(key: keyof ConfigInterface): any {
   return config[key];
 }
 
-function configSet(key: keyof ConfigInterface, val: any) {
+export function configSet(key: keyof ConfigInterface, val: any) {
   config[key] = val;
   fileJsonCreate(CONFIG_FILE_PATH, config);
   return configGet(key);
 }
-
-export { configDelete, configGet, configSet };

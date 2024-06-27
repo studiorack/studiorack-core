@@ -59,7 +59,7 @@ const map: { [property: string]: string } = {
 };
 const validPluginExt = ['deb', 'dmg', 'exe', 'msi', 'zip'];
 
-async function pluginCreate(dir: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
+export async function pluginCreate(dir: string, template: keyof PluginTemplate = 'steinberg'): Promise<boolean> {
   if (dirExists(dir)) {
     throw Error(`Directory already exists: ${dir}`);
   }
@@ -73,7 +73,7 @@ async function pluginCreate(dir: string, template: keyof PluginTemplate = 'stein
   return true;
 }
 
-function pluginDirectory(plugin: PluginVersion, type = 'VST3', depth?: number): string {
+export function pluginDirectory(plugin: PluginVersion, type = 'VST3', depth?: number): string {
   const pluginPath: string = (plugin.id || '').replace(/\//g, path.sep);
   const pluginPaths: string[] = [path.join(configGet('pluginFolder'), type), pluginPath, plugin.version || '0.0.0'];
   if (depth) {
@@ -82,7 +82,7 @@ function pluginDirectory(plugin: PluginVersion, type = 'VST3', depth?: number): 
   return pluginPaths.join(path.sep);
 }
 
-async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
+export async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
   const pluginPack: PluginPack = await pluginsGet();
   if (!pluginPack[id]) {
     throw Error(`Plugin not found ${id}`);
@@ -99,7 +99,7 @@ async function pluginGet(id: string, version?: string): Promise<PluginVersion> {
   return plugin;
 }
 
-async function pluginGetLocal(id: string, version?: string): Promise<PluginVersionLocal> {
+export async function pluginGetLocal(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugins: PluginVersionLocal[] = await pluginsGetLocal();
   return plugins.filter((plugin: PluginVersionLocal) => {
     const matchVersion: boolean = version ? version === plugin.version : true;
@@ -107,14 +107,14 @@ async function pluginGetLocal(id: string, version?: string): Promise<PluginVersi
   })[0];
 }
 
-async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
+export async function pluginsGet(type: string = 'index'): Promise<PluginPack> {
   const url: string = configGet('pluginRegistry').replace('${type}', type);
   return await apiJson(url).then(data => {
     return data.objects;
   });
 }
 
-async function pluginsGetLocal(): Promise<PluginVersionLocal[]> {
+export async function pluginsGetLocal(): Promise<PluginVersionLocal[]> {
   await toolInstall('validator');
   const pluginTypes: PluginTypes = configGet('pluginTypes');
   const pluginExts: string[] = Object.keys(pluginTypes).map((pluginTypeKey: string) => {
@@ -154,7 +154,12 @@ async function pluginsGetLocal(): Promise<PluginVersionLocal[]> {
   return Object.keys(pluginsFound).map((pluginKey: string) => pluginsFound[pluginKey]);
 }
 
-function pluginOrganize(dirSource: string, ext: string, dirTarget: string, plugin: PluginVersionLocal): string[] {
+export function pluginOrganize(
+  dirSource: string,
+  ext: string,
+  dirTarget: string,
+  plugin: PluginVersionLocal,
+): string[] {
   const paths: string[] = [];
   const files: string[] = dirRead(`${dirSource}/**/*.${ext}`);
   // Do not create directory unless there are plugins to copy
@@ -178,7 +183,7 @@ function pluginOrganize(dirSource: string, ext: string, dirTarget: string, plugi
 }
 
 // This is a prototype
-async function pluginInstall(id: string, version?: string): Promise<PluginVersionLocal> {
+export async function pluginInstall(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugin: PluginVersionLocal = (await pluginGet(id, version)) as PluginVersionLocal;
   plugin.paths = [];
 
@@ -265,7 +270,7 @@ async function pluginInstall(id: string, version?: string): Promise<PluginVersio
   return plugin;
 }
 
-async function pluginInstallAll(): Promise<PluginVersionLocal[]> {
+export async function pluginInstallAll(): Promise<PluginVersionLocal[]> {
   return await pluginsGet().then(async (pluginPack: PluginPack) => {
     const plugins: PluginVersionLocal[] = [];
     for (const pluginId in pluginPack) {
@@ -279,7 +284,7 @@ async function pluginInstallAll(): Promise<PluginVersionLocal[]> {
   });
 }
 
-function pluginInstalled(plugin: PluginVersion): boolean {
+export function pluginInstalled(plugin: PluginVersion): boolean {
   if (
     dirExists(pluginDirectory(plugin, 'CLAP')) ||
     dirExists(pluginDirectory(plugin, 'Components')) ||
@@ -295,11 +300,11 @@ function pluginInstalled(plugin: PluginVersion): boolean {
   return false;
 }
 
-function pluginLatest(pluginEntry: PluginEntry): PluginVersion {
+export function pluginLatest(pluginEntry: PluginEntry): PluginVersion {
   return pluginEntry.versions[pluginEntry.version];
 }
 
-function pluginLicense(key: string | PluginLicense) {
+export function pluginLicense(key: string | PluginLicense) {
   if (typeof key !== 'string') return key;
   const licenses: PluginLicense[] = configGet('licenses');
   let licenseMatch: PluginLicense = licenses[licenses.length - 1];
@@ -312,7 +317,7 @@ function pluginLicense(key: string | PluginLicense) {
   return licenseMatch;
 }
 
-async function pluginSearch(query?: string): Promise<PluginVersion[]> {
+export async function pluginSearch(query?: string): Promise<PluginVersion[]> {
   return await pluginsGet().then((pluginPack: PluginPack) => {
     const plugins: PluginVersion[] = [];
     if (query) {
@@ -335,7 +340,7 @@ async function pluginSearch(query?: string): Promise<PluginVersion[]> {
   });
 }
 
-function pluginSource(plugin: PluginVersion): string {
+export function pluginSource(plugin: PluginVersion): string {
   const pluginFile: PluginFile = plugin.files[getPlatform()];
   if (pluginFile.url) return pluginFile.url;
   const pluginRoot: string = configGet('pluginRelease').replace('${repo}');
@@ -346,7 +351,7 @@ function pluginSource(plugin: PluginVersion): string {
   }
 }
 
-async function pluginUninstall(id: string, version?: string): Promise<PluginVersionLocal> {
+export async function pluginUninstall(id: string, version?: string): Promise<PluginVersionLocal> {
   const plugin: PluginVersionLocal = (await pluginGetLocal(id, version)) as PluginVersionLocal;
   if (!plugin) {
     throw Error(`Plugin not found locally ${id}, ${version}`);
@@ -396,7 +401,7 @@ async function pluginUninstall(id: string, version?: string): Promise<PluginVers
   return plugin;
 }
 
-async function pluginUninstallAll(): Promise<PluginVersionLocal[]> {
+export async function pluginUninstallAll(): Promise<PluginVersionLocal[]> {
   return await pluginsGetLocal().then(async (pluginsLocal: PluginVersionLocal[]) => {
     const plugins: PluginVersionLocal[] = [];
     for (const PluginVersionLocal of pluginsLocal) {
@@ -412,7 +417,7 @@ async function pluginUninstallAll(): Promise<PluginVersionLocal[]> {
   });
 }
 
-function pluginValidate(dir: string, options?: PluginValidationOptions): PluginVersion {
+export function pluginValidate(dir: string, options?: PluginValidationOptions): PluginVersion {
   if (!dir || !dirExists(dir)) {
     throw Error(`File does not exist: ${dir}`);
   }
@@ -443,7 +448,7 @@ function pluginValidate(dir: string, options?: PluginValidationOptions): PluginV
   return pluginJson;
 }
 
-function pluginValidateFiles(pathItem: string, json: any): any {
+export function pluginValidateFiles(pathItem: string, json: any): any {
   const directory: string = pathGetDirectory(pathItem, path.sep);
   const slug: string = safeSlug(pathGetFilename(pathItem, path.sep));
   // Ensure files object exists
@@ -461,7 +466,7 @@ function pluginValidateFiles(pathItem: string, json: any): any {
   return json;
 }
 
-async function pluginValidateFolder(
+export async function pluginValidateFolder(
   pluginPath: string,
   options: PluginValidationOptions,
 ): Promise<PluginVersionLocal[]> {
@@ -496,7 +501,7 @@ async function pluginValidateFolder(
   return plugins;
 }
 
-function pluginValidateField(obj: any, field: string, type: string): string {
+export function pluginValidateField(obj: any, field: string, type: string): string {
   if (obj && !obj[field]) {
     return `- ${field} field missing\n`;
   }
@@ -506,7 +511,7 @@ function pluginValidateField(obj: any, field: string, type: string): string {
   return '';
 }
 
-function pluginValidateSchema(plugin: PluginVersionLocal): string | boolean {
+export function pluginValidateSchema(plugin: PluginVersionLocal): string | boolean {
   let error: string = '';
   error += pluginValidateField(plugin, 'author', 'string');
   error += pluginValidateField(plugin, 'date', 'string');
@@ -526,7 +531,7 @@ function pluginValidateSchema(plugin: PluginVersionLocal): string | boolean {
   return error.length === 0 ? false : error;
 }
 
-function parseClapOutput(pathItem: string, output: string) {
+export function parseClapOutput(pathItem: string, output: string) {
   const outputJson: any = JSON.parse(output);
   const pluginHeader: any = outputJson['clap.plugin-factory'][0];
   const pluginJson: any = {
@@ -543,7 +548,7 @@ function parseClapOutput(pathItem: string, output: string) {
   return pluginJson;
 }
 
-function parseValidatorOutput(pathItem: string, output: string): any {
+export function parseValidatorOutput(pathItem: string, output: string): any {
   const json: { [property: string]: any } = {};
   // loop through validator output
   for (let line of output.split('\n')) {
@@ -587,7 +592,7 @@ function parseValidatorOutput(pathItem: string, output: string): any {
   return json;
 }
 
-function removeDirectory(plugin: PluginVersionLocal, type: string) {
+export function removeDirectory(plugin: PluginVersionLocal, type: string) {
   // Always delete specific plugin version
   const versionDir: string = pluginDirectory(plugin, type);
   if (dirExists(versionDir)) {
@@ -612,26 +617,3 @@ function removeDirectory(plugin: PluginVersionLocal, type: string) {
     dirDelete(repoRootDir);
   }
 }
-
-export {
-  pluginCreate,
-  pluginDirectory,
-  pluginGet,
-  pluginGetLocal,
-  pluginsGet,
-  pluginsGetLocal,
-  pluginInstall,
-  pluginInstallAll,
-  pluginInstalled,
-  pluginLatest,
-  pluginLicense,
-  pluginSearch,
-  pluginSource,
-  pluginUninstall,
-  pluginUninstallAll,
-  pluginValidate,
-  pluginValidateFiles,
-  pluginValidateFolder,
-  pluginValidateField,
-  pluginValidateSchema,
-};

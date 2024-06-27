@@ -10,7 +10,7 @@ import { Tools } from './types/tool.js';
 
 const toolBinDir: string = path.join(dirAppData(), 'studiorack', 'bin');
 
-function toolFolder(type: keyof Tools, pluginPath: string): string[] {
+export function toolFolder(type: keyof Tools, pluginPath: string): string[] {
   const toolResults: string[] = [];
   if (pluginPath.includes('*')) {
     const pathList = dirRead(pluginPath);
@@ -25,7 +25,7 @@ function toolFolder(type: keyof Tools, pluginPath: string): string[] {
   return toolResults;
 }
 
-function toolGetPath(type: keyof Tools): string {
+export function toolGetPath(type: keyof Tools): string {
   const filename: string = type === 'clapinfo' ? 'clap-info' : type;
   let fileext: string = '';
   if (getPlatform() === 'mac' && type === 'pluginval') {
@@ -37,7 +37,7 @@ function toolGetPath(type: keyof Tools): string {
   return path.join(toolBinDir, filename + fileext);
 }
 
-async function toolInstall(type: keyof Tools): Promise<string> {
+export async function toolInstall(type: keyof Tools): Promise<string> {
   if (!toolInstalled(type)) {
     const toolUrl: string = configGet(`${type}Url` as keyof ConfigInterface).replace('${platform}', getPlatform());
     const data: Buffer = await apiBuffer(toolUrl);
@@ -47,11 +47,11 @@ async function toolInstall(type: keyof Tools): Promise<string> {
   return toolGetPath(type);
 }
 
-function toolInstalled(type: keyof Tools): boolean {
+export function toolInstalled(type: keyof Tools): boolean {
   return fileExists(toolGetPath(type));
 }
 
-function toolRun(type: keyof Tools, command: string): string {
+export function toolRun(type: keyof Tools, command: string): string {
   try {
     log('⎋', `${toolGetPath(type)} "${command}"`);
     if (type === 'pluginval') {
@@ -65,5 +65,3 @@ function toolRun(type: keyof Tools, command: string): string {
     return error.output ? error.output.toString() : error.toString();
   }
 }
-
-export { toolFolder, toolGetPath, toolInstall, toolInstalled, toolRun };

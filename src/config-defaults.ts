@@ -1,6 +1,6 @@
 import { ConfigInterface } from './types/config.js';
 
-function configDefaults(
+export function configDefaults(
   appFolder: string,
   pluginFolder: string,
   presetFolder: string,
@@ -425,5 +425,3 @@ function configDefaults(
       'https://github.com/studiorack/studiorack-template-steinberg/releases/latest/download/validator-${platform}.zip',
   };
 }
-
-export { configDefaults };
