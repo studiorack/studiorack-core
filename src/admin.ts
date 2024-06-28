@@ -1,6 +1,6 @@
 // Run when Electron needs elevated privileges
-// npm run build && node ./build/admin.js --operation install --id studiorack/mda/mda
-// npm run build && node ./build/admin.js --operation uninstall --id studiorack/mda/mda
+// npm run build && node ./build/admin.js --operation install --id studiorack/mda
+// npm run build && node ./build/admin.js --operation uninstall --id studiorack/mda
 
 import { pluginInstall, pluginUninstall } from './plugin.js';
 
