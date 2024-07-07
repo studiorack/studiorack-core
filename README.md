@@ -4,6 +4,10 @@
 
 Common methods package shared across StudioRack CLI, app and website for handling installing DAW VST plugin dependencies.
 
+![StudioRack Core](/screenshot.jpg)
+
+## Features
+
 - admin - Standalone script for running plugin installations with admin privileges
 - api - Helper methods for getting data via web requests
 - config- Reading and writing configuration settings
@@ -12,6 +16,8 @@ Common methods package shared across StudioRack CLI, app and website for handlin
 - project - Logic for searching and indexing audio projects
 - tool - Utilities and tools for validating plugins
 - utils - Other helper methods and string utilities
+
+## Installation
 
 To install the common package, run the command:
 
