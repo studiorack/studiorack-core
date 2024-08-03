@@ -87,14 +87,6 @@ const PROJECT_LOCAL: ProjectVersionLocal = {
   plugins: {},
 };
 
-function convertPaths(project: ProjectVersionLocal) {
-  project.files.audio.url = project.files.audio.url.split('/').join(path.sep);
-  project.files.image.url = project.files.image.url.split('/').join(path.sep);
-  project.files.project.url = project.files.project.url.split('/').join(path.sep);
-  project.path = project.path.split('/').join(path.sep);
-  return project;
-}
-
 beforeAll(() => {
   configSet('projectFolder', PROJECT_DIR);
 });
@@ -122,7 +114,7 @@ test('Get project directory', () => {
 test('Get project', async () => {
   const result = await projectGetLocal(PROJECT_ID);
   result.date = PROJECT_LOCAL.date;
-  expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Get projects', async () => {
@@ -134,7 +126,7 @@ test('Get projects', async () => {
 test('Install project plugins', async () => {
   const result = await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE));
   result.date = PROJECT_LOCAL.date;
-  expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
+  expect(result).toEqual(PROJECT_LOCAL);
 });
 
 test('Save project json', () => {
