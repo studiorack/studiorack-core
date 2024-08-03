@@ -33,7 +33,7 @@ const PROJECT_DEFAULT: ProjectVersion = {
     ext: 'als',
     name: 'Ableton',
   },
-  id: 'songs/april/example',
+  id: 'songs/april',
   name: 'StudioRack Project',
   files: {
     audio: {
@@ -65,23 +65,23 @@ const PROJECT_LOCAL: ProjectVersionLocal = {
     ext: 'als',
     name: 'Ableton',
   },
-  path: path.join('test', 'projects', 'Banwer Project'),
+  path: path.join('test', 'projects', 'Banwer Project', 'Banwer.als'),
   status: 'installed',
   files: {
     audio: {
       name: 'Banwer.wav',
       size: 1539540,
-      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.wav'),
+      url: 'test/projects/Banwer Project/Banwer.wav',
     },
     image: {
       name: 'Banwer.png',
       size: 16300,
-      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.png'),
+      url: 'test/projects/Banwer Project/Banwer.png',
     },
     project: {
       name: 'Banwer.als',
       size: 236613,
-      url: path.join('test', 'projects', 'Banwer Project', 'Banwer.als'),
+      url: 'test/projects/Banwer Project/Banwer.als',
     },
   },
   plugins: {},
@@ -101,16 +101,16 @@ beforeAll(() => {
 
 test('Create project locally', () => {
   const PROJECT_DEFAULT_UPDATED: any = Object.assign({}, PROJECT_DEFAULT);
-  PROJECT_DEFAULT_UPDATED.path = 'songs/april/example';
+  PROJECT_DEFAULT_UPDATED.path = path.join('songs', 'april', 'example.als');
   PROJECT_DEFAULT_UPDATED.status = 'installed';
-  const result = projectCreate('songs/april/example', false);
-  result.date = PROJECT_DEFAULT_UPDATED.date;
+  const result = projectCreate('songs/april/example.als', false);
+  result.date = PROJECT_DEFAULT.date;
   expect(result).toEqual(PROJECT_DEFAULT_UPDATED);
 });
 
 test('Create project default', () => {
   const result = projectDefault();
-  result.id = 'songs/april/example';
+  result.id = 'songs/april';
   result.date = PROJECT_DEFAULT.date;
   expect(result).toEqual(PROJECT_DEFAULT);
 });

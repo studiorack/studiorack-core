@@ -27,7 +27,7 @@ export function projectCreate(projectPath: string, prompt: boolean = true): Proj
     project.files.project.name = askQuestion('Main', project.files.project.name, `${projectName}.als`);
     project.files.project.url = path.join(projectPath, project.files.project.name);
   }
-  project.id = safeSlug(projectPath.split(path.sep).join('/'));
+  project.id = safeSlug(pathGetDirectory(projectPath, path.sep).split(path.sep).join('/'));
   project.path = projectPath;
   project.status = 'installed';
   const projectJsonPath: string = path.join(configGet('projectFolder'), `${projectName}.json`);
@@ -103,7 +103,7 @@ export async function projectsGetLocal(): Promise<ProjectVersionLocal[]> {
     const relativePath: string = projectPath.replace(configGet('projectFolder') + path.sep, '');
     project.id = safeSlug(pathGetWithoutExt(relativePath).split(path.sep).join('/'));
     // project.version = pathGetVersion(projectPath);
-    project.path = pathGetDirectory(projectPath, path.sep);
+    project.path = projectPath;
     project.status = 'installed';
     projects.push(project);
   });
@@ -186,7 +186,7 @@ export function projectValidate(dir: string, options?: PluginValidationOptions):
   project.date = fileDate(dir).toISOString();
   project.id = safeSlug(pathGetWithoutExt(relativePath).split(path.sep).join('/'));
   project.name = pathGetFilename(relativePath, path.sep);
-  project.path = pathGetDirectory(dir, path.sep);
+  project.path = dir;
   project.status = 'installed';
   project.tags = [type.name];
   project.type = type;

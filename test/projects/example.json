@@ -1,5 +1,5 @@
 {
-  "id": "songs/april/example",
+  "id": "songs/april",
   "author": "studiorack-user",
   "homepage": "https://studiorack.github.io/studiorack-site/",
   "name": "StudioRack Project",
@@ -7,7 +7,7 @@
   "tags": ["StudioRack"],
   "version": "1.0.0",
   "license": "cc0-1.0",
-  "date": "2024-08-02T05:12:28.552Z",
+  "date": "2024-08-03T05:46:34.163Z",
   "type": {
     "name": "Ableton",
     "ext": "als"
@@ -27,6 +27,6 @@
     }
   },
   "plugins": {},
-  "path": "songs/april/example",
+  "path": "songs/april/example.als",
   "status": "installed"
 }

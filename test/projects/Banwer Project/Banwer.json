@@ -7,7 +7,7 @@
   "tags": ["Ableton"],
   "version": "1.0.0",
   "license": "cc0-1.0",
-  "date": "2024-05-20T03:45:58.903Z",
+  "date": "2024-08-02T05:32:40.394Z",
   "type": {
     "name": "Ableton",
     "ext": "als"
@@ -30,6 +30,6 @@
     }
   },
   "plugins": {},
-  "path": "test/projects/Banwer Project",
+  "path": "test/projects/Banwer Project/Banwer.als",
   "status": "installed"
 }
