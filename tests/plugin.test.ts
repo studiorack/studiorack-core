@@ -221,7 +221,7 @@ test('Get plugin directory', () => {
 });
 
 test('Get valid plugin by id from registry', async () => {
-  expect(await pluginGet(PLUGIN_ID)).toMatchObject(PLUGIN);
+  expect(await pluginGet(PLUGIN_ID)).toEqual(PLUGIN);
 });
 
 test('Get invalid PLUGIN by id from registry', async () => {
@@ -229,7 +229,7 @@ test('Get invalid PLUGIN by id from registry', async () => {
 });
 
 test('Install plugin by id', async () => {
-  expect(await pluginInstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL);
+  expect(await pluginInstall(PLUGIN_ID)).toEqual(PLUGIN_LOCAL);
 });
 
 test('Check if plugin is installed locally', () => {
@@ -237,7 +237,7 @@ test('Check if plugin is installed locally', () => {
 });
 
 test('Get plugin locally', async () => {
-  expect(await pluginGetLocal('studiorack/mda')).toMatchObject(PLUGIN_LOCAL);
+  expect(await pluginGetLocal('studiorack/mda')).toEqual(PLUGIN_LOCAL);
 });
 
 test('List plugins in registry', async () => {
@@ -258,20 +258,16 @@ test('Get full plugin license information from config', async () => {
 });
 
 test('List plugins locally', async () => {
-  expect(await pluginsGetLocal()).toBeDefined();
+  expect(await pluginsGetLocal()).toEqual([PLUGIN_LOCAL]);
 });
 
 test('Search plugin registry', async () => {
-  expect(await pluginSearch('delay')).toBeDefined();
-});
-
-test('Search plugin registry', async () => {
-  expect(await pluginSearch('delay')).toBeDefined();
+  expect(await pluginSearch('mda')).toEqual([PLUGIN]);
 });
 
 test('Uninstall plugin by id', async () => {
   const PLUGIN_LOCAL_UPDATED: any = Object.assign({}, PLUGIN_LOCAL);
-  delete PLUGIN_LOCAL_UPDATED.paths;
+  PLUGIN_LOCAL_UPDATED.paths = [];
   PLUGIN_LOCAL_UPDATED.status = 'available';
-  expect(await pluginUninstall(PLUGIN_ID)).toMatchObject(PLUGIN_LOCAL_UPDATED);
+  expect(await pluginUninstall(PLUGIN_ID)).toEqual(PLUGIN_LOCAL_UPDATED);
 });

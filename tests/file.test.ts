@@ -104,11 +104,11 @@ test('Directory projects', () => {
 });
 
 test('Read directory', () => {
-  expect(dirRead(DIR_PATH)).toMatchObject([DIR_PATH]);
+  expect(dirRead(DIR_PATH)).toEqual([DIR_PATH]);
 });
 
 test('Read directory glob', () => {
-  expect(dirRead(DIR_PATH_GLOB)).toMatchObject([FILE_PATH]);
+  expect(dirRead(DIR_PATH_GLOB)).toEqual([FILE_PATH]);
 });
 
 test('Create file', () => {

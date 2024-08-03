@@ -100,16 +100,19 @@ beforeAll(() => {
 });
 
 test('Create project locally', () => {
+  const PROJECT_DEFAULT_UPDATED: any = Object.assign({}, PROJECT_DEFAULT);
+  PROJECT_DEFAULT_UPDATED.path = 'songs/april/example';
+  PROJECT_DEFAULT_UPDATED.status = 'installed';
   const result = projectCreate('songs/april/example', false);
-  result.date = PROJECT_DEFAULT.date;
-  expect(result).toMatchObject(PROJECT_DEFAULT);
+  result.date = PROJECT_DEFAULT_UPDATED.date;
+  expect(result).toEqual(PROJECT_DEFAULT_UPDATED);
 });
 
 test('Create project default', () => {
   const result = projectDefault();
   result.id = 'songs/april/example';
   result.date = PROJECT_DEFAULT.date;
-  expect(result).toMatchObject(PROJECT_DEFAULT);
+  expect(result).toEqual(PROJECT_DEFAULT);
 });
 
 test('Get project directory', () => {
@@ -122,8 +125,10 @@ test('Get project', async () => {
   expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
 });
 
-test('Get projects', () => {
-  expect(projectsGetLocal()).toBeDefined();
+test('Get projects', async () => {
+  const result = await projectsGetLocal();
+  result[0].date = PROJECT_LOCAL.date;
+  expect(result).toEqual([PROJECT_LOCAL]);
 });
 
 test('Install project plugins', async () => {

@@ -188,7 +188,7 @@ export async function pluginInstall(id: string, version?: string): Promise<Plugi
   plugin.paths = [];
 
   // If plugin is already installed then abort
-  if (pluginInstalled(plugin)) return pluginGetLocal(id, version);
+  if (pluginInstalled(plugin)) return await pluginGetLocal(id, version);
 
   // If plugin installation path is outside dirAppData(), and program is not running as Admin,
   // then trigger a pop-up to ask for elevated privileges, and run installation using cli.
