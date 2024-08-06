@@ -65,7 +65,7 @@ const PROJECT_LOCAL: ProjectVersionLocal = {
     ext: 'als',
     name: 'Ableton',
   },
-  path: path.join('test', 'projects', 'Banwer Project', 'Banwer.als'),
+  path: path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.als'),
   status: 'installed',
   files: {
     audio: {
@@ -92,10 +92,11 @@ beforeAll(() => {
 });
 
 test('Create project locally', () => {
+  const projectPath: string = path.join('songs', 'april', 'example.als');
   const PROJECT_DEFAULT_UPDATED: any = Object.assign({}, PROJECT_DEFAULT);
-  PROJECT_DEFAULT_UPDATED.path = path.join('songs', 'april', 'example.als');
+  PROJECT_DEFAULT_UPDATED.path = projectPath;
   PROJECT_DEFAULT_UPDATED.status = 'installed';
-  const result = projectCreate('songs/april/example.als', false);
+  const result = projectCreate(projectPath, false);
   result.date = PROJECT_DEFAULT.date;
   expect(result).toEqual(PROJECT_DEFAULT_UPDATED);
 });
