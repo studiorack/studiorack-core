@@ -179,7 +179,7 @@ export async function projectUninstall(dir: string, id?: string, version?: strin
   return projectSave(dir, project);
 }
 
-export function projectValidate(dir: string, options?: PluginValidationOptions): ProjectVersion {
+export function projectValidate(dir: string, options?: PluginValidationOptions): ProjectVersionLocal {
   const relativePath: string = dir.replace(configGet('projectFolder') + path.sep, '');
   const type: ProjectType = projectType(pathGetExt(dir));
   let project: ProjectVersionLocal = projectDefault() as ProjectVersionLocal;

@@ -237,6 +237,7 @@ test('Check if plugin is installed locally', () => {
 });
 
 test('Get plugin locally', async () => {
+  expect(await pluginGetLocal('studiorack/andes')).toBeUndefined();
   expect(await pluginGetLocal('studiorack/mda')).toEqual(PLUGIN_LOCAL);
 });
 

@@ -197,7 +197,7 @@ export async function pluginInstall(id: string, version?: string): Promise<Plugi
     if (id) command += ` --id ${id}`;
     if (version) command += ` --ver ${version}`;
     await runCliAsAdmin(command);
-    return plugin;
+    return await pluginGetLocal(plugin.id || '', plugin.version);
   }
 
   // Check file extension is supported
@@ -363,6 +363,9 @@ export async function pluginUninstall(id: string, version?: string): Promise<Plu
     if (id) command += ` --id ${id}`;
     if (version) command += ` --ver ${version}`;
     await runCliAsAdmin(command);
+    plugin.paths = [];
+    plugin.status = 'available';
+    return plugin;
   } else {
     if (!pluginInstalled(plugin)) {
       throw Error(

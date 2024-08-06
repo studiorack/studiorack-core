@@ -71,21 +71,29 @@ const PROJECT_LOCAL: ProjectVersionLocal = {
     audio: {
       name: 'Banwer.wav',
       size: 1539540,
-      url: 'test/projects/Banwer Project/Banwer.wav',
+      url: path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.wav'),
     },
     image: {
       name: 'Banwer.png',
       size: 16300,
-      url: 'test/projects/Banwer Project/Banwer.png',
+      url: path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.png'),
     },
     project: {
       name: 'Banwer.als',
       size: 236613,
-      url: 'test/projects/Banwer Project/Banwer.als',
+      url: path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.als'),
     },
   },
   plugins: {},
 };
+
+function convertPaths(project: ProjectVersionLocal) {
+  project.files.audio.url = project.files.audio.url.split('/').join(path.sep);
+  project.files.image.url = project.files.image.url.split('/').join(path.sep);
+  project.files.project.url = project.files.project.url.split('/').join(path.sep);
+  project.path = project.path.split('/').join(path.sep);
+  return project;
+}
 
 beforeAll(() => {
   configSet('projectFolder', PROJECT_DIR);
@@ -127,7 +135,7 @@ test('Get projects', async () => {
 test('Install project plugins', async () => {
   const result = await projectInstall(path.join(PROJECT_DIR, PROJECT_FILE));
   result.date = PROJECT_LOCAL.date;
-  expect(result).toEqual(PROJECT_LOCAL);
+  expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
 });
 
 test('Save project json', () => {
@@ -162,7 +170,7 @@ test('Uninstall project plugins', async () => {
 test('Validate project', () => {
   const result = projectValidate(path.join(PROJECT_DIR, 'Banwer Project', 'Banwer.als'), { json: true, files: true });
   result.date = PROJECT_LOCAL.date;
-  expect(result).toEqual(PROJECT_LOCAL);
+  expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
 });
 
 test('Validate project files', () => {
