@@ -123,13 +123,13 @@ test('Get project directory', () => {
 test('Get project', async () => {
   const result = await projectGetLocal(PROJECT_ID);
   result.date = PROJECT_LOCAL.date;
-  expect(result).toEqual(PROJECT_LOCAL);
+  expect(convertPaths(result)).toEqual(PROJECT_LOCAL);
 });
 
 test('Get projects', async () => {
   const result = await projectsGetLocal();
   result[0].date = PROJECT_LOCAL.date;
-  expect(result).toEqual([PROJECT_LOCAL]);
+  expect([convertPaths(result[0])]).toEqual([PROJECT_LOCAL]);
 });
 
 test('Install project plugins', async () => {
