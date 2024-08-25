@@ -142,12 +142,6 @@ export function configDefaults(
         same: true,
       },
       {
-        key: 'gpl-3.0',
-        name: 'GNU General Public License v3.0',
-        url: 'https://choosealicense.com/licenses/gpl-3.0',
-        same: true,
-      },
-      {
         key: 'isc',
         name: 'ISC License',
         url: 'https://choosealicense.com/licenses/isc',
