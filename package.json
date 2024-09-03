@@ -4,7 +4,10 @@
   "description": "Core library containing shared functionality",
   "type": "module",
   "main": "./build/index.js",
-  "exports": "./build/index.js",
+  "exports": {
+    "node": "./build/index.js",
+    "default": "./build/index-browser.js"
+  },
   "types": "./build/index.d.ts",
   "files": [
     "build"
