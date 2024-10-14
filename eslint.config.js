@@ -12,6 +12,6 @@ export default [
     },
   },
   {
-    ignores: ['src/convert.ts'],
+    ignores: ['build', 'src/convert.ts'],
   },
 ];
