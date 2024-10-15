@@ -19,7 +19,7 @@
     "prebuild": "npm run lint",
     "build": "npm run clean && tsc && npm run copy",
     "dev": "tsx ./src/index.ts",
-    "lint": "eslint './**/*.ts'",
+    "lint": "eslint .",
     "test": "vitest run ./tests --hook-timeout=60000 --test-timeout=60000 --no-file-parallelism",
     "format": "prettier . --write",
     "test:watch": "vitest ./tests",
