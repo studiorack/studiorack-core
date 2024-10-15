@@ -260,7 +260,7 @@ export function isAdmin(): boolean {
     try {
       execFileSync('net', ['session'], { stdio: 'ignore' });
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   } else {

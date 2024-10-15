@@ -49,7 +49,7 @@
     "slugify": "^1.6.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
+    "@eslint/js": "^9.12.0",
     "@types/adm-zip": "^0.4.33",
     "@types/fs-extra": "^11.0.4",
     "@types/glob": "^7.1.3",
@@ -59,14 +59,14 @@
     "@types/readline-sync": "^1.4.8",
     "@types/semver": "^7.5.8",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.57.0",
+    "eslint": "^9.12.0",
     "globals": "^15.2.0",
     "prettier": "^3.2.5",
     "quicktype": "^23.0.168",
     "rimraf": "^5.0",
     "tsx": "^4.10.2",
-    "typescript": "^5.4.2",
-    "typescript-eslint": "^7.9.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.9.0",
     "vitest": "^1.6.0"
   },
   "repository": {
