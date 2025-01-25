@@ -1,68 +1,17 @@
-# studiorack-core
+# studiorack-core has been deprecated
 
-![Test](https://github.com/studiorack/studiorack-core/workflows/Test/badge.svg)
+StudioRack core was a prototype of an open-source audio plugin core functions. It showed what was possible by publishing reusable code and making it available to command line tools, apps and websites.
 
-Common methods package shared across StudioRack CLI, app and website for handling installing DAW VST plugin dependencies.
+This core codebase required maintenance to keep up-to-date and was missing important features such as:
 
-![StudioRack Core](/screenshot.jpg)
+- Support for projects/presets
+- Target specific operating systems and architectures
+- File hashes for security
+- Multiple plugin/archive formats
 
-## Features
+We have now combined forces with the Owlplug team, to define an open-source shared audio package manager specification and GitHub organization. The new core codebase supports those important features and will allow the standards to scale beyond StudioRack and Owlplug to other audio package managers.
 
-- admin - Standalone script for running plugin installations with admin privileges
-- api - Helper methods for getting data via web requests
-- config- Reading and writing configuration settings
-- file - Helper methods for manipulating local files
-- plugin - Logic for searching and installing plugins
-- project - Logic for searching and indexing audio projects
-- tool - Utilities and tools for validating plugins
-- utils - Other helper methods and string utilities
-
-## Installation
-
-To install the common package, run the command:
-
-    npm install @studiorack/core
-
-Import the package using:
-
-    import { toolInstall } from '@studiorack/core';
-
-Then use the available methods as normal.
-
-## Developer information
-
-StudioRack Core was built using:
-
-- NodeJS 20.x
-- TypeScript 5.x
-
-## Installation
-
-To install, build and run code locally, first install dependencies:
-
-    npm install
-
-## Usage
-
-Run dev command:
-
-    npm run dev
-
-Or to create and run a production build:
-
-    npm run build
-    npm start
-
-## Deployment
-
-This package is versioned using git tags:
-
-    npm version patch
-    git push && git push origin --tags
-
-It is published to npm using:
-
-    npm publish
+Check it the new project here: https://github.com/open-audio-stack/open-audio-stack-core
 
 ## Contact
 
